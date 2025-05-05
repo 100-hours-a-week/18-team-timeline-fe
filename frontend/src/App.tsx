@@ -8,12 +8,13 @@ import NewsDetail from '@/pages/PN-002';
 import SignUp from '@/pages/PU-001';
 import Login from '@/pages/PU-002';
 import UserInfo from '@/pages/PU-003';
+import { Container } from './components/layout/Container';
 
 const App: React.FC = () => {
   const currentPage = usePageStore((state) => state.currentPage);
 
   return (
-    <div>
+    <Container>
       <Router>
         <Routes>
           <Route path="/" element={<Navigate to={currentPage} />} />
@@ -24,7 +25,7 @@ const App: React.FC = () => {
           <Route path={ROUTES.USER_INFO} element={<UserInfo />} />
         </Routes>
       </Router>
-    </div>
+    </Container>
   );
 };
 

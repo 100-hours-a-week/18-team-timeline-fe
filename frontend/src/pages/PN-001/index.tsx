@@ -1,5 +1,9 @@
+import { Header } from "@/components/layout/Header";
+
 export default function MainPage() {
   return (
-    null
+    <div>
+      <Header/>
+    </div>
   )
 }

@@ -27,8 +27,8 @@ export const ENDPOINTS = {
   USER_PASSWORD: '/users/me/password',
   USER_WITHDRAW: '/users/me/state',
   NEWS: '/news',
-  NEWS_DETAIL: '/news/:id',
   NEWS_HOTISSUE: '/news/hotissue',
+  NEWS_DETAIL: '/news/:id',
   BOOKMARK: '/news/:id/bookmark',
   COMMENT: '/news/:id/comments',
 

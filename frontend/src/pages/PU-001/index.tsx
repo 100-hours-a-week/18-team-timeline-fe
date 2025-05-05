@@ -1,5 +1,7 @@
+import { Header } from "@/components/layout/Header";
+
 export default function SignUpPage() {
   return (
-    null
+    <Header/>
   )
 }
