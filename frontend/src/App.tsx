@@ -9,6 +9,7 @@ import SignUp from '@/pages/PU-001';
 import Login from '@/pages/PU-002';
 import UserInfo from '@/pages/PU-003';
 import { Container } from './components/layout/Container';
+import { Header } from './components/layout/Header';
 
 const App: React.FC = () => {
   const currentPage = usePageStore((state) => state.currentPage);
@@ -16,6 +17,7 @@ const App: React.FC = () => {
   return (
     <Container>
       <Router>
+        <Header />
         <Routes>
           <Route path="/" element={<Navigate to={currentPage} />} />
           <Route path={ROUTES.MAIN} element={<Main />} />
