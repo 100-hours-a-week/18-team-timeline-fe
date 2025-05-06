@@ -54,3 +54,5 @@ export const ENDPOINTS = {
 
   getCommentURL: (id: number) => `/news/${id}/comments`,
 };
+
+export const INQUIRY_URL = 'https://ktb.goorm.io/'

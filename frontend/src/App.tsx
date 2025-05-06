@@ -10,6 +10,7 @@ import Login from '@/pages/PU-002';
 import UserInfo from '@/pages/PU-003';
 import { Container } from './components/layout/Container';
 import { Header } from './components/layout/Header';
+import { Sidebar } from './components/layout/SideBar';
 
 const App: React.FC = () => {
   const currentPage = usePageStore((state) => state.currentPage);
@@ -17,6 +18,7 @@ const App: React.FC = () => {
   return (
     <Container>
       <Router>
+        <Sidebar />
         <Header />
         <Routes>
           <Route path="/" element={<Navigate to={currentPage} />} />

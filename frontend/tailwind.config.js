@@ -20,7 +20,7 @@ export default {
         headerIconColor: '#000000',
 
         // CC-002
-        menuColor: '#FFFFFF',
+        menuColor: '#F2F2F2',
         menuItemColor: '#000000',
         menuItemHoverColor: '#AAAAAA',
         menuMetaTextColor: '#6F6F6F',

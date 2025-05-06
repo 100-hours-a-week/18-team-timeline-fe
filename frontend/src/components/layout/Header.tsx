@@ -4,6 +4,7 @@ import { Text } from '../ui/Text'
 import clsx from 'clsx'
 import { Link } from 'react-router-dom'
 import { ROUTES } from '@/constants/url'
+import { useSidebarStore } from '@/stores/sidebarStore'
 
 type ReactDivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
 
@@ -18,7 +19,13 @@ export const Header = ({ className: _className }: HeaderProps) => {
 
   return (
     <div className={className}>
-      <Icon name="Bars3Icon" size={24} variant="solid" className="text-headerIconColor cursor-pointer" />
+      <Icon
+        name="Bars3Icon"
+        size={24}
+        variant="solid"
+        className="text-headerIconColor cursor-pointer"
+        onClick={() => useSidebarStore.getState().toggle()}
+      />
       <Link to={ROUTES.MAIN}>
         <Text className="text-2xl font-extrabold cursor-pointer">탐나라</Text>
       </Link>

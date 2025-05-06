@@ -28,9 +28,10 @@ export const Container = ({ className: _className, children }: ContainerProps) =
 
   const wrapperClass = clsx(
     isSmall ? 'w-full' : 'w-full max-w-[390px]',
-    'h-screen mx-auto bg-myWhite',
+    'h-screen mx-auto bg-myWhite relative overflow-hidden',
     _className
   )
+  
 
   return (
     <div className={containerClass}>
