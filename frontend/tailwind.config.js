@@ -26,11 +26,14 @@ export default {
         menuMetaTextColor: '#6F6F6F',
 
         // CC-003
-        modalColor: '#000000',
-        modalTitleColor: '#FFFFFF',
-        modalContentColor: '#FFFFFF',
+        modalColor: '#FFFFFF',
+        modalTitleColor: '#000000',
+        modalContentColor: '#000000',
+        modalButtonTextColor: '#FFFFFF',
         modalButtonConfirmColor: '#4F4F4F',
-        modalButtonCancleColor: '#9A9A9A',
+        modalButtonConfirmHoverColor: '#6F6F6F',
+        modalButtonCancelColor: '#9A9A9A',
+        modalButtonCancelHoverColor: '#AAAAAA',
 
         // CC-004
         toastColor: '#9A9A9A',
