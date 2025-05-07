@@ -59,8 +59,8 @@ export default {
         buttonKakaoColor: '#9A9A9A',
 
         checkBoxBgColor: '#D9D9D9',
-        checkBoxCheckActiveColor: '#000000',
-        checkBoxCheckDisactiveColor: '#FFFFFF',
+        checkBoxLabelColor: '#000000',
+        checkBoxMetaTextColor: '#6F6F6F',
 
         navigationTextColor: '#000000',
         navigationTextHoverColor: '#A0A0A0',
