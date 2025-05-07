@@ -32,6 +32,7 @@ export default {
         modalButtonTextColor: '#FFFFFF',
         modalButtonConfirmColor: '#4F4F4F',
         modalButtonConfirmHoverColor: '#6F6F6F',
+        modalButtonDisactiveColor: '#D9D9D9',
         modalButtonCancelColor: '#9A9A9A',
         modalButtonCancelHoverColor: '#AAAAAA',
 
