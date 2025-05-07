@@ -41,13 +41,15 @@ export default {
 
         // PU
         puBgColor: '#F9F9F9',
-        puCardColor: '#FFFFFF',
+        puWrapperColor: '#FFFFFF',
         puTitleColor: '#000000',
 
         inputBgColor: '#EFEFEF',
         inputBorderColor: '#DFDFDF',
         inputBorderFocusColor: '#000000',
         inputPlaceholderColor: '#9F9F9F',
+        labelTextColor: '#000000',
+        labelSpanColor: '#4F4F4F',
         helperTextColor: '#808080',
         metaTextColor: '#4F4F4F',
 
