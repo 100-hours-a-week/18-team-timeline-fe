@@ -14,7 +14,7 @@ export const Wrapper = ({
 }: WrapperProps) => {
 
   const className = clsx(
-    'h-fit rounded-xl mx-7 mt-16 py-14',
+    'h-fit rounded-xl mx-7 my-16 py-14',
     'flex flex-col bg-puWrapperColor',
     _className
   )
