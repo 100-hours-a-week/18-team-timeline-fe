@@ -39,7 +39,7 @@ export const Banner: React.FC = () => {
       className="w-full h-[200px] swiper-custom rounded-lg"
       style={{
         '--swiper-navigation-color': '#000',
-        '--swiper-navigation-size': '2rem'
+        '--swiper-navigation-size': '1rem',
       } as React.CSSProperties}
     >
       {newsCards.map((news) => (

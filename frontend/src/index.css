@@ -40,8 +40,8 @@ a {
   
   background-color: rgba(255, 255, 255, 0.5); /* 반투명 흰색 */
   border-radius: 10px;                      /* 둥근 버튼 */
-  width: 2rem;                              /* 필요에 따라 크기 조절 */
-  height: 4rem;
+  width: 1.5rem;                              /* 필요에 따라 크기 조절 */
+  height: 2rem;
 }
 
 /* hover 시 배경 더 진하게 */
