@@ -9,7 +9,7 @@ export default function LoginPage() {
     <div className="wrap bg-puBgColor">
       <Wrapper
         title="로그인"
-        className="px-9"
+        className="px-8"
       >
         <LoginForm/>
         <div className={lineClass} />
