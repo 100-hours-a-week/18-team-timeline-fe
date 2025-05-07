@@ -41,7 +41,7 @@ export default {
 
         // PU
         puBgColor: '#F9F9F9',
-        puCardColor: '#FFFFFF',
+        puWrapperColor: '#FFFFFF',
         puTitleColor: '#000000',
 
         inputBgColor: '#EFEFEF',
