@@ -1,4 +1,4 @@
-import { type DetailedHTMLProps, type HTMLAttributes } from "react"
+import type { DetailedHTMLProps, HTMLAttributes } from "react"
 import clsx from "clsx"
 import { Input } from "@/components/form/Input"
 import { Button } from "../components/ui/Button"
@@ -6,6 +6,7 @@ import { Text } from "@/components/ui/Text"
 import { Link } from "react-router-dom"
 import { ROUTES } from "@/constants/url"
 import { useSignUpLogic } from "./SignUpLogic"
+import { CheckSection } from "./CheckSection"
 
 type SignUpFormProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> & {}
 
@@ -13,10 +14,12 @@ export const SignUpForm = ({}: SignUpFormProps) => {
   const {
     email, setEmail, password, setPassword,
     passwordCheck, setPasswordCheck, name, setName,
+    checkedTerms, setCheckedTerms, checkedPrivacy, setCheckedPrivacy,
     errors, isButtonActive, handleSubmit, checkEmailDuplicate, checkNameDuplicate,
   } = useSignUpLogic()
   
   const formClass = clsx('w-full flex flex-col justify-center', 'space-y-3')
+  const checkClass = clsx('pt-3')
   const buttonClass = clsx('flex flex-col pt-8 space-y-1')
   const navigationClass = clsx('w-full justify-center flex flex-row space-x-1', 'text-sm text-navigationTextColor')
   const linkClass = clsx('hover:text-navigationTextHoverColor')
@@ -67,9 +70,16 @@ export const SignUpForm = ({}: SignUpFormProps) => {
         onBlur={checkNameDuplicate}
         helperText={errors.name}
       />
+      <CheckSection
+        checkedTerms={checkedTerms}
+        setCheckedTerms={setCheckedTerms}
+        checkedPrivacy={checkedPrivacy}
+        setCheckedPrivacy={setCheckedPrivacy}
+        className={checkClass}
+      />
       <div className={buttonClass}>
         <Button
-          text="로그인하기"
+          text="회원가입하기"
           isActive={isButtonActive}
         />
         <div className={navigationClass}>

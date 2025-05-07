@@ -10,6 +10,8 @@ export const useSignUpLogic = () => {
   const [password, setPassword] = useState("")
   const [passwordCheck, setPasswordCheck] = useState("")
   const [name, setName] = useState("")
+  const [checkedTerms, setCheckedTerms] = useState(false)
+  const [checkedPrivacy, setCheckedPrivacy] = useState(false)
   const [errors, setErrors] = useState<{ email?: string; password?: string; passwordCheck?: string; name?: string }>({})
   const [isButtonActive, setIsButtonActive] = useState(false)
 
@@ -19,8 +21,8 @@ export const useSignUpLogic = () => {
   useEffect(() => {
     const result = validateSignUp(email, password, passwordCheck, name)
     setErrors(result.errors)
-    setIsButtonActive(result.isValid)
-  }, [email, password, passwordCheck, name])
+    setIsButtonActive(result.isValid && checkedTerms && checkedPrivacy)
+  }, [email, password, passwordCheck, name, checkedTerms, checkedPrivacy])
 
   const checkDuplicate = async (
     value: string,
@@ -61,10 +63,12 @@ export const useSignUpLogic = () => {
     password, setPassword,
     passwordCheck, setPasswordCheck,
     name, setName,
+    checkedTerms, setCheckedTerms,
+    checkedPrivacy, setCheckedPrivacy,
     errors,
     isButtonActive,
     handleSubmit,
     checkEmailDuplicate,
-    checkNameDuplicate
+    checkNameDuplicate,
   }
 }
