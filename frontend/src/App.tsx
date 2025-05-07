@@ -3,11 +3,11 @@ import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-d
 import './App.css';
 import usePageStore from './stores/pageStore';
 import { ROUTES } from '@/constants/url';
-import Main from '@/pages/PN-001';
-import NewsDetail from '@/pages/PN-002';
-import SignUp from '@/pages/PU-001';
-import Login from '@/pages/PU-002';
-import UserInfo from '@/pages/PU-003';
+import Main from '@/pages/PN/PN-001';
+import NewsDetail from '@/pages/PN/PN-002';
+import SignUp from '@/pages/PU/PU-001';
+import Login from '@/pages/PU/PU-002';
+import UserInfo from '@/pages/PU/PU-003';
 import { Container } from './components/layout/Container';
 import { Header } from './components/layout/Header';
 import { Sidebar } from './components/layout/SideBar';
