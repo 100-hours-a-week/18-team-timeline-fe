@@ -77,7 +77,7 @@ export const Sidebar = () => {
         </div>
       ) : (
         <div className={menuClass}>
-          <Text className={clsx(titleClass, 'leading-8')}>로그인이<br />필요합니다.</Text>
+          <Text className={clsx(titleClass)}>로그인이<br />필요합니다.</Text>
           <div className={lineClass} />
           <nav className={navClass}>
             <Link to={ROUTES.LOGIN} className={navItemClass} onClick={close}>
