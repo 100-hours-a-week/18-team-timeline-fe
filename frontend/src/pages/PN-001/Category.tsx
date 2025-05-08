@@ -26,15 +26,15 @@ const Category: React.FC<CategoryProps> = ({ onCategoryChange }) => {
   };
 
   return (
-    <div className="flex justify-center space-x-3 border-b border-gray-200 pb-2 pt-2">
+    <div className="flex justify-center space-x-3 border-b border-none pb-2 pt-2">
       {categories.map((category) => (
         <button
           key={category.id}
           onClick={() => handleCategoryClick(category.id)}
-          className={`px-4 py-2 text-sm font-medium ${
+          className={`px-4 py-2 text-sm text-black ${
             selectedCategory === category.id
-              ? 'text-black font-bold border-b-2 border-black'
-              : 'text-gray-500'
+              ? 'text-black font-bold border-b-2 border-[#F2A359]'
+              : 'text-black font-medium '
           }`}
         >
           {category.name}
