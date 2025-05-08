@@ -10,7 +10,7 @@ import Login from '@/pages/PU/PU-002';
 import UserInfo from '@/pages/PU/PU-003';
 import { Container } from './components/layout/Container';
 import { Header } from './components/layout/Header';
-import { Sidebar } from './components/layout/SideBar';
+import { Sidebar } from './components/layout/Sidebar';
 
 const App: React.FC = () => {
   const currentPage = usePageStore((state) => state.currentPage);
