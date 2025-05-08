@@ -52,9 +52,10 @@ export default {
         labelSpanColor: '#4F4F4F',
         helperTextColor: '#808080',
         metaTextColor: '#4F4F4F',
+        inputInactiveText: '#4F4F4F',
 
         buttonTextColor: '#FFFFFF',
-        buttonDisactiveColor: '#D9D9D9',
+        buttonInactiveColor: '#D9D9D9',
         buttonActiveColor: '#4F4F4F',
         buttonKakaoColor: '#9A9A9A',
 
@@ -74,7 +75,7 @@ export default {
         newsCardMetaTextColor: '#9A9A9A',
 
         categoryBgColor: '#000000',
-        categoryTextDisactiveColor: '#AAAAAA',
+        categoryTextInactiveColor: '#AAAAAA',
         categoryTextActiveColor: '#000000',
 
         fabBgColor: '#000000',
