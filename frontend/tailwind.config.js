@@ -32,6 +32,7 @@ export default {
         modalButtonTextColor: '#FFFFFF',
         modalButtonConfirmColor: '#4F4F4F',
         modalButtonConfirmHoverColor: '#6F6F6F',
+        modalButtonDisactiveColor: '#D9D9D9',
         modalButtonCancelColor: '#9A9A9A',
         modalButtonCancelHoverColor: '#AAAAAA',
 
@@ -48,6 +49,8 @@ export default {
         inputBorderColor: '#DFDFDF',
         inputBorderFocusColor: '#000000',
         inputPlaceholderColor: '#9F9F9F',
+        labelTextColor: '#000000',
+        labelSpanColor: '#4F4F4F',
         helperTextColor: '#808080',
         metaTextColor: '#4F4F4F',
 
