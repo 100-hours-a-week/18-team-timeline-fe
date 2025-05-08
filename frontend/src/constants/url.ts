@@ -25,6 +25,8 @@ export const ENDPOINTS = {
   SIGNUP: '/users',
   CHECK_EMAIL: (email: string) => `/users/check-email?email=${encodeURIComponent(email)}`,
   CHECK_NAME: (name: string) => `/users/check-nickname?nickname=${name}`,
+  SEND_CODE: '/auth/email-verification-codes',
+  CHECK_CODE: '/auth/email-verification-codes/verify',
   USER_INFO: '/users/me',
   USER_PASSWORD: '/users/me/password',
   USER_WITHDRAW: '/users/me/state',
