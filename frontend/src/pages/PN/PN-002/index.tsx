@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import SearchBar from './SearchBar';
 import NewsList from './NewsList';
 import Modal from './Modal';
@@ -16,6 +15,7 @@ export default function SearchResults({ searchQuery }: SearchResultsProps) {
   const [showLoginModal, setShowLoginModal] = useState(false);
 
   const handleKeywordAdd = (keyword: string) => {
+    // 키워드가 6개 미만이고 중복되지 않을 때만 추가
     if (keywords.length < 6 && !keywords.includes(keyword)) {
       setKeywords([...keywords, keyword]);
     }
@@ -45,14 +45,18 @@ export default function SearchResults({ searchQuery }: SearchResultsProps) {
           <SearchBar 
             initialQuery={searchQuery}
             onKeywordAdd={handleKeywordAdd}
+            onKeywordRemove={handleKeywordRemove} // 키워드 제거 함수 전달
             keywords={keywords}
           />
         </div>
 
-        <div className="mt-6">
+        <div className="mt-4">
           <button
             onClick={handleTimelineCreate}
-            className="bg-[#F2A359] text-white px-4 py-2 rounded-lg hover:bg-[#E29349] transition-colors"
+            className={`bg-[#F2A359] text-white px-4 py-2 rounded-3xl transition-colors ${
+              keywords.length === 0 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[#E29349]'
+            }`}
+            disabled={keywords.length === 0} // 키워드가 없으면 비활성화
           >
             타임라인 생성하기
           </button>

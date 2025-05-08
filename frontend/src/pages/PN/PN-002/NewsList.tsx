@@ -51,10 +51,17 @@ export const NewsList: React.FC<NewsListProps> = ({ searchQuery, keywords }) => 
   useEffect(() => {
     const container = document.querySelector('.news-container');
     if (container) {
-      container.addEventListener('scroll', handleScroll);
-      return () => container.removeEventListener('scroll', handleScroll);
+      const handleScrollNative = (e: Event) => {
+        const element = e.currentTarget as HTMLDivElement;
+        if (element.scrollHeight - element.scrollTop <= element.clientHeight + 10) {
+          loadMoreNews();
+        }
+      };
+      
+      container.addEventListener('scroll', handleScrollNative);
+      return () => container.removeEventListener('scroll', handleScrollNative);
     }
-  }, [handleScroll]);
+  }, [loadMoreNews]);
 
   // Simulated API call with search functionality
   const fetchNews = async (query: string, keywords: string[], page: number): Promise<News[]> => {
