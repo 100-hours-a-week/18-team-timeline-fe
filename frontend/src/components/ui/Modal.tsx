@@ -88,7 +88,7 @@ export const InputModal = ({
               buttonClass,
               'bg-modalButtonConfirmColor hover:bg-modalButtonConfirmHoverColor',
               {
-                'bg-modalButtonDisactiveColor cursor-not-allowed': !password.trim(),
+                'bg-modalButtonInactiveColor cursor-not-allowed': !password.trim(),
               }
             )}
           >
