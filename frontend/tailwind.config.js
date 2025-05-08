@@ -32,6 +32,7 @@ export default {
         modalButtonTextColor: '#FFFFFF',
         modalButtonConfirmColor: '#4F4F4F',
         modalButtonConfirmHoverColor: '#6F6F6F',
+        modalButtonDisactiveColor: '#D9D9D9',
         modalButtonCancelColor: '#9A9A9A',
         modalButtonCancelHoverColor: '#AAAAAA',
 
@@ -40,13 +41,20 @@ export default {
         toastTextColor: '#FFFFFF',
 
         // PU
-        puBgColor: '#F0F0F0',
+        puBgColor: '#F9F9F9',
+        puWrapperColor: '#FFFFFF',
+        puTitleColor: '#000000',
 
-        inputFormColor: '#DFDFDF',
+        inputBgColor: '#EFEFEF',
+        inputBorderColor: '#DFDFDF',
+        inputBorderFocusColor: '#000000',
         inputPlaceholderColor: '#9F9F9F',
+        labelTextColor: '#000000',
+        labelSpanColor: '#4F4F4F',
         helperTextColor: '#808080',
         metaTextColor: '#4F4F4F',
 
+        buttonTextColor: '#FFFFFF',
         buttonDisactiveColor: '#D9D9D9',
         buttonActiveColor: '#4F4F4F',
         buttonKakaoColor: '#9A9A9A',
@@ -54,6 +62,9 @@ export default {
         checkBoxBgColor: '#D9D9D9',
         checkBoxCheckActiveColor: '#000000',
         checkBoxCheckDisactiveColor: '#FFFFFF',
+
+        navigationTextColor: '#000000',
+        navigationTextHoverColor: '#A0A0A0',
 
         // PN
         pnBgColor: '#FFFFFF',
