@@ -5,6 +5,7 @@ interface ValidationResult {
     password?: string
     passwordCheck?: string
     name?: string
+    code?: string
   };
 }
 
@@ -12,7 +13,9 @@ export function validateSignUp(
   email: string,
   password: string,
   passwordCheck: string,
-  name: string
+  name: string,
+  code: string,
+  showVerificationInput: boolean
 ): ValidationResult {
   const errors: ValidationResult["errors"] = {};
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -45,6 +48,10 @@ export function validateSignUp(
     errors.name = "닉네임을 입력하세요."
   } else if (name.length > 10 || name.length < 2) {
     errors.name = "2자 이상 10자 이내로 입력해 주세요."
+  }
+
+  if (showVerificationInput && !code.trim()) {
+    errors.code = "메일이 발송되었습니다. 1시간 이내에 인증을 완료해 주세요.";
   }
 
   return {

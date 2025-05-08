@@ -1,6 +1,6 @@
 import type { DetailedHTMLProps, HTMLAttributes } from "react"
 import clsx from "clsx"
-import { Input } from "@/components/form/Input"
+import { ButtonInput, Input } from "@/components/form/Input"
 import { Button } from "../components/ui/Button"
 import { Text } from "@/components/ui/Text"
 import { Link } from "react-router-dom"
@@ -12,10 +12,19 @@ type SignUpFormProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDiv
 
 export const SignUpForm = ({}: SignUpFormProps) => {
   const {
-    email, setEmail, password, setPassword,
-    passwordCheck, setPasswordCheck, name, setName,
-    checkedTerms, setCheckedTerms, checkedPrivacy, setCheckedPrivacy,
-    errors, isButtonActive, handleSubmit, checkEmailDuplicate, checkNameDuplicate,
+    email, setEmail,
+    password, setPassword,
+    passwordCheck, setPasswordCheck,
+    name, setName,
+    code, setCode,
+    isEmailInputValid, isEmailAvailable,
+    showVerificationInput, setShowVerificationInput,
+    sendVerificationCode,
+    checkedTerms, setCheckedTerms,
+    checkedPrivacy, setCheckedPrivacy,
+    checkEmailDuplicate, checkNameDuplicate,
+    codeValid,
+    errors, isButtonActive, handleSubmit,
   } = useSignUpLogic()
   
   const formClass = clsx('w-full flex flex-col justify-center', 'space-y-3')
@@ -23,21 +32,55 @@ export const SignUpForm = ({}: SignUpFormProps) => {
   const buttonClass = clsx('flex flex-col pt-8 space-y-1')
   const navigationClass = clsx('w-full justify-center flex flex-row space-x-1', 'text-sm text-navigationTextColor')
   const linkClass = clsx('hover:text-navigationTextHoverColor')
+  const verificationClass = clsx(
+    'transition-all duration-300 ease-in-out',
+    showVerificationInput ? 'max-h-[56px] opacity-100' : 'max-h-0 opacity-0'
+  )
 
   return (
     <form className={formClass} onSubmit={handleSubmit}>
-      <Input
-        id="email"
-        labelName="이메일"
-        required={true}
-        type="text"
-        placeholder="이메일을 입력하세요."
-        value={email}
-        maxLength={255}
-        onChange={(e) => setEmail(e.target.value)}
-        onBlur={checkEmailDuplicate}
-        helperText={errors.email}
-      />
+      <div>
+        <ButtonInput
+          id="email"
+          labelName="이메일"
+          required={true}
+          type="text"
+          placeholder="이메일을 입력하세요."
+          value={email}
+          maxLength={255}
+          onChange={(e) => setEmail(e.target.value)}
+          onBlur={checkEmailDuplicate}
+          helperText={errors.email}
+          isValid={isEmailInputValid && isEmailAvailable}
+          onClick={async () => {
+            await sendVerificationCode()
+            setShowVerificationInput(true)
+          }}
+        />
+        <div className={verificationClass}>
+          <div className={clsx(showVerificationInput ? 'mt-1' : 'mt-0')}>
+          <Input
+            id="verification"
+            required={true}
+            type="text"
+            inputMode="numeric"
+            pattern="[0-9]*"
+            maxLength={6}
+            placeholder="인증번호 6자리를 입력하세요."
+            value={code}
+            helperText={errors.code ?? (codeValid ? "인증이 완료되었습니다." : undefined)}
+            readOnly={codeValid}
+            className={clsx(codeValid && "text-inputInactiveText cursor-not-allowed")}
+            onChange={(e) => {
+              if (!codeValid) {
+                const onlyNums = e.target.value.replace(/\D/g, "");
+                setCode(onlyNums);
+              }
+            }}
+          />
+          </div>
+        </div>
+      </div>
       <Input
         id="password"
         labelName="비밀번호"
