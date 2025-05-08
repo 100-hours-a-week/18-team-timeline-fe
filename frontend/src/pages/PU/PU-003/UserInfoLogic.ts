@@ -1,15 +1,20 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type DetailedHTMLProps, type HTMLAttributes } from "react";
 import { useRequestStore } from "@/stores/requestStore";
 import { ENDPOINTS } from "@/constants/url";
 import { validateUserInfo } from "../utils/validateUserInfo";
 
-export const useUserInfoLogic = () => {
+type UserInfoLogicProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> & {
+  setToastMessage: (msg: string) => void;
+}
+
+export const useUserInfoLogic = ({ setToastMessage }: UserInfoLogicProps ) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState('')
   const [name, setName] = useState("");
   const [errors, setErrors] = useState<{ name?: string }>({});
   const [isButtonActive, setIsButtonActive] = useState(false);
   const [isInputModalOpen, setIsInputModalOpen] = useState(false)
+  const [isNameChecked, setIsNameChecked] = useState(false)
 
   const { getData, postData } = useRequestStore();
 
@@ -37,14 +42,21 @@ export const useUserInfoLogic = () => {
 
     const result = validateUserInfo(name)
     setErrors(result.errors)
-    setIsButtonActive(result.isValid)
+    setIsNameChecked(false)
+    setIsButtonActive(result.isValid && isNameChecked)
   }, [name])
 
   const checkNameDuplicate = async () => {
     if (!name || errors.name) return;
+
     const res = await getData(ENDPOINTS.CHECK_NAME(name));
+
     if (!res.available) {
       setErrors((prev) => ({ ...prev, name: "이미 사용 중인 닉네임입니다." }));
+      setIsNameChecked(false)
+    } else {
+      setErrors((prev) => ({...prev, name: undefined}))
+      setIsNameChecked(true)
     }
   };
 
@@ -55,9 +67,11 @@ export const useUserInfoLogic = () => {
       const res = await postData(ENDPOINTS.USER_INFO, { name });
       if (res?.success) {
         localStorage.setItem('name', name);
+        setToastMessage("회원정보가 수정되었습니다.")
       }
     } catch (error) {
       console.error("닉네임 수정 실패", error);
+      setToastMessage("회원정보 수정에 실패하였습니다.")
     }
   };
 

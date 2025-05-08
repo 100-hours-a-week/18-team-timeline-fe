@@ -1,4 +1,4 @@
-import type { DetailedHTMLProps, HTMLAttributes } from "react";
+import { useState, type DetailedHTMLProps, type HTMLAttributes } from "react";
 import clsx from "clsx";
 import { Input } from "@/components/form/Input";
 import { Button } from "../components/ui/Button";
@@ -9,10 +9,13 @@ import { InputModal } from "@/components/ui/Modal";
 import { useUserInfoLogic } from "./UserInfoLogic";
 import { useRequestStore } from "@/stores/requestStore";
 import { ENDPOINTS } from "@/constants/url";
+import { Toast } from "@/components/ui/Toast";
 
 type UserInfoFormProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> & {}
 
 export const UserInfoForm = ({}: UserInfoFormProps) => {
+  const [toastMessage, setToastMessage] = useState("")
+
   const {
     email,
     password, setPassword,
@@ -20,7 +23,8 @@ export const UserInfoForm = ({}: UserInfoFormProps) => {
     checkNameDuplicate,
     isInputModalOpen, setIsInputModalOpen,
     errors, isButtonActive, handleSubmit,
-  } = useUserInfoLogic();
+  } = useUserInfoLogic({ setToastMessage });
+
 
   const { deleteData } = useRequestStore()
 
@@ -92,6 +96,8 @@ export const UserInfoForm = ({}: UserInfoFormProps) => {
         onConfirm={handleConfirmDelete}
         onCancel={handleCancelDelete}
       />
+
+      {toastMessage && <Toast message={toastMessage} />}
     </>
   );
 };
