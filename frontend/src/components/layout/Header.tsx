@@ -29,7 +29,7 @@ export const Header = ({ className: _className }: HeaderProps) => {
       <Link to={ROUTES.MAIN}>
         <Text className="text-2xl font-extrabold cursor-pointer">탐나라</Text>
       </Link>
-      <Link to={ROUTES.SERCH_RESULTS}>
+      <Link to={ROUTES.SEARCH_RESULTS}>
         <Icon name="MagnifyingGlassIcon" size={24} variant="solid" className="text-headerIconColor cursor-pointer" />
       </Link> 
     </div>
