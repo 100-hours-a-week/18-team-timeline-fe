@@ -14,6 +14,7 @@ export const ROUTES = {
   LOGIN: '/login',
   SIGNUP: '/signup',
   USER_INFO: '/user-info',
+  SERCH_RESULTS: '/search-results',
   NEWS_DETAIL: '/news/:id',
   getNewsDetailPath: (id: number) => `/news/${id}`,
 };
