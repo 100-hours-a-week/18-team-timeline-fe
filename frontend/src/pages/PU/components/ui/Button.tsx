@@ -20,7 +20,7 @@ export const Button = ({
 
   const className = clsx(
     buttonClass,
-    isActive ? 'bg-buttonActiveColor' : 'bg-buttonDisactiveColor',
+    isActive ? 'bg-buttonActiveColor' : 'bg-buttonInactiveColor',
     _className
   )
 

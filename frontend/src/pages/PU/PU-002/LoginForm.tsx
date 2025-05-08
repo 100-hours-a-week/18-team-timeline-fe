@@ -39,7 +39,7 @@ export const LoginForm = ({}: LoginFormProps) => {
     }
 
     try {
-      const res = await postData(ENDPOINTS.LOGIN, localStorage.getItem('accessToken') ?? '')
+      const res = await postData(ENDPOINTS.LOGIN, {email, password})
       if (res?.success) {
         navigate(ROUTES.MAIN);
       }
