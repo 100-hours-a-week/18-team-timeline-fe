@@ -13,7 +13,7 @@ export const Text: FC<TextProps> = ({
   return (
     <div
       className={clsx(
-        'tracking-[-0.02em] leading-[16px]',
+        'tracking-[-0.02em]',
         className
       )}
       {...props}

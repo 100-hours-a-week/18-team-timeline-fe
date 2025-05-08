@@ -28,7 +28,7 @@ export const Toast: React.FC<ToastProps> = ({ message, className }) => {
 
   const toastClass = clsx(
     'bg-toastColor/80 text-toastTextColor rounded-full',
-    'px-4 py-2 text-sm font-medium text-left',
+    'px-4 py-2 text-sm font-light text-left',
     'inline-block w-fit max-w-[350px] whitespace-normal',
     className
   );
