@@ -32,6 +32,7 @@ export default {
         modalButtonTextColor: '#FFFFFF',
         modalButtonConfirmColor: '#4F4F4F',
         modalButtonConfirmHoverColor: '#6F6F6F',
+        modalButtonDisactiveColor: '#D9D9D9',
         modalButtonCancelColor: '#9A9A9A',
         modalButtonCancelHoverColor: '#AAAAAA',
 
@@ -62,6 +63,9 @@ export default {
         checkBoxBgColor: '#D9D9D9',
         checkBoxLabelColor: '#000000',
         checkBoxMetaTextColor: '#6F6F6F',
+
+        navigationTextColor: '#000000',
+        navigationTextHoverColor: '#A0A0A0',
 
         navigationTextColor: '#000000',
         navigationTextHoverColor: '#A0A0A0',
