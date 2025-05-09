@@ -12,6 +12,7 @@ if (!API_BASE_URL) {
 export const ROUTES = {
   MAIN: '/main',
   LOGIN: '/login',
+  KAKAO_CALLBACK: "/auth/kakao/callback",
   SIGNUP: '/signup',
   USER_INFO: '/user-info',
   NEWS_DETAIL: '/news/:id',
@@ -20,7 +21,8 @@ export const ROUTES = {
 
 export const ENDPOINTS = {
   LOGIN: '/auth/login',
-  KAKAO_LOGIN: '/auth/login/kakao',
+  KAKAO_LOGIN: '/auth/kakao/login-url',
+  KAKAO_LOGIN_CALLBACK: (code: string) => `/auth/kakao/callback?code=${code}`,
   LOGOUT: '/users/logout',
   SIGNUP: '/users',
   CHECK_EMAIL: (email: string) => `/users/check-email?email=${encodeURIComponent(email)}`,
