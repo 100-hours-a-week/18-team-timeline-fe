@@ -24,27 +24,27 @@ function isTokenValid(token: string | null): boolean {
 }
 
 export const useAuthStore = create<AuthState>((set) => {
-  const token = localStorage.getItem('accessToken');
+  const token = localStorage.getItem('token');
   const initialLoginState = isTokenValid(token);
 
   return {
     isLoggedIn: initialLoginState,
 
     login: (token: string) => {
-      localStorage.setItem('accessToken', token);
+      localStorage.setItem('token', token);
       set({ isLoggedIn: true });
     },
 
     logout: () => {
-      localStorage.removeItem('accessToken');
+      localStorage.removeItem('token');
       set({ isLoggedIn: false });
     },
 
     checkAuth: () => {
-      const token = localStorage.getItem('accessToken');
+      const token = localStorage.getItem('token');
       const isValid = isTokenValid(token);
       set({ isLoggedIn: isValid });
-      if (!isValid) localStorage.removeItem('accessToken');
+      if (!isValid) localStorage.removeItem('token');
     },
   };
 });
