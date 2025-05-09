@@ -2,7 +2,7 @@ import { jwtDecode, type JwtPayload } from "jwt-decode";
 
 export interface TokenJwtPayload extends JwtPayload {
   sub?: string;
-  name?: string;
+  username?: string;
   role?: string;
 }
 
@@ -17,25 +17,27 @@ export const handleToken = (token: string): void => {
     const decoded = jwtDecode<TokenJwtPayload>(token);
 
     if (isTokenExpired(decoded.exp)) {
-      localStorage.removeItem("accessToken");
+      localStorage.removeItem("token");
       localStorage.removeItem("userId");
-      localStorage.removeItem("name");
+      localStorage.removeItem("userName");
       localStorage.removeItem("role");
       return;
     }
 
-    const userId = decoded.sub ? Number(decoded.sub) : null;
-
-    if (userId && decoded.name && decoded.role) {
-      localStorage.setItem("accessToken", token);
-      localStorage.setItem("userId", userId.toString());
-      localStorage.setItem("name", decoded.name);
+    if (decoded.sub && decoded.username && decoded.role) {
+      localStorage.setItem("token", token);
+      localStorage.setItem("userId", decoded.sub);
+      localStorage.setItem("userName", decoded.username);
       localStorage.setItem("role", decoded.role);
     } else {
-      console.warn("JWT에서 필수 정보 누락: sub, name, role");
+      console.warn("JWT에서 필수 정보 누락: sub, username, role", {
+        sub: decoded.sub,
+        username: decoded.username,
+        role: decoded.role
+      }); 
     }
   } catch (error) {
     console.error("JWT 처리 중 오류 발생:", error);
     localStorage.clear();
   }
-};
+}
