@@ -19,7 +19,7 @@ export const handleToken = (token: string): void => {
     if (isTokenExpired(decoded.exp)) {
       localStorage.removeItem("accessToken");
       localStorage.removeItem("userId");
-      localStorage.removeItem("username");
+      localStorage.removeItem("name");
       localStorage.removeItem("role");
       return;
     }
@@ -29,7 +29,7 @@ export const handleToken = (token: string): void => {
     if (userId && decoded.name && decoded.role) {
       localStorage.setItem("accessToken", token);
       localStorage.setItem("userId", userId.toString());
-      localStorage.setItem("username", decoded.name);
+      localStorage.setItem("name", decoded.name);
       localStorage.setItem("role", decoded.role);
     } else {
       console.warn("JWT에서 필수 정보 누락: sub, name, role");
