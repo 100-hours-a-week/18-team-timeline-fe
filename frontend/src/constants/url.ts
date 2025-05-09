@@ -12,6 +12,7 @@ if (!API_BASE_URL) {
 export const ROUTES = {
   MAIN: '/main',
   LOGIN: '/login',
+  KAKAO_CALLBACK: "/auth/kakao/callback",
   SIGNUP: '/signup',
   USER_INFO: '/user-info',
   NEWS_DETAIL: '/news/:id',
