@@ -2,10 +2,10 @@ import { useEffect, useRef } from 'react';
 import { useSidebarStore } from '@/stores/sidebarStore';
 import clsx from 'clsx';
 import { Link } from 'react-router-dom';
-import { ENDPOINTS, INQUIRY_URL, ROUTES } from '@/constants/url';
+import { INQUIRY_URL, ROUTES } from '@/constants/url';
 import { Icon } from '../ui/Icon';
 import { Text } from '../ui/Text';
-import { ApiButton } from '../ui/Button';
+import { LogoutButton } from '../ui/Button';
 import { useAuthStore } from '@/stores/authStore';
 
 export const Sidebar = () => {
@@ -64,15 +64,10 @@ export const Sidebar = () => {
             <Link to={ROUTES.USER_INFO} className={navItemClass} onClick={close}>
               회원정보 수정
             </Link>
-            <ApiButton
-              method="POST"
-              url={ENDPOINTS.LOGOUT}
-              redirectTo={ROUTES.MAIN}
+            <LogoutButton
               className={clsx(navItemClass, 'block text-left')}
               onClick={close}
-            >
-              로그아웃
-            </ApiButton>
+            />
           </nav>
         </div>
       ) : (
