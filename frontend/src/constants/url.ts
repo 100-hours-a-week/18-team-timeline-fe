@@ -20,7 +20,8 @@ export const ROUTES = {
 
 export const ENDPOINTS = {
   LOGIN: '/auth/login',
-  KAKAO_LOGIN: (code: string) => `/auth/kakao/callback?code=${code}`,
+  KAKAO_LOGIN: '/auth/kakao/login-url',
+  KAKAO_LOGIN_CALLBACK: (code: string) => `/auth/kakao/callback?code=${code}`,
   LOGOUT: '/users/logout',
   SIGNUP: '/users',
   CHECK_EMAIL: (email: string) => `/users/check-email?email=${encodeURIComponent(email)}`,
