@@ -10,7 +10,7 @@ type UserInfoLogicProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTML
 export const useUserInfoLogic = ({ setToastMessage }: UserInfoLogicProps ) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState('')
-  const [name, setName] = useState("");
+  const [name, setName] = useState('');
   const [errors, setErrors] = useState<{ name?: string }>({});
   const [isButtonActive, setIsButtonActive] = useState(false);
   const [isInputModalOpen, setIsInputModalOpen] = useState(false)
@@ -19,11 +19,12 @@ export const useUserInfoLogic = ({ setToastMessage }: UserInfoLogicProps ) => {
   const { getData, postData } = useRequestStore();
 
   useEffect(() => {
+    setName(localStorage.getItem('userName') ?? '');
+    
     const fetchUserInfo = async () => {
       try {
         const res = await getData(ENDPOINTS.USER_INFO);
         setEmail(res.data.email);
-        setName(res.data.username);
       } catch (e) {
         console.error("유저 정보 조회 실패", e);
       }
@@ -32,7 +33,7 @@ export const useUserInfoLogic = ({ setToastMessage }: UserInfoLogicProps ) => {
   }, []);
 
   useEffect(() => {
-    const prevName = localStorage.getItem("name");
+    const prevName = localStorage.getItem("userName");
   
     if (name === prevName) {
       setErrors({});
