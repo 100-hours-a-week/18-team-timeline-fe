@@ -1,8 +1,7 @@
 import type { DetailedHTMLProps, HTMLAttributes } from "react"
 import clsx from "clsx"
 import { useRequestStore } from '@/stores/requestStore';
-import { useNavigate } from 'react-router-dom';
-import { ROUTES, ENDPOINTS } from "@/constants/url"
+import { ENDPOINTS } from "@/constants/url"
 
 type ReactDivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
 type ButtonProps = ReactDivProps & {

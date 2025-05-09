@@ -12,7 +12,7 @@ import UserInfo from '@/pages/PU/PU-003';
 import { Container } from './components/layout/Container';
 import { Header } from './components/layout/Header';
 import { Sidebar } from './components/layout/Sidebar';
-import { KakaoCallback } from './pages/auth/KakaoCallback';
+import { KakaoCallback } from './pages/PU/auth/KakaoCallback';
 
 const App: React.FC = () => {
   const currentPage = usePageStore((state) => state.currentPage);
