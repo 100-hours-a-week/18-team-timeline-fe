@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import SearchBar from './SearchBar';
 import NewsList from './NewsList';
-import Modal from './Modal';
+import { Modal } from '@/components/ui/Modal';
 import { useAuthStore } from '@/stores/authStore';
 
 interface SearchResultsProps {
@@ -74,10 +74,9 @@ export default function SearchResults({ searchQuery }: SearchResultsProps) {
         />
       </div>
 
-      {/* Modal components */}
+      {/* 공통 Modal 컴포넌트 사용 */}
       <Modal 
         isOpen={showTimelineModal}
-        onClose={() => setShowTimelineModal(false)}
         title="타임라인을 생성하시겠습니까?"
         content="검색창의 키워드와 관련된 타임라인이 생성됩니다."
         onConfirm={() => {
@@ -91,7 +90,6 @@ export default function SearchResults({ searchQuery }: SearchResultsProps) {
 
       <Modal 
         isOpen={showLoginModal}
-        onClose={() => setShowLoginModal(false)}
         title="로그인 후 이용 가능합니다."
         content="확인을 누르면 로그인 페이지로 이동합니다."
         onConfirm={handleLogin}
