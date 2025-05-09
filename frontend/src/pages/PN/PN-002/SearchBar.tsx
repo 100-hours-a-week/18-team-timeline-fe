@@ -21,18 +21,28 @@ export default function SearchBar({
 
   const handleAddKeyword = (input: string) => {
     if (!input.trim()) return;
-  
+    
+    // 띄어쓰기로 단어 분리
     const newKeywords = input.trim().split(/\s+/).filter(k => k.length > 0);
-  
-    let addedCount = 0;
-    newKeywords.forEach(keyword => {
-      if (!keywords.includes(keyword) && keywords.length + addedCount < 6) {
-        onKeywordAdd(keyword);
-        addedCount++;
+    console.log('분리된 키워드들:', newKeywords);
+    
+    // 각 키워드를 개별적으로 추가
+    for (const keyword of newKeywords) {
+      if (keywords.length >= 6) {
+        console.log('최대 키워드 개수(6개) 도달, 추가 중단');
+        break;
       }
-    });
-  
-    setQuery(''); // 입력창 초기화
+      
+      if (!keywords.includes(keyword)) {
+        onKeywordAdd(keyword);
+        console.log('키워드 추가됨:', keyword);
+      } else {
+        console.log('중복 키워드 무시됨:', keyword);
+      }
+    }
+    
+    // 입력창 초기화
+    setQuery('');
   };
   
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -81,26 +91,34 @@ export default function SearchBar({
         </button>
       </div>
 
-      {/* Selected keywords */}
-      {keywords.length > 0 && (
-        <div className="flex flex-wrap gap-2 mt-2 mb-4">
-          {keywords.map((keyword) => (
-            <div
-              key={keyword}
-              className="flex items-center bg-[#54577C] px-3 py-1 rounded-full text-white text-sm"
-            >
-              <span>{keyword}</span>
-              <button
-                onClick={() => onKeywordRemove(keyword)}
-                className="ml-2 text-white hover:text-gray-400"
-                aria-label={`${keyword} 키워드 삭제`}
+      {/* Selected keywords with count indicator */}
+      <div className="flex justify-between items-center mt-2 mb-4">
+        {keywords.length > 0 && (
+          <div className="flex flex-wrap gap-2">
+            {keywords.map((keyword) => (
+              <div
+                key={keyword}
+                className="flex items-center bg-[#54577C] px-3 py-1 rounded-full text-white text-sm"
               >
-                ×
-              </button>
-            </div>
-          ))}
-        </div>
-      )}
+                <span>{keyword}</span>
+                <button
+                  onClick={() => onKeywordRemove(keyword)}
+                  className="ml-2 text-white hover:text-gray-400"
+                  aria-label={`${keyword} 키워드 삭제`}
+                >
+                  ×
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+        {/* 키워드 개수 표시 (선택 사항) */}
+        {keywords.length > 0 && (
+          <div className="text-sm text-gray-500">
+            {keywords.length}/6 키워드
+          </div>
+        )}
+      </div>
     </div>
   );
 }

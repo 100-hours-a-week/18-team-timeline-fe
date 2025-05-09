@@ -14,10 +14,11 @@ export default function SearchResults({ searchQuery }: SearchResultsProps) {
   const [showTimelineModal, setShowTimelineModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
 
+  // 키워드 추가 함수 - 수정됨
   const handleKeywordAdd = (keyword: string) => {
-    // 키워드가 6개 미만이고 중복되지 않을 때만 추가
-    if (keywords.length < 6 && !keywords.includes(keyword)) {
-      setKeywords([...keywords, keyword]);
+    // 키워드가 비어있지 않고, 6개 미만이며, 중복되지 않을 때만 추가
+    if (keyword.trim() && keywords.length < 6 && !keywords.includes(keyword)) {
+      setKeywords(prevKeywords => [...prevKeywords, keyword]);
     }
   };
 
