@@ -17,6 +17,7 @@ export default {
 
         // CC-001
         headerColor: '#F2F2F2',
+        headerTextColor: '#000000',
         headerIconColor: '#000000',
 
         // CC-002
