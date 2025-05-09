@@ -40,11 +40,7 @@ export const KaKaoButton = ({
   text = "카카오로 시작하기",
   className: _className
 }: KakaoButtonProps) => {
-
-  const navigate = useNavigate();
-  const {
-    postData,
-  } = useRequestStore();
+  const { getData } = useRequestStore();
 
   const className = clsx(
     buttonClass,
@@ -54,12 +50,14 @@ export const KaKaoButton = ({
 
   const handleClick = async () => {
     try {
-      const res = await postData(ENDPOINTS.KAKAO_LOGIN);
-      if (res?.success) {
-        navigate(ROUTES.MAIN);
-      }
+      const res = await getData<{ data: { loginUrl: string } }>(ENDPOINTS.KAKAO_LOGIN);
+      const kakaoUrl = res?.data?.loginUrl;
+
+      if (!kakaoUrl) throw new Error("카카오 로그인 URL이 존재하지 않습니다.");
+
+      window.location.href = kakaoUrl;
     } catch (error) {
-      console.error("카카오 로그인 실패", error);
+      console.error("카카오 로그인 요청 실패", error);
       alert("카카오 로그인 중 오류가 발생했습니다.");
     }
   };
