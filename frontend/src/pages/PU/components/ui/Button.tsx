@@ -34,13 +34,10 @@ export const Button = ({
   )
 }
 
-type KakaoButtonProps = ButtonProps & {
-  accessToken: string
-}
+type KakaoButtonProps = ButtonProps & {}
 
 export const KaKaoButton = ({
   text = "카카오로 시작하기",
-  accessToken,
   className: _className
 }: KakaoButtonProps) => {
 
@@ -57,7 +54,7 @@ export const KaKaoButton = ({
 
   const handleClick = async () => {
     try {
-      const res = await postData(ENDPOINTS.KAKAO_LOGIN, accessToken);
+      const res = await postData(ENDPOINTS.KAKAO_LOGIN);
       if (res?.success) {
         navigate(ROUTES.MAIN);
       }
