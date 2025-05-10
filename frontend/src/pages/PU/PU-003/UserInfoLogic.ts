@@ -18,7 +18,7 @@ export const useUserInfoLogic = ({ setToastMessage }: UserInfoLogicProps ) => {
   const [isInputModalOpen, setIsInputModalOpen] = useState(false)
   const [isNameChecked, setIsNameChecked] = useState(false)
 
-  const { getData, postData } = useRequestStore();
+  const { getData, patchData } = useRequestStore();
   const navigate  = useNavigate();
   const userName = localStorage.getItem('userName');
 
@@ -42,25 +42,24 @@ export const useUserInfoLogic = ({ setToastMessage }: UserInfoLogicProps ) => {
     fetchUserInfo();
   }, []);
 
-  useEffect(() => { 
-    if (name === userName) {
-      setErrors({});
-      setIsButtonActive(false);
-      return;
+  useEffect(() => {
+    const result = validateUserInfo(name);
+    setErrors(result.errors);
+    setIsButtonActive(result.isValid && isNameChecked);
+  }, [name, isNameChecked]);
+  
+  useEffect(() => {
+    if (name !== userName) {
+      setIsNameChecked(false);
     }
-
-    const result = validateUserInfo(name)
-    setErrors(result.errors)
-    setIsNameChecked(false)
-    setIsButtonActive(result.isValid && isNameChecked)
-  }, [name])
+  }, [name]);
 
   const checkNameDuplicate = async () => {
     if (!name || errors.name) return;
 
     const res = await getData(ENDPOINTS.CHECK_NAME(name));
 
-    if (!res.available) {
+    if (!res.data.available) {
       setErrors((prev) => ({ ...prev, name: "이미 사용 중인 닉네임입니다." }));
       setIsNameChecked(false)
     } else {
@@ -73,10 +72,11 @@ export const useUserInfoLogic = ({ setToastMessage }: UserInfoLogicProps ) => {
     e.preventDefault();
     if (!isButtonActive) return;
     try {
-      const res = await postData(ENDPOINTS.USER_INFO, { name });
+      const res = await patchData(ENDPOINTS.USER_INFO, { nickname: name });
       if (res?.success) {
-        localStorage.setItem('name', name);
+        localStorage.setItem('userName', name);
         setToastMessage("회원정보가 수정되었습니다.")
+        window.location.reload()
       }
     } catch (error) {
       console.error("닉네임 수정 실패", error);
