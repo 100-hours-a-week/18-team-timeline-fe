@@ -44,7 +44,7 @@ export const Banner: React.FC = () => {
     >
       {newsCards.map((news) => (
         <SwiperSlide key={news.id}>
-          <Link to={`/timeline/${news.id}`} className="relative block w-full h-full">
+          <Link to={`/news/${news.id}`} className="relative block w-full h-full">
             <img
               src={news.imageUrl}
               alt={news.title}
