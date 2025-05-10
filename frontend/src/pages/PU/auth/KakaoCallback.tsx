@@ -29,6 +29,7 @@ export const KakaoCallback = () => {
 
         handleToken(token);
         navigate(ROUTES.MAIN);
+        window.location.reload();
       } catch (err) {
         console.error("카카오 콜백 처리 실패", err);
         alert("로그인에 실패했습니다.");
