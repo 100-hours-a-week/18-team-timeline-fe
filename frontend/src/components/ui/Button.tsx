@@ -72,6 +72,7 @@ export const LogoutButton = ({
         localStorage.removeItem('userName')
         localStorage.removeItem('role')
         navigate(ROUTES.MAIN);
+        window.location.reload()
       }
 
       if (onClick) {
