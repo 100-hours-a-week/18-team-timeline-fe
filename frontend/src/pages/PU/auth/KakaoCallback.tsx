@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { axiosInstance } from "@/lib/axios";
 import { ENDPOINTS, ROUTES } from "@/constants/url";
 import { handleToken } from "@/utils/handleToken";
+import { axiosInstance } from "@/lib/axios";
 
 export const KakaoCallback = () => {
   const [searchParams] = useSearchParams();
@@ -12,12 +12,10 @@ export const KakaoCallback = () => {
   useEffect(() => {
     const fetchToken = async () => {
       if (!code) return;
-
       try {
-        const res = await axiosInstance.get(
-          ENDPOINTS.KAKAO_LOGIN_CALLBACK(code),
-          { validateStatus: () => true }
-        );
+        const res = await axiosInstance.get(ENDPOINTS.KAKAO_LOGIN_CALLBACK(code), {
+          validateStatus: () => true,
+        });
 
         const authHeader = res.headers["authorization"];
 
