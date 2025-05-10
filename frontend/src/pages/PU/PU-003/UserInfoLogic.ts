@@ -2,6 +2,8 @@ import { useEffect, useState, type DetailedHTMLProps, type HTMLAttributes } from
 import { useRequestStore } from "@/stores/requestStore";
 import { ENDPOINTS } from "@/constants/url";
 import { validateUserInfo } from "../utils/validateUserInfo";
+import { useNavigate } from 'react-router-dom';
+import { ROUTES } from "@/constants/url";
 
 type UserInfoLogicProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> & {
   setToastMessage: (msg: string) => void;
@@ -17,14 +19,22 @@ export const useUserInfoLogic = ({ setToastMessage }: UserInfoLogicProps ) => {
   const [isNameChecked, setIsNameChecked] = useState(false)
 
   const { getData, postData } = useRequestStore();
+  const navigate  = useNavigate();
+  const userName = localStorage.getItem('userName');
 
   useEffect(() => {
-    setName(localStorage.getItem('userName') ?? '');
+    if (!userName) {
+      alert('로그인 정보가 없습니다. 다시 로그인해주세요.');
+      navigate(ROUTES.LOGIN);
+      return;
+    }
+
+    setName(userName);
     
     const fetchUserInfo = async () => {
       try {
         const res = await getData(ENDPOINTS.USER_INFO);
-        setEmail(res.data.email);
+        setEmail(res.data.user.email);
       } catch (e) {
         console.error("유저 정보 조회 실패", e);
       }
@@ -32,10 +42,8 @@ export const useUserInfoLogic = ({ setToastMessage }: UserInfoLogicProps ) => {
     fetchUserInfo();
   }, []);
 
-  useEffect(() => {
-    const prevName = localStorage.getItem("userName");
-  
-    if (name === prevName) {
+  useEffect(() => { 
+    if (name === userName) {
       setErrors({});
       setIsButtonActive(false);
       return;
