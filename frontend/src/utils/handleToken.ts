@@ -17,6 +17,7 @@ export const handleToken = (token: string): void => {
     const decoded = jwtDecode<TokenJwtPayload>(token);
 
     if (isTokenExpired(decoded.exp)) {
+      console.log("액세스 토큰이 만로되었습니다.")
       localStorage.removeItem("token");
       localStorage.removeItem("userId");
       localStorage.removeItem("userName");
