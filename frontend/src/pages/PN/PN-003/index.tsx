@@ -4,6 +4,7 @@ import { useAuthStore } from '@/stores/authStore';
 import { Toast } from '@/components/ui/Toast';
 import TimelineCard from './TimelineCard';
 import TimelineHeader from './TimelineHeader';
+import TimelineContainer from './TimelineContainer';
 import SentimentAnalysis from './SentimentAnalysis';
 import CommentSection from './CommentSection';
 import { useTimelineData } from './hooks/useTimelineData';
@@ -113,7 +114,7 @@ export default function NewsDetail() {
       
       {/* 타임라인 컨텐츠 */}
       <div className="container mx-auto px-0 pb-6">
-        {/* 타임라인 헤더 - 너비가 꽉 차도록 수정 */}
+        {/* 타임라인 헤더 */}
         <TimelineHeader 
           title={newsData.title}
           lastUpdated={newsData.lastUpdated}
@@ -126,7 +127,7 @@ export default function NewsDetail() {
         <div className="px-4">
           {/* 메인 이미지/비디오 */}
           {newsData.imageUrl && (
-            <div className="relative mb-6 rounded-lg overflow-hidden">
+            <div className="relative mt-4 mb-6 rounded-lg overflow-hidden">
               <div className="aspect-w-16 aspect-h-9 w-full">
                 <img 
                   src={newsData.imageUrl} 
@@ -155,7 +156,7 @@ export default function NewsDetail() {
         )}
         
         {/* 타임라인 업데이트 버튼 */}
-        <div className="flex justify-center mb-8">
+        <div className="flex justify-center mb-6">
           <button
             onClick={handleTimelineUpdateWithToast}
             disabled={isUpdating || !isUpdateAvailable}
@@ -171,26 +172,21 @@ export default function NewsDetail() {
           </button>
         </div>
         
-        {/* 타임라인 카드 목록 */}
-        <div className="space-y-4">
-          {newsData.timeline.map((card) => (
-            <TimelineCard
-              key={card.id}
-              data={card}
-              showSources={showSources[card.id] || false}
-              onToggleSources={() => toggleSources(card.id)}
-            />
-          ))}
-        </div>
-        
+        {/* 타임라인 카드 목록 - TimelineContainer 컴포넌트 사용 */}
+        <TimelineContainer
+          timeline={newsData.timeline}
+          showSources={showSources}
+          toggleSources={toggleSources}
+        />
+
         {/* 감정 분석 컴포넌트 */}
-        <SentimentAnalysis 
+        {/* <SentimentAnalysis 
           title={newsData.title}
           sentiment={newsData.sentiment}
-        />
+        /> */}
         
         {/* 댓글 컴포넌트 */}
-        <div ref={commentListRef}>
+        {/* <div ref={commentListRef}>
           <CommentSection 
             comments={comments}
             commentText={commentText}
@@ -201,7 +197,7 @@ export default function NewsDetail() {
             onDeleteComment={handleDeleteComment}
             commentsEndRef={commentsEndRef}
           />
-        </div>
+        </div> */}
       </div>
     </div>
       
