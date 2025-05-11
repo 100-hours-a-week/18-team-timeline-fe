@@ -121,7 +121,7 @@ export default function NewsList({ category }: NewsListProps) {
 
     return (
       <a
-        href={`/timeline/${newsItem.id}`}
+        href={`/news/${newsItem.id}`}
         className="group flex flex-col md:flex-row items-center w-full overflow-hidden bg-white rounded-lg mb-4"
       >
         <div className="flex-shrink-0 w-[120px] h-[100px] flex items-center justify-center pl-3">
