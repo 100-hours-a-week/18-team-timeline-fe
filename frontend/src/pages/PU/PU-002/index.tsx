@@ -13,9 +13,7 @@ export default function LoginPage() {
       >
         <LoginForm/>
         <div className={lineClass} />
-        <KaKaoButton
-          accessToken={localStorage.getItem('accessToken') ?? ''}
-        />
+        <KaKaoButton />
       </Wrapper>
     </div>
   )

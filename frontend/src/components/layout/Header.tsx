@@ -27,7 +27,7 @@ export const Header = ({ className: _className }: HeaderProps) => {
         onClick={() => useSidebarStore.getState().toggle()}
       />
       <Link to={ROUTES.MAIN}>
-        <Text className="text-2xl font-extrabold cursor-pointer">탐나라</Text>
+        <Text className="text-2xl font-extrabold cursor-pointer text-headerTextColor">탐나라</Text>
       </Link>
       <Link to={ROUTES.SEARCH_RESULTS}>
         <Icon name="MagnifyingGlassIcon" size={24} variant="solid" className="text-headerIconColor cursor-pointer" />

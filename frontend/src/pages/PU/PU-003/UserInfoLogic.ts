@@ -2,6 +2,8 @@ import { useEffect, useState, type DetailedHTMLProps, type HTMLAttributes } from
 import { useRequestStore } from "@/stores/requestStore";
 import { ENDPOINTS } from "@/constants/url";
 import { validateUserInfo } from "../utils/validateUserInfo";
+import { useNavigate } from 'react-router-dom';
+import { ROUTES } from "@/constants/url";
 
 type UserInfoLogicProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> & {
   setToastMessage: (msg: string) => void;
@@ -10,20 +12,29 @@ type UserInfoLogicProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTML
 export const useUserInfoLogic = ({ setToastMessage }: UserInfoLogicProps ) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState('')
-  const [name, setName] = useState("");
+  const [name, setName] = useState('');
   const [errors, setErrors] = useState<{ name?: string }>({});
   const [isButtonActive, setIsButtonActive] = useState(false);
   const [isInputModalOpen, setIsInputModalOpen] = useState(false)
   const [isNameChecked, setIsNameChecked] = useState(false)
 
-  const { getData, postData } = useRequestStore();
+  const { getData, patchData } = useRequestStore();
+  const navigate  = useNavigate();
+  const userName = localStorage.getItem('userName');
 
   useEffect(() => {
+    if (!userName) {
+      alert('로그인 정보가 없습니다. 다시 로그인해주세요.');
+      navigate(ROUTES.LOGIN);
+      return;
+    }
+
+    setName(userName);
+    
     const fetchUserInfo = async () => {
       try {
         const res = await getData(ENDPOINTS.USER_INFO);
-        setEmail(res.data.email);
-        setName(res.data.username);
+        setEmail(res.data.user.email);
       } catch (e) {
         console.error("유저 정보 조회 실패", e);
       }
@@ -32,26 +43,23 @@ export const useUserInfoLogic = ({ setToastMessage }: UserInfoLogicProps ) => {
   }, []);
 
   useEffect(() => {
-    const prevName = localStorage.getItem("name");
+    const result = validateUserInfo(name);
+    setErrors(result.errors);
+    setIsButtonActive(result.isValid && isNameChecked);
+  }, [name, isNameChecked]);
   
-    if (name === prevName) {
-      setErrors({});
-      setIsButtonActive(false);
-      return;
+  useEffect(() => {
+    if (name !== userName) {
+      setIsNameChecked(false);
     }
-
-    const result = validateUserInfo(name)
-    setErrors(result.errors)
-    setIsNameChecked(false)
-    setIsButtonActive(result.isValid && isNameChecked)
-  }, [name])
+  }, [name]);
 
   const checkNameDuplicate = async () => {
     if (!name || errors.name) return;
 
     const res = await getData(ENDPOINTS.CHECK_NAME(name));
 
-    if (!res.available) {
+    if (!res.data.available) {
       setErrors((prev) => ({ ...prev, name: "이미 사용 중인 닉네임입니다." }));
       setIsNameChecked(false)
     } else {
@@ -64,10 +72,11 @@ export const useUserInfoLogic = ({ setToastMessage }: UserInfoLogicProps ) => {
     e.preventDefault();
     if (!isButtonActive) return;
     try {
-      const res = await postData(ENDPOINTS.USER_INFO, { name });
+      const res = await patchData(ENDPOINTS.USER_INFO, { nickname: name });
       if (res?.success) {
-        localStorage.setItem('name', name);
+        localStorage.setItem('userName', name);
         setToastMessage("회원정보가 수정되었습니다.")
+        window.location.reload()
       }
     } catch (error) {
       console.error("닉네임 수정 실패", error);
