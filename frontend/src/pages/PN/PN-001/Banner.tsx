@@ -16,7 +16,7 @@ interface NewsCard {
   id: number;
   title: string;
   summary: string;
-  imageUrl: string;
+  image: string;
   category: string;
   updatedAt: string;
   bookmarked: boolean;
@@ -37,7 +37,7 @@ const fallbackNewsCards: NewsCard[] = [
     id: 1, 
     title: '핫이슈 입니다 1', 
     summary: '핫이슈에 대한 간략한 설명입니다', 
-    imageUrl: 'https://picsum.photos/seed/1/400/200', 
+    image: 'https://picsum.photos/seed/1/400/200', 
     category: 'economy',
     updatedAt: '2025-04-17T12:00:00',
     bookmarked: false,
@@ -47,7 +47,7 @@ const fallbackNewsCards: NewsCard[] = [
     id: 2, 
     title: '핫이슈 입니다 2', 
     summary: '두 번째 핫이슈에 대한 간략한 설명입니다', 
-    imageUrl: 'https://picsum.photos/seed/2/400/200', 
+    image: 'https://picsum.photos/seed/2/400/200', 
     category: 'sports',
     updatedAt: '2025-04-16T15:30:00',
     bookmarked: true,
@@ -57,7 +57,7 @@ const fallbackNewsCards: NewsCard[] = [
     id: 3, 
     title: '핫이슈 일지도 아닐지도 모릅니다', 
     summary: '세 번째 핫이슈에 대한 간략한 설명입니다', 
-    imageUrl: 'https://picsum.photos/seed/3/400/200', 
+    image: 'https://picsum.photos/seed/3/400/200', 
     category: 'entertainment',
     updatedAt: '2025-04-15T09:45:00',
     bookmarked: false,
@@ -143,7 +143,7 @@ export const Banner: React.FC = () => {
         <SwiperSlide key={news.id}>
           <Link to={`/news/${news.id}`} className="relative block w-full h-full">
             <img
-              src={news.imageUrl}
+              src={news.image}
               alt={news.title}
               className="w-full h-full object-cover rounded-lg"
             />

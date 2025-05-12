@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 interface News {
   id: string;
   title: string;
-  imageUrl: string;
+  image: string;
   category: string;
   createdAt: string;
   content: string;
@@ -29,7 +29,7 @@ export default function NewsList({ category }: NewsListProps) {
     const baseNews: News[] = Array.from({ length: pageSize }, (_, i) => ({
       id: `${page * pageSize + i + 1}`,
       title: `Sample News ${page * pageSize + i + 1}`,
-      imageUrl: `https://picsum.photos/seed/${page * pageSize + i + 1}/400/200`,
+      image: `https://picsum.photos/seed/${page * pageSize + i + 1}/400/200`,
       category: ['economy', 'sports', 'entertainment'][i % 3],
       createdAt: new Date(Date.now() - ((page - 1) * pageSize + i) * 24 * 60 * 60 * 1000).toISOString(),
       content: `뉴스 ${page * pageSize + i + 1}의 내용입니다. 내용이 길면 잘릴 수도 있습니다. 바로 이렇게요.`
@@ -40,7 +40,7 @@ export default function NewsList({ category }: NewsListProps) {
         {
           id: 'ktb-vote',
           title: '투표 페이지로 이동',
-          imageUrl: '',
+          image: '',
           category: 'ktb',
           createdAt: '',
           content: ''
@@ -122,11 +122,11 @@ export default function NewsList({ category }: NewsListProps) {
     return (
       <a
         href={`/news/${newsItem.id}`}
-        className="group flex flex-col md:flex-row items-center w-full overflow-hidden bg-white rounded-lg mb-4"
+        className="group flex flex-row items-center w-full overflow-hidden bg-white rounded-lg mb-4"
       >
         <div className="flex-shrink-0 w-[120px] h-[100px] flex items-center justify-center pl-3">
           <img
-            src={newsItem.imageUrl}
+            src={newsItem.image}
             alt={newsItem.title}
             className="w-[120px] h-[100px] object-cover transition-transform duration-300 group-hover:scale-105 rounded-lg"
           />
