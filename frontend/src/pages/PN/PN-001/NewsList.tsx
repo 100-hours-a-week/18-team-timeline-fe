@@ -3,10 +3,9 @@ import axios from 'axios';
 import { API_BASE_URL, ENDPOINTS } from '@/constants/url';
 
 interface News {
-  id: number;
+  id: string;
   title: string;
-  summary: string;
-  image: string | null;
+  image: string;
   category: string;
   updatedAt: string;
   bookmarked: boolean;
