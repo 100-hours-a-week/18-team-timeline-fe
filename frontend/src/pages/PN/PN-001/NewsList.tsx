@@ -1,12 +1,25 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { API_BASE_URL, ENDPOINTS } from '@/constants/url';
 
 interface News {
   id: string;
   title: string;
   image: string;
   category: string;
-  createdAt: string;
-  content: string;
+  updatedAt: string;
+  bookmarked: boolean;
+  bookmarkedAt: string | null;
+}
+
+interface CategoryNewsData {
+  newsList: News[];
+}
+
+interface ApiResponse {
+  success: boolean;
+  message: string;
+  data: { [key: string]: CategoryNewsData };
 }
 
 interface NewsListProps {
@@ -15,151 +28,89 @@ interface NewsListProps {
 
 export default function NewsList({ category }: NewsListProps) {
   const [news, setNews] = useState<News[]>([]);
-  const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const loaderRef = useRef(null);
-  const pageSize = 20;
+  const [error, setError] = useState<string | null>(null);
 
-  // 뉴스 불러오는 함수
-  const fetchNews = async (category: string, page: number): Promise<News[]> => {
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // 현재 페이지에 대한 뉴스 아이템 생성
-    const baseNews: News[] = Array.from({ length: pageSize }, (_, i) => ({
-      id: `${page * pageSize + i + 1}`,
-      title: `Sample News ${page * pageSize + i + 1}`,
-      image: `https://picsum.photos/seed/${page * pageSize + i + 1}/400/200`,
-      category: ['economy', 'sports', 'entertainment'][i % 3],
-      createdAt: new Date(Date.now() - ((page - 1) * pageSize + i) * 24 * 60 * 60 * 1000).toISOString(),
-      content: `뉴스 ${page * pageSize + i + 1}의 내용입니다. 내용이 길면 잘릴 수도 있습니다. 바로 이렇게요.`
-    }));
+  const normalizedCategory = category.toUpperCase();
+  const isCategoryAll = normalizedCategory === 'ALL' || normalizedCategory === '';
 
-    if (category === 'ktb') {
-      return [
-        {
-          id: 'ktb-vote',
-          title: '투표 페이지로 이동',
-          image: '',
-          category: 'ktb',
-          createdAt: '',
-          content: ''
-        },
-        ...baseNews
-      ];
-    }
-
-    return baseNews;
-  };
-
-  // 더 많은 뉴스를 로드하는 함수
-  const loadMoreNews = useCallback(async () => {
-    if (!hasMore || isLoading) return;
+  const fetchNews = async () => {
+    setIsLoading(true);
+    setError(null);
 
     try {
-      setIsLoading(true);
-      const newNews = await fetchNews(category, page);
-      
-      if (newNews.length > 0) {
-        setNews(prev => [...prev, ...newNews]);
-        setPage(prev => prev + 1);
-        setHasMore(newNews.length === pageSize);
-      } else {
-        setHasMore(false);
+      let url = ENDPOINTS.NEWS;
+      const queryParams: string[] = [];
+
+      // **항상 ALL 포함이므로 굳이 쿼리 안 넣고, 받아서 JS에서 필터 가능**
+      if (queryParams.length > 0) {
+        url += `?${queryParams.join('&')}`;
       }
-    } catch (error) {
-      console.error('Error loading news:', error);
+
+      const response = await axios.get<ApiResponse>(API_BASE_URL + url);
+
+      if (response.data.success) {
+        const data = response.data.data;
+
+        // **존재 유무 확인 후 처리**
+        const targetData = isCategoryAll
+          ? data.ALL
+          : data[normalizedCategory] ?? { newsList: [] };
+
+        setNews(targetData.newsList);
+      } else {
+        setError(response.data.message || '데이터를 불러오는데 실패했습니다.');
+      }
+    } catch (err) {
+      console.error('API 요청 오류:', err);
+      setError('네트워크 오류가 발생했습니다.');
     } finally {
       setIsLoading(false);
     }
-  }, [category, page, hasMore, isLoading]);
-
-  // IntersectionObserver 설정
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      entries => {
-        if (entries[0].isIntersecting && hasMore) {
-          loadMoreNews();
-        }
-      },
-      { threshold: 0.1 }
-    );
-    
-    if (loaderRef.current) {
-      observer.observe(loaderRef.current);
-    }
-    
-    return () => {
-      if (loaderRef.current) {
-        observer.unobserve(loaderRef.current);
-      }
-    };
-  }, [loadMoreNews, hasMore]);
-
-  // 카테고리가 변경될 때 뉴스 목록 초기화
-  useEffect(() => {
-    setNews([]);
-    setPage(1);
-    setHasMore(true);
-    loadMoreNews();
-  }, [category]);
-
-  // 뉴스 아이템 컴포넌트
-  const NewsItem = ({ newsItem }) => {
-    if (newsItem.category === 'ktb') {
-      return (
-        <a
-          href="/vote"
-          className="group flex flex-col md:flex-row md:items-center bg-white rounded-lg overflow-hidden shadow-md mb-4"
-        >
-          <div className="w-full bg-[#002A22] text-white flex items-center justify-center p-4">
-            <h3 className="text-xl font-bold">투표 페이지로 이동</h3>
-          </div>
-        </a>
-      );
-    }
-
-    return (
-      <a
-        href={`/news/${newsItem.id}`}
-        className="group flex flex-row items-center w-full overflow-hidden bg-white rounded-lg mb-4"
-      >
-        <div className="flex-shrink-0 w-[120px] h-[100px] flex items-center justify-center pl-3">
-          <img
-            src={newsItem.image}
-            alt={newsItem.title}
-            className="w-[120px] h-[100px] object-cover transition-transform duration-300 group-hover:scale-105 rounded-lg"
-          />
-        </div>
-        <div className="p-4 md:p-4 flex-grow text-right">
-          <h3 className="text-lg font-semibold text-[20px] line-clamp-2 mb-1">
-            {newsItem.title}
-          </h3>
-          <p className="text-gray-600 text-[14px] line-clamp-2 mb-1">
-            {newsItem.content}
-          </p>
-          <div className="text-[10px] text-[#F2A359]">
-            {new Date(newsItem.createdAt).toLocaleDateString()}
-          </div>
-        </div>
-      </a>
-    );
   };
 
-  return (
-    <div className="space-y-2">
-      {news.map((newsItem) => (
-        <NewsItem key={newsItem.id} newsItem={newsItem} />
-      ))}
-      
-      {/* 로딩 인디케이터 및 observer의 타겟 */}
-      <div ref={loaderRef} className="py-4">
-        {isLoading && (
-          <div className="flex justify-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+  useEffect(() => {
+    fetchNews();
+  }, [category]);
+
+  const formatDate = (dateString: string) => new Date(dateString).toLocaleDateString();
+
+  const NewsItem = ({ newsItem }: { newsItem: News }) => (
+    <a href={`/news/${newsItem.id}`} className="group flex flex-row items-center w-full overflow-hidden bg-white rounded-lg mb-4">
+      <div className="flex-shrink-0 w-[120px] h-[100px] flex items-center justify-center pl-3 mt-2 mb-2">
+        {newsItem.image ? (
+          <img src={newsItem.image} alt={newsItem.title} className="w-[120px] h-[100px] object-cover rounded-lg" />
+        ) : (
+          <div className="w-[120px] h-[100px] bg-gray-200 flex items-center justify-center rounded-lg">
+            <span className="text-gray-500 text-xs">이미지 없음</span>
           </div>
         )}
       </div>
+      <div className="p-4 flex-grow flex flex-col items-end text-right">
+        <div className="flex justify-between items-start w-full">
+          <h3 className="text-lg font-semibold text-[20px] mb-1">{newsItem.title}</h3>
+          {newsItem.bookmarked && (
+            <span className="text-yellow-500 ml-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+              </svg>
+            </span>
+          )}
+        </div>
+        <p className="text-gray-600 text-[14px] mb-1 w-full text-right">{newsItem.summary}</p>
+        <div className="text-[10px] text-[#F2A359]">{formatDate(newsItem.updatedAt)}</div>
+      </div>
+    </a>
+  );
+
+  return (
+    <div className="space-y-2">
+      {error && <div className="bg-red-100 border text-red-700 px-4 py-3 rounded mb-4">{error}</div>}
+      {isLoading && <div className="text-center py-8 text-gray-500">불러오는 중...</div>}
+      {news.length === 0 && !isLoading && !error && (
+        <div className="text-center py-8 text-gray-500">표시할 뉴스가 없습니다.</div>
+      )}
+      {news.map(newsItem => <NewsItem key={newsItem.id} newsItem={newsItem} />)}
     </div>
   );
 }
