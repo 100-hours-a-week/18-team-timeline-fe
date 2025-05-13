@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ToastPosition } from '../types';
+import type { ToastPosition } from '../types';
 
 interface UseToastReturn {
   showToast: boolean;

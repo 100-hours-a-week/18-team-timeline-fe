@@ -4,6 +4,12 @@ import { Toast } from '@/components/ui/Toast';
 import TimelineHeader from './TimelineHeader';
 import TimelineContainer from './TimelineContainer';
 import { useTimelineData } from './hooks/useTimelineData';
+import { useAuthStore } from '@/stores/authStore';
+import SentimentAnalysis from './SentimentAnalysis';
+import CommentSection from './CommentSection';
+import { useComments } from './hooks/useComments';
+import { useToast } from './hooks/useToast';
+import type { UserInfo } from './types';
 
 export default function NewsDetail() {
   // 주의: 파라미터 이름이 'id'로 설정되어 있습니다!
@@ -14,8 +20,9 @@ export default function NewsDetail() {
   console.log('NewsDetail extracted newsId:', newsId);
   
   const navigate = useNavigate();
-  const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState('');
+  const { showToast, toastMessage, toastPosition, setToastMessage } = useToast();
+  // const { isLoggedIn, checkAuth } = useAuthStore();
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   
   // 타임라인 데이터 훅 사용
   const { 
@@ -26,20 +33,16 @@ export default function NewsDetail() {
     showSources,
     toggleSources,
     isUpdating,
+    isUpdateAvailable,
     handleToggleBookmark,
     handleShare,
+    handleTimelineUpdate,
     formattedTimeline
   } = useTimelineData({ newsId });
 
   // 토스트 메시지 표시 함수
   const showToastMessage = (message: string) => {
     setToastMessage(message);
-    setShowToast(true);
-    
-    // 3초 후 토스트 메시지 숨기기
-    setTimeout(() => {
-      setShowToast(false);
-    }, 3000);
   };
 
   // 북마크 토글 핸들러 (토스트 메시지 추가)
@@ -60,6 +63,15 @@ export default function NewsDetail() {
     } catch (err) {
       showToastMessage('URL 복사에 실패했습니다.');
     }
+  };
+
+  // 타임라인 업데이트 버튼 클릭 핸들러 (토스트 메시지 처리 추가)
+  const handleTimelineUpdateWithToast = () => {
+    if (!isUpdateAvailable) {
+      setToastMessage('이미 최신 상태입니다.');
+      return;
+    }
+    handleTimelineUpdate();
   };
 
   if (loading) {
@@ -116,10 +128,27 @@ export default function NewsDetail() {
                 />
               </div>
               <div className="absolute bottom-2 right-2 text-xs bg-black bg-opacity-50 text-white px-2 py-1 rounded">
-                {/* 이미지 출처: {newsData.source} */}
+                이미지 출처: {newsData.image}
               </div>
             </div>
           )}
+
+          {/* 타임라인 업데이트 버튼 */}
+          <div className="flex justify-center mb-6">
+            <button
+              onClick={handleTimelineUpdateWithToast}
+              disabled={isUpdating || !isUpdateAvailable}
+              className={`px-6 py-2 rounded-full transition-colors ${
+                isUpdating 
+                  ? 'bg-black text-white cursor-wait' 
+                  : isUpdateAvailable 
+                    ? 'bg-black text-white hover:bg-gray-800' 
+                    : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+              }`}
+            >
+              {isUpdating ? '업데이트 중...' : '타임라인 업데이트'}
+            </button>
+          </div>
 
           {/* 타임라인 컨테이너 */}
           <TimelineContainer 

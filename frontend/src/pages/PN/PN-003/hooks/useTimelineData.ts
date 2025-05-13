@@ -70,8 +70,10 @@ interface UseTimelineDataReturn {
   showSources: Record<string, boolean>;
   toggleSources: (cardId: string) => void;
   isUpdating: boolean;
+  isUpdateAvailable: boolean;
   handleToggleBookmark: () => Promise<void>;
   handleShare: () => Promise<void>;
+  handleTimelineUpdate: () => Promise<void>;
   formattedTimeline: TimelineCard[]; // 변환된 타임라인 추가
 }
 
@@ -84,6 +86,7 @@ export const useTimelineData = ({ newsId }: UseTimelineDataProps): UseTimelineDa
   const [error, setError] = useState<string | null>(null);
   const [bookmarked, setBookmarked] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
+  const [isUpdateAvailable, setIsUpdateAvailable] = useState(false);
   const [showSources, setShowSources] = useState<Record<string, boolean>>({});
   const [formattedTimeline, setFormattedTimeline] = useState<TimelineCard[]>([]);
 
@@ -249,6 +252,7 @@ export const useTimelineData = ({ newsId }: UseTimelineDataProps): UseTimelineDa
             endDate: '2023-01-06'
           }
         ];
+        
         
         const mockData: NewsDetail = {
           title: `뉴스 #${numericId} - 중요 사건 타임라인`,
