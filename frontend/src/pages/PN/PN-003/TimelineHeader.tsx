@@ -1,18 +1,19 @@
 import React from 'react';
 import { formatRelativeTime } from '@/pages/PN/utils/dateUtils';
 
+// API 응답 구조에 맞춘 인터페이스
 interface TimelineHeaderProps {
   title: string;
-  lastUpdated: string;
-  isBookmarked: boolean;
+  updatedAt: string;
+  bookmarked: boolean;
   onToggleBookmark: () => void;
   onShare: () => void;
 }
 
 const TimelineHeader: React.FC<TimelineHeaderProps> = ({
   title,
-  lastUpdated,
-  isBookmarked,
+  updatedAt,
+  bookmarked,
   onToggleBookmark,
   onShare,
 }) => {
@@ -20,7 +21,7 @@ const TimelineHeader: React.FC<TimelineHeaderProps> = ({
     <div className="w-full bg-white p-4">
       <div className="flex justify-between items-center mb-1">
         <h2 className="text-lg font-bold flex-grow">{title}</h2>
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-6">
           <button
             onClick={onShare}
             aria-label="공유하기"
@@ -36,10 +37,10 @@ const TimelineHeader: React.FC<TimelineHeaderProps> = ({
           </button>
           <button
             onClick={onToggleBookmark}
-            aria-label={isBookmarked ? '북마크 취소' : '북마크 추가'}
+            aria-label={bookmarked ? '북마크 취소' : '북마크 추가'}
             className="text-gray-600"
           >
-            {isBookmarked ? (
+            {bookmarked ? (
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
               </svg>
@@ -52,7 +53,7 @@ const TimelineHeader: React.FC<TimelineHeaderProps> = ({
         </div>
       </div>
       <p className="text-xs text-gray-500">
-        {formatRelativeTime(lastUpdated)} 마지막 업데이트
+        {formatRelativeTime(updatedAt)} 마지막 업데이트
       </p>
     </div>
   );
