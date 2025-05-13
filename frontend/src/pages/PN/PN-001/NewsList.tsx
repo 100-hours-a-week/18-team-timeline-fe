@@ -5,6 +5,7 @@ import { API_BASE_URL, ENDPOINTS } from '@/constants/url';
 interface News {
   id: string;
   title: string;
+  summary: string;
   image: string;
   category: string;
   updatedAt: string;

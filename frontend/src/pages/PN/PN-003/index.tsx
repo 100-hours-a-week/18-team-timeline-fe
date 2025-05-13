@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Toast } from '@/components/ui/Toast';
 import TimelineHeader from './TimelineHeader';
 import TimelineContainer from './TimelineContainer';
 import { useTimelineData } from './hooks/useTimelineData';
+import { useAuthStore } from '@/stores/authStore';
+import { useToast } from './hooks/useToast';
+import { formatRelativeTime } from '@/pages/PN/utils/dateUtils';
 
 export default function NewsDetail() {
   // 주의: 파라미터 이름이 'id'로 설정되어 있습니다!
@@ -14,8 +17,13 @@ export default function NewsDetail() {
   console.log('NewsDetail extracted newsId:', newsId);
   
   const navigate = useNavigate();
-  const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState('');
+  const { showToast, toastMessage, setToastMessage } = useToast();
+  const { isLoggedIn, checkAuth } = useAuthStore();
+  
+  // 로그인 상태 체크
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
   
   // 타임라인 데이터 훅 사용
   const { 
@@ -26,20 +34,16 @@ export default function NewsDetail() {
     showSources,
     toggleSources,
     isUpdating,
+    isUpdateAvailable,
     handleToggleBookmark,
     handleShare,
+    handleTimelineUpdate,
     formattedTimeline
   } = useTimelineData({ newsId });
 
   // 토스트 메시지 표시 함수
   const showToastMessage = (message: string) => {
     setToastMessage(message);
-    setShowToast(true);
-    
-    // 3초 후 토스트 메시지 숨기기
-    setTimeout(() => {
-      setShowToast(false);
-    }, 3000);
   };
 
   // 북마크 토글 핸들러 (토스트 메시지 추가)
@@ -59,6 +63,42 @@ export default function NewsDetail() {
       showToastMessage('URL이 복사되었습니다!');
     } catch (err) {
       showToastMessage('URL 복사에 실패했습니다.');
+    }
+  };
+
+  // 타임라인 업데이트 버튼 클릭 핸들러 (토스트 메시지 처리 추가)
+  const handleTimelineUpdateWithToast = async () => {
+    // 로그인 여부 확인
+    if (!isLoggedIn) {
+      setToastMessage('로그인이 필요한 기능입니다.');
+      return;
+    }
+    
+    // 업데이트 가능 여부 확인
+    if (!isUpdateAvailable) {
+      setToastMessage('이미 최신 상태입니다.');
+      return;
+    }
+    
+    try {
+      await handleTimelineUpdate();
+      setToastMessage('타임라인이 성공적으로 업데이트되었습니다.');
+    } catch (err) {
+      // 오류 메시지 처리
+      const errorMessage = err instanceof Error ? err.message : '타임라인 업데이트에 실패했습니다.';
+      setToastMessage(errorMessage);
+      
+      // 401 오류일 경우 로그인 페이지로 이동
+      if (errorMessage.includes('인증되지 않은 사용자') || errorMessage.includes('다시 로그인')) {
+        setTimeout(() => {
+          navigate('/login', { state: { returnUrl: window.location.pathname } });
+        }, 1500);
+      }
+      
+      // 409 Conflict (24시간 제한) 오류일 경우 로그 남기기
+      if (errorMessage.includes('24시간')) {
+        console.log('24시간 제한으로 인해 업데이트 불가');
+      }
     }
   };
 
@@ -116,10 +156,49 @@ export default function NewsDetail() {
                 />
               </div>
               <div className="absolute bottom-2 right-2 text-xs bg-black bg-opacity-50 text-white px-2 py-1 rounded">
-                {/* 이미지 출처: {newsData.source} */}
+                이미지 출처: {newsData.image}
               </div>
             </div>
           )}
+
+          {/* 마지막 업데이트 시간 표시 */}
+          <div className="text-center text-sm text-gray-500 mb-3">
+            {formatRelativeTime(newsData.updatedAt)} 업데이트
+          </div>
+
+          {/* 타임라인 업데이트 버튼 */}
+          <div className="flex justify-center mb-6">
+            <button
+              onClick={handleTimelineUpdateWithToast}
+              disabled={isUpdating || !isUpdateAvailable || !isLoggedIn}
+              className={`px-6 py-2 rounded-full transition-colors flex items-center ${
+                isUpdating 
+                  ? 'bg-black text-white cursor-wait' 
+                  : isUpdateAvailable && isLoggedIn
+                    ? 'bg-black text-white hover:bg-gray-800' 
+                    : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+              }`}
+            >
+              {isUpdating ? (
+                <>
+                  <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  업데이트 중...
+                </>
+              ) : (
+                <>
+                  {isUpdateAvailable && (
+                    <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                    </svg>
+                  )}
+                  {!isLoggedIn ? '로그인 필요' : '타임라인 업데이트'}
+                </>
+              )}
+            </button>
+          </div>
 
           {/* 타임라인 컨테이너 */}
           <TimelineContainer 
