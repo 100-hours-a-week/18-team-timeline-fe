@@ -13,6 +13,8 @@ import { Container } from './components/layout/Container';
 import { Header } from './components/layout/Header';
 import { Sidebar } from './components/layout/Sidebar';
 import { KakaoCallback } from './pages/PU/auth/KakaoCallback';
+import { LogoutRoute } from './routes/LogoutRoute';
+import { LoginRoute } from './routes/LoginRoute';
 
 const App: React.FC = () => {
   const currentPage = usePageStore((state) => state.currentPage);
@@ -23,14 +25,35 @@ const App: React.FC = () => {
         <Sidebar />
         <Header />
         <Routes>
+          {/* 로그인 여부와 상관없이 접근 가능 */}
           <Route path="/" element={<Navigate to={currentPage} />} />
           <Route path={ROUTES.MAIN} element={<Main />} />
           <Route path={ROUTES.SEARCH_RESULTS} element={<SearchResults searchQuery={''} />} />
           <Route path={ROUTES.NEWS_DETAIL} element={<NewsDetail />} />
-          <Route path={ROUTES.KAKAO_CALLBACK} element={<KakaoCallback />} />
-          <Route path={ROUTES.SIGNUP} element={<SignUp />} />
-          <Route path={ROUTES.LOGIN} element={<Login />} />
-          <Route path={ROUTES.USER_INFO} element={<UserInfo />} />
+
+          {/* 로그아웃 상태에서만 접근 가능 */}
+          <Route path={ROUTES.SIGNUP} element={
+            <LogoutRoute>
+              <SignUp />
+            </LogoutRoute>
+          } />
+          <Route path={ROUTES.LOGIN} element={
+            <LogoutRoute>
+              <Login />
+            </LogoutRoute>
+          } />
+          <Route path={ROUTES.KAKAO_CALLBACK} element={
+            <LogoutRoute>
+              <KakaoCallback />
+            </LogoutRoute>
+          } />
+          
+          {/* 로그인 상태에서만 접근 가능 */}
+          <Route path={ROUTES.USER_INFO} element={
+            <LoginRoute>
+              <UserInfo />
+            </LoginRoute>
+          } />
         </Routes>
       </Router>
     </Container>
