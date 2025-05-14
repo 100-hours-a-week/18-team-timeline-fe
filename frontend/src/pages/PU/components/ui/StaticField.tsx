@@ -14,7 +14,7 @@ export const StaticField = ({
   
   const containerClass = clsx('w-full flex flex-col justify-center', _className);
   const labelClass = clsx('text-base font-semibold text-labelTextColor')
-  const contentClass = clsx('text-base font-light text-staticTextColor')
+  const contentClass = clsx('text-base font-light text-myBlack')
   
   return (
     <Text className={containerClass}>
