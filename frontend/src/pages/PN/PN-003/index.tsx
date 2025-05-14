@@ -162,12 +162,15 @@ export default function NewsDetail() {
           )}
 
           {/* 마지막 업데이트 시간 표시 */}
-          <div className="text-center text-sm text-gray-500 mb-3">
+          {/* <div className="text-center text-sm text-gray-500 mb-3">
             {formatRelativeTime(newsData.updatedAt)} 업데이트
-          </div>
+          </div> */}
 
           {/* 타임라인 업데이트 버튼 */}
-          <div className="flex justify-center mb-6">
+          <div 
+            className="flex justify-center pb-4"
+            style={{ boxShadow: '0 10px 8px -6px rgba(0, 0, 0, 0.1)' }}
+          >
             <button
               onClick={handleTimelineUpdateWithToast}
               disabled={isUpdating || !isUpdateAvailable || !isLoggedIn}
@@ -208,41 +211,6 @@ export default function NewsDetail() {
           />
         </div>
       </div>
-      
-      {/* 감정 분석 결과 */}
-      {/* <div className="container mx-auto px-4 py-6">
-        <div className="mt-12 mb-4">
-          <h3 className="text-lg font-bold whitespace-pre-line">
-            {`${newsData.title},\n다른 사람들은 어떻게 생각할까?`}
-          </h3> */}
-          
-          {/* 감정 분석 통계 */}
-          {/* <div className="mt-6 mb-8">
-            <div className="h-8 bg-gray-200 rounded-full overflow-hidden flex">
-              <div 
-                className="bg-black h-full" 
-                style={{ width: `${newsData.statistics.negative}%` }}
-              ></div>
-              <div 
-                className="bg-gray-400 h-full" 
-                style={{ width: `${newsData.statistics.neutral}%` }}
-              ></div>
-              <div 
-                className="bg-gray-600 h-full" 
-                style={{ width: `${newsData.statistics.positive}%` }}
-              ></div>
-            </div>
-            <div className="flex justify-between mt-2 text-sm text-gray-600">
-              <span>긍정</span>
-              <span>중립</span>
-              <span>부정</span>
-            </div>
-            <div className="text-xs text-center mt-4 text-gray-500">
-              *BERT 기반 모델을 활용하여 긍정/중립/부정으로 분류했습니다.
-            </div>
-          </div>
-        </div>
-      </div> */}
       
       {/* 토스트 메시지 */}
       {showToast && (

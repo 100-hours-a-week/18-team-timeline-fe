@@ -38,7 +38,7 @@ const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({ title, sentiment 
           <span>부정</span>
         </div>
         <div className="text-xs text-center mt-4 text-gray-500">
-          *BERT 기반 모델을 활용하여 긍정/중립/부정으로 분류했습니다.
+          *Bge-m3 기반 모델을 활용하여 해당 뉴스에 대한 온라인 반응을 긍정/중립/부정으로 분류했습니다.
         </div>
       </div>
     </div>
