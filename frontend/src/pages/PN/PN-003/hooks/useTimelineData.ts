@@ -116,6 +116,9 @@ export const useTimelineData = ({ newsId }: UseTimelineDataProps): UseTimelineDa
     
     // return hoursPassed >= 24;
 
+    console.log('updatedAt (UTC):', updatedAt.toISOString());
+    console.log('now (UTC):', now.toISOString());
+  
     // 테스트용 2분 뒤 업데이트
     console.log(`업데이트로부터 ${(timeDiff / 1000).toFixed(0)}초가 지났습니다.`);
   
@@ -454,7 +457,7 @@ export const useTimelineData = ({ newsId }: UseTimelineDataProps): UseTimelineDa
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${token}`,
             },
-            timeout: 10000,
+            timeout: 1000000000,
             withCredentials: false,
           }
         );
@@ -462,19 +465,22 @@ export const useTimelineData = ({ newsId }: UseTimelineDataProps): UseTimelineDa
         if (response.data.success) {
           console.log('타임라인 업데이트 성공:', response.data);
 
-          const updatedNewsData = response.data.data.news;
-          setNewsData(updatedNewsData);
+          // const updatedNewsData = response.data.data.news;
+          // //setNewsData(updatedNewsData);
 
-          const transformedTimeline = updatedNewsData.timeline.map(transformTimelineData);
-          setFormattedTimeline(transformedTimeline);
+          // const transformedTimeline = updatedNewsData.timeline.map(transformTimelineData);
+          // setFormattedTimeline(transformedTimeline);
 
-          const sourcesState: Record<string, boolean> = {};
-          transformedTimeline.forEach((item: any) => {
-            sourcesState[item.id] = false;
-          });
-          setShowSources(sourcesState);
+          // const sourcesState: Record<string, boolean> = {};
+          // transformedTimeline.forEach((item: any) => {
+          //   sourcesState[item.id] = false;
+          // });
+          // setShowSources(sourcesState);
 
-          setIsUpdateAvailable(false);
+          // setIsUpdateAvailable(false);
+
+          // ⭐ 업데이트 성공 후 강제로 fetchNewsData 호출 (중복 데이터 방지)
+          await fetchNewsData();
 
           return Promise.resolve(response.data.message);
         } else {
