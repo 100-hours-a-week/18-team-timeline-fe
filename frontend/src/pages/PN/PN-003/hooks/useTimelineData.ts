@@ -464,7 +464,7 @@ export const useTimelineData = ({ newsId }: UseTimelineDataProps): UseTimelineDa
           setFormattedTimeline(transformedTimeline);
 
           const sourcesState: Record<string, boolean> = {};
-          transformedTimeline.forEach(item => {
+          transformedTimeline.forEach((item: any) => {
             sourcesState[item.id] = false;
           });
           setShowSources(sourcesState);
