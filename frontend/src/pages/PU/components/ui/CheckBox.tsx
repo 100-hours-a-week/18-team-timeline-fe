@@ -1,4 +1,4 @@
-import { type DetailedHTMLProps, type HTMLAttributes } from "react";
+import type { HTMLAttributes } from "react";
 import clsx from "clsx";
 
 type CheckBoxProps = Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> & {
