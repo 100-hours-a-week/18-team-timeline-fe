@@ -22,6 +22,7 @@ export default {
 
         // CC-002
         menuColor: '#F2F2F2',
+        menuTitleColor: '#000000',
         menuItemColor: '#000000',
         menuItemHoverColor: '#AAAAAA',
         menuMetaTextColor: '#6F6F6F',
@@ -64,9 +65,6 @@ export default {
         checkBoxBgColor: '#D9D9D9',
         checkBoxLabelColor: '#000000',
         checkBoxMetaTextColor: '#6F6F6F',
-
-        navigationTextColor: '#000000',
-        navigationTextHoverColor: '#A0A0A0',
 
         navigationTextColor: '#000000',
         navigationTextHoverColor: '#A0A0A0',

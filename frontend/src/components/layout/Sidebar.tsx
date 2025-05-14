@@ -38,7 +38,7 @@ export const Sidebar = () => {
   const iconClass = 'flex justify-end p-4';
   const lineClass = 'border-t border-lineColor';
   const menuClass = 'relative mx-4 flex flex-col';
-  const titleClass = 'text-2xl font-bold flex flex-col pl-1 pt-10 pb-4';
+  const titleClass = 'text-menuTitleColor text-2xl font-bold flex flex-col pl-1 pt-10 pb-4';
   const navClass = 'flex flex-col pl-1 pt-6 space-y-4';
   const navItemClass = 'text-menuItemColor hover:text-menuItemHoverColor text-lg font-medium';
   const metaClass = 'absolute bottom-0 left-0 right-0 px-4';
