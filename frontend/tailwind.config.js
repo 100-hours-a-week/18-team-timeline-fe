@@ -69,9 +69,6 @@ export default {
         navigationTextColor: '#000000',
         navigationTextHoverColor: '#A0A0A0',
 
-        navigationTextColor: '#000000',
-        navigationTextHoverColor: '#A0A0A0',
-
         // PN
         pnBgColor: '#FFFFFF',
         newsCardColor: '#DADADA',
