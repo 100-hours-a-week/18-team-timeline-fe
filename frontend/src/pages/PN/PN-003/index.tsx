@@ -6,6 +6,7 @@ import TimelineContainer from './TimelineContainer';
 import { useTimelineData } from './hooks/useTimelineData';
 import { useAuthStore } from '@/stores/authStore';
 import { useToast } from './hooks/useToast';
+import SentimentAnalysis from './SentimentAnalysis';
 import { formatRelativeTime } from '@/pages/PN/utils/dateUtils';
 
 export default function NewsDetail() {
@@ -204,12 +205,29 @@ export default function NewsDetail() {
           </div>
 
           {/* 타임라인 컨테이너 */}
-          <TimelineContainer 
-            timeline={formattedTimeline} 
-            showSources={showSources}
-            toggleSources={toggleSources}
-          />
+          <div className="rounded-xl">
+            <TimelineContainer 
+              timeline={formattedTimeline} 
+              showSources={showSources}
+              toggleSources={toggleSources}
+            />
+          </div>
         </div>
+      </div>
+
+      {/* 감정 분석 */}
+      <div 
+        className="bg-[#FFFFFF] rounded-xl mb-8 p-4"
+        style={{ boxShadow: '0 -10px 8px -6px rgba(0, 0, 0, 0.1)' }}
+      >
+        <SentimentAnalysis 
+          title={newsData.title}
+          statistics={{
+            positive: newsData.statistics.positive,
+            neutral: newsData.statistics.neutral,
+            negative: newsData.statistics.negative
+          }}
+        />
       </div>
       
       {/* 토스트 메시지 */}
