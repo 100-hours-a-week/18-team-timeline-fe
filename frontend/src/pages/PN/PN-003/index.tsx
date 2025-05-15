@@ -36,7 +36,7 @@ export default function NewsDetail() {
     toggleSources,
     isUpdating,
     isUpdateAvailable,
-    handleToggleBookmark,
+    // handleToggleBookmark,
     handleShare,
     handleTimelineUpdate,
     formattedTimeline
@@ -50,20 +50,24 @@ export default function NewsDetail() {
   // 북마크 토글 핸들러 (토스트 메시지 추가)
   const onToggleBookmark = async () => {
     try {
-      await handleToggleBookmark();
-      showToastMessage(bookmarked ? '북마크가 해제되었습니다.' : '북마크에 추가되었습니다.');
+      // await handleToggleBookmark();
+      // showToastMessage(bookmarked ? '북마크가 해제되었습니다.' : '북마크에 추가되었습니다.');
+      showToastMessage('업데이트 예정입니다.');
     } catch (err) {
-      showToastMessage('북마크 업데이트에 실패했습니다.');
+      // showToastMessage('북마크 업데이트에 실패했습니다.');
+      showToastMessage('업데이트 예정입니다.');
     }
   };
 
   // 공유하기 핸들러 (토스트 메시지 추가)
   const onShare = async () => {
     try {
-      await handleShare();
-      showToastMessage('URL이 복사되었습니다!');
+      // await handleShare();
+      // showToastMessage('URL이 복사되었습니다!');
+      showToastMessage('업데이트 예정입니다.');
     } catch (err) {
-      showToastMessage('URL 복사에 실패했습니다.');
+      // showToastMessage('URL 복사에 실패했습니다.');
+      showToastMessage('업데이트 예정입니다.');
     }
   };
 
