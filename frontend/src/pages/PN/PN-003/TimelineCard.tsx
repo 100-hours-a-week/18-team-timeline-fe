@@ -37,7 +37,7 @@ const TimelineCard: React.FC<TimelineCardProps> = ({
       <div className="relative bg-white rounded-lg shadow-sm p-5 z-20">
         <div className="flex justify-between items-start">
           <div>
-            <h3 className="font-bold truncate max-w-[250px]">{data.title}</h3>
+            <h3 className="font-bold text-black truncate max-w-[250px]">{data.title}</h3>
             <p className="text-xs text-gray-500 mt-1">
               {data.startDate} ~ {data.endDate}
             </p>
@@ -62,12 +62,12 @@ const TimelineCard: React.FC<TimelineCardProps> = ({
         </div>
         
         <div className="mt-2">
-          <p className="text-sm text-gray-800 whitespace-pre-line">{data.content}</p>
+          <p className="text-sm text-gray-800 whitespace-pre-line text-black">{data.content}</p>
         </div>
         
         {showSources && data.sources.length > 0 && (
           <div className="mt-4 pt-4 border-t border-gray-200">
-            <h4 className="text-xs font-semibold mb-2">출처:</h4>
+            <h4 className="text-xs text-black font-semibold mb-2">출처:</h4>
             <ul className="space-y-2">
               {data.sources.map((source, index) => (
                 <li key={index} className="text-xs">

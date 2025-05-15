@@ -88,7 +88,7 @@ export default function NewsList({ category }: NewsListProps) {
       </div>
       <div className="p-4 flex-grow flex flex-col items-end text-right">
         <div className="flex justify-between items-start w-full">
-        <h3 className="w-full text-lg font-semibold text-[20px] leading-tight mb-2 line-clamp-2 text-right">
+        <h3 className="w-full text-lg font-semibold text-[20px] leading-tight mb-2 line-clamp-2 text-right text-black">
           {newsItem.title}
         </h3>
           {newsItem.bookmarked && (
