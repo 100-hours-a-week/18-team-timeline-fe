@@ -12,8 +12,8 @@ interface SentimentAnalysisProps {
 const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({ title, statistics }) => {
   return (
     <div className="mt-6 mb-4">
-      <h3 className="text-lg font-bold whitespace-pre-line">
-        {`${title},\n다른 사람들은 어떻게 생각할까?`}
+      <h3 className="text-lg text-black font-bold whitespace-pre-line">
+        {`${title.slice(0, 20)}...,\n다른 사람들은 어떻게 생각할까?`}
       </h3>
       
       {/* 감정 분석 통계 */}
@@ -35,15 +35,15 @@ const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({ title, statistics
         
         {/* 범례 개선: 글자 옆에 색 원, 가까이 붙임 */}
         <div className="flex justify-center mt-3 space-x-4 text-sm text-gray-600">
-          <div className="flex items-center space-x-1">
+          <div className="flex items-center space-x-1 text-black">
             <span className="w-3 h-3 bg-gray-600 rounded-full inline-block"></span>
             <span>긍정</span>
           </div>
-          <div className="flex items-center space-x-1">
+          <div className="flex items-center space-x-1 text-black">
             <span className="w-3 h-3 bg-gray-400 rounded-full inline-block"></span>
             <span>중립</span>
           </div>
-          <div className="flex items-center space-x-1">
+          <div className="flex items-center space-x-1 text-black">
             <span className="w-3 h-3 bg-black rounded-full inline-block"></span>
             <span>부정</span>
           </div>
