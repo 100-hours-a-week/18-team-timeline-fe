@@ -161,8 +161,15 @@ export default function NewsDetail() {
                     className="w-full h-full object-cover rounded-lg"
                   />
                 </div>
-                <div className="absolute bottom-2 right-2 text-xs bg-black bg-opacity-50 text-white px-2 py-1 rounded">
-                  이미지 출처: {newsData.image}
+                <div className="absolute bottom-2 right-2 text-xs bg-black bg-opacity-50 text-white px-2 py-1 rounded max-w-[70%] overflow-hidden whitespace-nowrap text-ellipsis">
+                  <a 
+                    href={newsData.image} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="hover:underline"
+                  >
+                    이미지 출처: {newsData.image}
+                  </a>
                 </div>
               </div>
             )}
