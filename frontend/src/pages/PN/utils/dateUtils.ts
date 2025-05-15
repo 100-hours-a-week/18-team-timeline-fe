@@ -14,7 +14,7 @@ export function formatRelativeTime(dateTimeString: string): string {
   const dateUTC = new Date(dateTimeString);
   const nowUTC = new Date(new Date().toISOString()); // 강제 UTC 기준으로 now
 
-  const diff = nowUTC.getTime() - dateUTC.getTime();
+  const diff = nowUTC.getTime() - dateUTC.getTime() - 9 * 60 * 60 * 1000;
 
   const minutes = Math.floor(diff / (1000 * 60));
   const hours = Math.floor(diff / (1000 * 60 * 60));
