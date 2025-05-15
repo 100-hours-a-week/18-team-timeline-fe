@@ -366,7 +366,7 @@ export const useTimelineData = ({ newsId }: UseTimelineDataProps): UseTimelineDa
     if (!newsId || !newsData) return Promise.reject(new Error('뉴스 데이터가 없습니다.'));
     
     // 숫자 ID 추출
-    const numericId = newsId.replace(/\D/g, '');
+    // const numericId = newsId.replace(/\D/g, '');
     
     try {
       setIsUpdating(true);

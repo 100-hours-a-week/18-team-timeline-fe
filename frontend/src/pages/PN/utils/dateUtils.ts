@@ -21,7 +21,7 @@ export function formatRelativeTime(dateTimeString: string): string {
   const days = Math.floor(diff / (1000 * 60 * 60 * 24));
   const weeks = Math.floor(days / 7);
   const months = Math.floor(days / 30);
-  const years = Math.floor(days / 365);
+  // const years = Math.floor(days / 365);
 
   if (minutes < 1) {
     return '방금 전';

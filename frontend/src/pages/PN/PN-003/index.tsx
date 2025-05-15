@@ -7,7 +7,7 @@ import { useTimelineData } from './hooks/useTimelineData';
 import { useAuthStore } from '@/stores/authStore';
 import { useToast } from './hooks/useToast';
 import SentimentAnalysis from './SentimentAnalysis';
-import { formatRelativeTime } from '@/pages/PN/utils/dateUtils';
+// import { formatRelativeTime } from '@/pages/PN/utils/dateUtils';
 
 export default function NewsDetail() {
   // 주의: 파라미터 이름이 'id'로 설정되어 있습니다!
@@ -37,7 +37,7 @@ export default function NewsDetail() {
     isUpdating,
     isUpdateAvailable,
     // handleToggleBookmark,
-    handleShare,
+    // handleShare,
     handleTimelineUpdate,
     formattedTimeline
   } = useTimelineData({ newsId });
