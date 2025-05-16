@@ -61,9 +61,9 @@ export default {
         btnActiveBg: '#F2A359',
         btnKakaoBg: '#FEE500',
 
-        checkBoxBgColor: '#D9D9D9',
-        checkBoxLabelColor: '#000000',
-        checkBoxMetaTextColor: '#6F6F6F',
+        checkBoxBg: '#F2A359',
+        checkBoxLabel: '#2A4759',
+        checkBoxMetaText: '#4F4F4F',
 
         navText: '#2A4759',
         navTextHover: '#F2A359',
