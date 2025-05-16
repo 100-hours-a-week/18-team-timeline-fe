@@ -37,7 +37,7 @@ const TimelineCard: React.FC<TimelineCardProps> = ({
       <div className="relative bg-white rounded-lg shadow-sm p-5 z-20">
         <div className="flex justify-between items-start">
           <div>
-            <h3 className="font-bold text-black truncate max-w-[250px]">{data.title}</h3>
+            <h3 className="font-bold text-black max-w-[250px]">{data.title}</h3>
             <p className="text-xs text-[#F2A359] mt-1">
               {data.startDate} ~ {data.endDate}
             </p>
