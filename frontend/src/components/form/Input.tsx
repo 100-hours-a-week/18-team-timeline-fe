@@ -70,8 +70,8 @@ export const ButtonInput = ({
     'flex w-full, space-x-1'
   )
   const buttonClass = clsx(
-    'w-[80px] text-buttonTextColor text-sm rounded-[5px]',
-    isValid ? 'bg-buttonActiveColor' : 'bg-buttonInactiveColor'
+    'w-[80px] text-btnText text-sm rounded-[5px]',
+    isValid ? 'bg-btnActiveBg' : 'bg-btnInactiveBg'
   )
 
   return (

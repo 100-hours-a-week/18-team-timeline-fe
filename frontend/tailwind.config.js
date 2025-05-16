@@ -56,10 +56,10 @@ export default {
         metaTextColor: '#4F4F4F',
         inputInactiveText: '#4F4F4F',
 
-        buttonTextColor: '#FFFFFF',
-        buttonInactiveColor: '#D9D9D9',
-        buttonActiveColor: '#4F4F4F',
-        buttonKakaoColor: '#9A9A9A',
+        btnText: '#FFFFFF',
+        btnInactiveBg: '#F3D7C2',
+        btnActiveBg: '#F2A359',
+        btnKakaoBg: '#FEE500',
 
         checkBoxBgColor: '#D9D9D9',
         checkBoxLabelColor: '#000000',
