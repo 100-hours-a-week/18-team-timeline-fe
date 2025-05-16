@@ -10,7 +10,7 @@ type ButtonProps = ReactDivProps & {
   isActive?: boolean
 }
 
-const buttonClass = 'w-full h-9 text-base text-buttonTextColor rounded-[5px]'
+const buttonClass = 'w-full h-9 text-base text-btnText rounded-[5px]'
 
 export const Button = ({
   text,
@@ -20,7 +20,7 @@ export const Button = ({
 
   const className = clsx(
     buttonClass,
-    isActive ? 'bg-buttonActiveColor' : 'bg-buttonInactiveColor',
+    isActive ? 'bg-btnActiveBg' : 'bg-btnInactiveBg',
     _className
   )
 
@@ -44,7 +44,7 @@ export const KaKaoButton = ({
 
   const className = clsx(
     buttonClass,
-    'bg-buttonKakaoColor',
+    'bg-btnKakaoBg text-myBlack',
     _className
   );
 
