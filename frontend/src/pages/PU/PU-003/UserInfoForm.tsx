@@ -53,8 +53,8 @@ export const UserInfoForm = ({}: UserInfoFormProps) => {
 
   const formClass = clsx("w-full flex flex-col justify-center", "space-y-3");
   const buttonClass = clsx("flex flex-col pt-8 space-y-1");
-  const navigationClass = clsx("w-full justify-center flex flex-row space-x-1", "text-sm text-navigationTextColor");
-  const linkClass = clsx("hover:text-navigationTextHoverColor");
+  const navigationClass = clsx("w-full justify-center flex flex-row space-x-1", "text-sm text-navText");
+  const linkClass = clsx("hover:text-navTextHover");
 
   return (
     <>
