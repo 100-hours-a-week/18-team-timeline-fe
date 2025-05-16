@@ -39,8 +39,8 @@ export default {
         modalBtnCancelHover: '#577F98',
 
         // CC-004
-        toastColor: '#9A9A9A',
-        toastTextColor: '#FFFFFF',
+        toastBg: '#2A4759',
+        toastText: '#FFFFFF',
 
         // PU
         puBgColor: '#F9F9F9',
