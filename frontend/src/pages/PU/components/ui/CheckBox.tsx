@@ -17,9 +17,9 @@ export const CheckBox = ({
   };
 
   const wrapperClass = clsx('flex space-x-1', className);
-  const checkClass = clsx('w-4 h-4 my-0.5 accent-checkBoxBgColor cursor-pointer')
-  const labelClass = clsx('text-sm cursor-pointer select-none text-checkBoxLabelColor')
-  const metaTextClass = clsx('text-xs font-light text-checkBoxMetaTextColor')
+  const checkClass = clsx('w-4 h-4 my-0.5 accent-checkBoxBg cursor-pointer')
+  const labelClass = clsx('text-sm cursor-pointer select-none text-checkBoxLabel')
+  const metaTextClass = clsx('text-xs font-light text-checkBoxMetaText')
 
   return (
     <div className={wrapperClass} {...props}>
