@@ -42,9 +42,9 @@ export default {
         toastTextColor: '#FFFFFF',
 
         // PU
-        puBgColor: '#F9F9F9',
-        puWrapperColor: '#FFFFFF',
-        puTitleColor: '#000000',
+        puBg: '#FCFAF7',
+        puWrapper: '#FFFFFF',
+        puTitle: '#2A4759',
 
         inputBg: '#F1EFEC',
         inputBorder: '#D4C9BE',
@@ -65,8 +65,8 @@ export default {
         checkBoxLabelColor: '#000000',
         checkBoxMetaTextColor: '#6F6F6F',
 
-        navigationTextColor: '#000000',
-        navigationTextHoverColor: '#A0A0A0',
+        navText: '#2A4759',
+        navTextHover: '#F2A359',
 
         // PN
         pnBgColor: '#FFFFFF',

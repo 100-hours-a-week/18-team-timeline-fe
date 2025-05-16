@@ -15,12 +15,12 @@ export const Wrapper = ({
 
   const className = clsx(
     'h-fit rounded-xl mx-7 my-16 py-14',
-    'flex flex-col bg-puWrapperColor',
+    'flex flex-col bg-puWrapper',
     _className
   )
 
   const titleClass = clsx(
-    'text-3xl font-extrabold text-puTitleColor',
+    'text-3xl font-extrabold text-puTitle',
     'pb-9 text-center'
   )
 
