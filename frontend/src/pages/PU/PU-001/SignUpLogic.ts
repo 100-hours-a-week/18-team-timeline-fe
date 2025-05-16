@@ -35,14 +35,20 @@ export const useSignUpLogic = () => {
 
   const checkDuplicate = async (
     value: string,
-    validator: (v: string) => Promise<{ available: boolean }>,
+    validator: (v: string) => Promise<{
+      success: boolean;
+      message: string;
+      data: { available: boolean }
+    }>,
     key: keyof typeof errors,
     message: string,
     onAvailable?: (ok: boolean) => void
   ) => {
     if (!value || errors[key]) return;
+
     const res = await validator(value);
-    if (!res.available) {
+
+    if (!res.data.available) {
       setErrors((prev) => ({ ...prev, [key]: message }));
       onAvailable?.(false)
     } else {
