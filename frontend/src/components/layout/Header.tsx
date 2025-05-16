@@ -12,10 +12,13 @@ type HeaderProps = ReactDivProps & {}
 
 export const Header = ({ className: _className }: HeaderProps) => {
   const className = clsx(
-    'top-0 w-full h-[50px] bg-headerColor',
+    'top-0 w-full h-[48px] bg-headerBackground',
     'flex items-center justify-between px-[20px]',
     _className,
   )
+
+  const iconClass = "text-headerIcon cursor-pointer"
+  const logoClass = "text-2xl font-extrabold cursor-pointer text-headerLogo"
 
   return (
     <div className={className}>
@@ -23,11 +26,11 @@ export const Header = ({ className: _className }: HeaderProps) => {
         name="Bars3Icon"
         size={24}
         variant="solid"
-        className="text-headerIconColor cursor-pointer"
+        className={iconClass}
         onClick={() => useSidebarStore.getState().toggle()}
       />
       <Link to={ROUTES.MAIN}>
-        <Text className="text-2xl font-extrabold cursor-pointer text-headerTextColor">탐나라</Text>
+        <Text className={logoClass}>탐나라</Text>
       </Link>
       <Link to={ROUTES.SEARCH_RESULTS}>
         <Icon name="MagnifyingGlassIcon" size={24} variant="solid" className={iconClass} />

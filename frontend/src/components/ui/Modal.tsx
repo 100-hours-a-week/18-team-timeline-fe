@@ -3,11 +3,11 @@ import clsx from 'clsx';
 import { Input } from '../form/Input';
 
 const backgroundClass = 'fixed inset-0 z-50 bg-myBlack/60 flex items-center justify-center'
-const modalContainerClass = 'bg-modalColor rounded-[10px] w-[320px] p-6 text-center shadow-lg'
+const modalContainerClass = 'bg-modalBg rounded-[10px] w-[320px] p-6 text-center shadow-lg'
 const textWrapperClass = 'mt-2 mb-3 space-y-1'
-const titleClass = 'text-xl font-bold'
-const contentClass = 'text-sm text-modalContentColor'
-const buttonClass = 'px-7 py-1 rounded-md text-modalButtonTextColor font-medium'
+const titleClass = 'text-xl font-bold text-modalTitle'
+const contentClass = 'text-sm text-modalContent'
+const buttonClass = 'px-7 py-1 rounded-md text-modalBtnText font-medium'
 const inputClass = 'mb-5'
 
 type ModalProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> & {
@@ -35,7 +35,7 @@ export const Modal = ({
             onClick={onConfirm}
             className={clsx(
               buttonClass,
-              'bg-modalButtonConfirmColor hover:bg-modalButtonConfirmHoverColor'
+              'bg-modalBtnConfirm hover:bg-modalBtnConfirmHover'
             )}
           >
             확인
@@ -44,7 +44,7 @@ export const Modal = ({
             onClick={onCancel}
             className={clsx(
               buttonClass,
-              'bg-modalButtonCancelColor hover:bg-modalButtonCancelHoverColor'
+              'bg-modalBtnCancel hover:bg-modalBtnCancelHover'
             )}
           >
             취소
@@ -86,11 +86,12 @@ export const InputModal = ({
             disabled={!password.trim()}
             className={clsx(
               buttonClass,
-              'bg-modalButtonConfirmColor hover:bg-modalButtonConfirmHoverColor',
               {
-                'bg-modalButtonInactiveColor cursor-not-allowed': !password.trim(),
+                'bg-modalBtnConfirm hover:bg-modalBtnConfirmHover': password.trim(),
+                'bg-modalBtnInactive': !password.trim(),
               }
             )}
+            
           >
             확인
           </button>
@@ -98,7 +99,7 @@ export const InputModal = ({
             onClick={onCancel}
             className={clsx(
               buttonClass,
-              'bg-modalButtonCancelColor hover:bg-modalButtonCancelHoverColor'
+              'bg-modalBtnCancel hover:bg-modalBtnCancelHover'
             )}
           >
             취소

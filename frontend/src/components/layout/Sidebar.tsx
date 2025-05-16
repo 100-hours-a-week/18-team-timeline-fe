@@ -31,16 +31,16 @@ export const Sidebar = () => {
   }, [isOpen, close]);
 
   const className = clsx(
-    'absolute top-0 left-0 h-full w-[240px] bg-menuColor z-50 transition-transform duration-300',
+    'absolute top-0 left-0 h-full w-[240px] bg-menuBackground z-50 transition-transform duration-300',
     isOpen ? 'translate-x-0' : '-translate-x-full'
   );
 
   const iconClass = 'flex justify-end p-4';
-  const lineClass = 'border-t border-lineColor';
+  const lineClass = 'border-t border-ccLine';
   const menuClass = 'relative mx-4 flex flex-col';
-  const titleClass = 'text-menuTitleColor text-2xl font-bold flex flex-col pl-1 pt-10 pb-4';
+  const titleClass = 'text-menuTitle text-2xl font-bold flex flex-col pl-1 pt-10 pb-4';
   const navClass = 'flex flex-col pl-1 pt-6 space-y-4';
-  const navItemClass = 'text-menuItemColor hover:text-menuItemHoverColor text-lg font-medium';
+  const navItemClass = 'text-menuItem hover:text-menuItemHover text-lg font-medium';
   const metaClass = 'absolute bottom-0 left-0 right-0 px-4';
   const metaItemClass = 'flex flex-col pl-1 space-y-1 text-xs font-semithin';
 
@@ -51,14 +51,14 @@ export const Sidebar = () => {
           name="Bars3Icon"
           size={24}
           variant="solid"
-          className="text-menuItemColor cursor-pointer"
+          className="text-menuItem cursor-pointer"
           onClick={close}
         />
       </div>
 
       {isLoggedIn ? (
         <div className={menuClass}>
-          <Text className={titleClass}>마이페이지</Text>
+          <Text className={titleClass}>마이 페이지</Text>
           <div className={lineClass} />
           <nav className={navClass}>
             <Link to={ROUTES.USER_INFO} className={navItemClass} onClick={close}>
@@ -90,12 +90,16 @@ export const Sidebar = () => {
         <div className={clsx(metaItemClass, 'pt-4 pb-8')}>
           <Link
             to={INQUIRY_URL}
-            className="text-menuItemColor hover:text-menuItemHoverColor"
+            className="text-menuItem"
             onClick={close}
           >
             문의하기
           </Link>
-          <Text className="text-metaTextColor">v0.01 25.05.12</Text>
+          <Text
+            className="text-menuMetaText"
+          >
+            v0.01 25.05.12
+          </Text>
         </div>
       </div>
     </div>
