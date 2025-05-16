@@ -55,7 +55,7 @@ export const useUserInfoLogic = ({ setToastMessage }: UserInfoLogicProps ) => {
   }, [name]);
 
   const checkNameDuplicate = async () => {
-    if (!name || errors.name) return;
+    if (!name || errors.name || name === userName ) return;
 
     const res = await getData(ENDPOINTS.CHECK_NAME(name));
 
