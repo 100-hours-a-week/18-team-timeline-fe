@@ -13,7 +13,7 @@ export default {
         mainBgColor: '#E5E5E5',
 
         // CC
-        lineColor: '#AAAAAA',
+        ccLine: '#DDDDDD',
 
         // CC-001
         headerBackground: '#F2A359',
@@ -21,11 +21,11 @@ export default {
         headerIcon: '#EEEEEE',
 
         // CC-002
-        menuColor: '#F2F2F2',
-        menuTitleColor: '#000000',
-        menuItemColor: '#000000',
-        menuItemHoverColor: '#AAAAAA',
-        menuMetaTextColor: '#6F6F6F',
+        menuBackground: '#EEEEEE',
+        menuTitle: '#2A4759',
+        menuItem: '#2A4759',
+        menuItemHover: '#F2A359',
+        menuMetaText: '#2A4759',
 
         // CC-003
         modalColor: '#FFFFFF',
