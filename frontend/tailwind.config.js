@@ -28,15 +28,15 @@ export default {
         menuMetaText: '#2A4759',
 
         // CC-003
-        modalColor: '#FFFFFF',
-        modalTitleColor: '#000000',
-        modalContentColor: '#000000',
-        modalButtonTextColor: '#FFFFFF',
-        modalButtonConfirmColor: '#4F4F4F',
-        modalButtonConfirmHoverColor: '#6F6F6F',
-        modalButtonInactiveColor: '#D9D9D9',
-        modalButtonCancelColor: '#9A9A9A',
-        modalButtonCancelHoverColor: '#AAAAAA',
+        modalBg: '#F5F5F5',
+        modalTitle: '#2A4759',
+        modalContent: '#4F4F4F',
+        modalBtnText: '#FFFFFF',
+        modalBtnConfirm: '#F2A359',
+        modalBtnConfirmHover: '#F4C89E',
+        modalBtnInactive: '#F3D7C2',
+        modalBtnCancel: '#2A4759',
+        modalBtnCancelHover: '#577F98',
 
         // CC-004
         toastColor: '#9A9A9A',
