@@ -16,9 +16,9 @@ export default {
         lineColor: '#AAAAAA',
 
         // CC-001
-        headerColor: '#F2F2F2',
-        headerTextColor: '#000000',
-        headerIconColor: '#000000',
+        headerBackground: '#F2A359',
+        headerLogo: '#EEEEEE',
+        headerIcon: '#EEEEEE',
 
         // CC-002
         menuColor: '#F2F2F2',
