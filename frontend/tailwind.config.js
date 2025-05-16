@@ -13,7 +13,7 @@ export default {
         mainBgColor: '#E5E5E5',
 
         // CC
-        lineColor: '#AAAAAA',
+        ccLine: '#DDDDDD',
 
         // CC-001
         headerColor: '#F2F2F2',
@@ -46,14 +46,14 @@ export default {
         puWrapperColor: '#FFFFFF',
         puTitleColor: '#000000',
 
-        inputBgColor: '#EFEFEF',
-        inputBorderColor: '#DFDFDF',
-        inputBorderFocusColor: '#000000',
-        inputPlaceholderColor: '#9F9F9F',
-        labelTextColor: '#000000',
-        labelSpanColor: '#4F4F4F',
-        helperTextColor: '#808080',
-        metaTextColor: '#4F4F4F',
+        inputBg: '#F1EFEC',
+        inputBorder: '#D4C9BE',
+        inputBorderFocus: '#000000',
+        inputPlaceholder: '#D4C9BE',
+        labelText: '#2A4759',
+        labelRequired: '#F79B72',
+        helperText: '#808080',
+        metaText: '#4F4F4F',
         inputInactiveText: '#4F4F4F',
 
         btnText: '#FFFFFF',
