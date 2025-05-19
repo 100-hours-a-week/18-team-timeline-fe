@@ -7,7 +7,7 @@ const labelClass = clsx('text-base font-semibold text-labelText')
 const inputClass = clsx(
   'h-8 bg-inputBg border border-inputBorder rounded-[5px]',
   'focus:outline-none focus:ring-1 focus:ring-inputBorderFocus',
-  'inline-block text-sm placeholder-inputPlaceholder px-2'
+  'inline-block text-sm text-myBlack placeholder-inputPlaceholder px-2'
 );
 const helperClass = clsx('px-2 text-sm text-helperText leading-snug');
 
