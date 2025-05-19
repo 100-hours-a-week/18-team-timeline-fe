@@ -3,7 +3,7 @@ name: Frontend CI
 
 on:
   push:
-    branches: [ "develop", "release/**", "main", "feature/cicd" ]
+    branches: [ "develop", "release/**", "main" ]
     paths: [ "frontend/**" ]
   pull_request:
     branches: [ "develop", "release/**" ]
