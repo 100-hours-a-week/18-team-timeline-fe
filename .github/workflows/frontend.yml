@@ -1,0 +1,71 @@
+name: Frontend CI/CD
+
+on:
+  push:
+    branches: [ develop, release/**, main ]
+    paths: [ 'frontend/**' ]
+  pull_request:
+    branches: [ develop, release/** ]
+    paths: [ 'frontend/**' ]
+
+jobs:
+  build-and-push:
+    name: Build & Push Frontend Docker to ECR
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. 소스코드 체크아웃
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      # 2. AWS OIDC 인증 (IAM Role Assume)
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::346011888304:role/github-action-role
+          aws-region: ap-northeast-2
+
+      # 3. 커밋 SHA → Docker 태그
+      - name: Get short commit SHA
+        id: meta
+        run: echo "tag=$(echo $GITHUB_SHA | cut -c1-7)" >> "$GITHUB_OUTPUT"
+
+      # 4. Node.js 설치 (React@latest + Vite@latest)
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      # 5. 의존성 설치 & 빌드 (vite.config.ts 기반)
+      - name: Install dependencies and build
+        working-directory: ./frontend
+        run: |
+          npm ci
+          npm run build
+
+      # 6. ECR 로그인 (Amazon 전용 Docker registry)
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v1
+
+      # 7. Docker 이미지 빌드 & ECR 푸시
+      - name: Build and Push Docker Image
+        working-directory: ./frontend
+        env:
+          TAG: ${{ steps.meta.outputs.tag }}
+        run: |
+          ECR_REPO=123456789012.dkr.ecr.ap-northeast-2.amazonaws.com/tamnara/fe
+
+          echo "🐳 Docker 이미지 빌드 중... (태그: $TAG)"
+          docker build -t $ECR_REPO:$TAG .
+
+          echo "🚀 Docker 이미지 푸시 중..."
+          docker push $ECR_REPO:$TAG
+
+      # 8. Discord 성공 알림
+      - name: Notify Discord on Success
+        run: |
+          TAG=${{ steps.meta.outputs.tag }}
+          ECR_REPO=123456789012.dkr.ecr.ap-northeast-2.amazonaws.com/tamnara/fe
+          curl -X POST -H "Content-Type: application/json" \
+            -d "{\"content\": \"✅ *프론트엔드 Docker 이미지 푸시 완료!*\\n📦 Repository: $ECR_REPO:$TAG\\n👉 [ECR 보기](https://ap-northeast-2.console.aws.amazon.com/ecr/repositories/tamnara/fe?region=ap-northeast-2)\"}" \
+            ${{ secrets.DISCORD_WEBHOOK_URL }}
