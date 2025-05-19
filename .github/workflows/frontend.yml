@@ -24,7 +24,7 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-        working-directory: frontend # ✅ frontend 디렉토리 기준
+        working-directory: frontend # ✅ frontend 디렉토리 기준.
 
       - name: Run lint
         run: npm run lint
