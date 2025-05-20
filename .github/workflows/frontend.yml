@@ -42,6 +42,12 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
 
+    permissions:
+      id-token: write         # OIDC 인증 (AWS Assume Role용)
+      contents: read          # GitHub 리포지토리 읽기 권한
+      checks: write           # CI 체크 결과를 PR에 남길 수 있음
+      pull-requests: write    # PR에 코멘트 달기 등 가능
+      
     steps:
       - name: Checkout source code
         uses: actions/checkout@v3
