@@ -1,39 +1,59 @@
-name: Frontend CI
+name: Build and Push tamnara/fe Docker Image to ECR
 
 on:
   push:
-    branches: [ "develop", "release/**", "main" ]
-    paths: [ "frontend/**" ]
-  pull_request:
-    branches: [ "develop", "release/**" ]
-    paths: [ "frontend/**" ]
+    branches:
+      - release/**
+      - develop
+      - main
 
 jobs:
-  build:
+  build-and-push:
     runs-on: ubuntu-latest
 
+    permissions:
+      id-token: write
+      contents: read
+      checks: write
+      pull-requests: write
+
     steps:
-      - name: Checkout code
+      # 1. Checkout source
+      - name: Checkout source code
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      # 2. Configure AWS credentials (OIDC)
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v2
         with:
-          node-version: '20'
+          role-to-assume: arn:aws:iam::346011888304:role/github-action-role
+          aws-region: ap-northeast-2
+      
+      # 3. Create .env file from GitHub Secrets
+      - name: Create .env file from GitHub Secrets
+        run: |
+          echo "VITE_API_BASE_URL=${{ secrets.VITE_API_BASE_URL }}" >> frontend/.env
+          echo "VITE_FRONTEND_BASE_URL=${{ secrets.VITE_FRONTEND_BASE_URL }}" >> frontend/.env
 
-      - name: Install dependencies
-        run: npm install
-        working-directory: frontend
+      # 4. Login to Amazon ECR
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Run lint
-        run: npm run lint
-        working-directory: frontend
+      # 5. Get short commit SHA
+      - name: Get short commit SHA
+        id: meta
+        run: echo "tag=$(echo $GITHUB_SHA | cut -c1-7)" >> "$GITHUB_OUTPUT"
 
-      # ❌ 테스트는 아직 준비되지 않아서 임시 생략
-      # - name: Run tests
-      #   run: npm test
-      #   working-directory: frontend
+      # 6. Build Docker image
+      - name: Build Docker image
+        run: |
+          REG=346011888304.dkr.ecr.ap-northeast-2.amazonaws.com/tamnara_fe
+          docker build -t $REG:latest -t $REG:${{ steps.meta.outputs.tag }} -f ./frontend/Dockerfile ./frontend
 
-      # ✅ 또는 테스트 생략 메시지 출력
-      - name: Skip tests (placeholder)
-        run: echo "✅ Tests are skipped for now"
+      # 7. Push Docker image to ECR
+      - name: Push Docker image
+        run: |
+          REG=346011888304.dkr.ecr.ap-northeast-2.amazonaws.com/tamnara/fe
+          docker push $REG:latest
+          docker push $REG:${{ steps.meta.outputs.tag }}
+
