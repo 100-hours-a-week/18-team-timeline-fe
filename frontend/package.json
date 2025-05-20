@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "format": "prettier --write .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "..."
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
