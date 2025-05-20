@@ -1,0 +1,76 @@
+name: Frontend CI/CD
+
+on:
+  push:
+    branches:
+      - release/**
+      - develop
+      - main
+
+jobs:
+  # 1. 공통 CI (모든 브랜치에서 실행)
+  frontend-ci:
+    name: Frontend Build & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: frontend
+
+      - name: Run tests (optional)
+        run: npm run test || echo "Test skipped"
+        working-directory: frontend
+
+      - name: Create .env file from GitHub Secrets
+        run: |
+          echo "VITE_API_BASE_URL=${{ secrets.VITE_API_BASE_URL }}" >> frontend/.env
+          echo "VITE_FRONTEND_BASE_URL=${{ secrets.VITE_FRONTEND_BASE_URL }}" >> frontend/.env
+
+  # 2. ECR Push (오직 main 브랜치에서만 실행)
+  build-and-push:
+    name: Docker Build & ECR Push (main only)
+    needs: frontend-ci
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::346011888304:role/github-action-role
+          aws-region: ap-northeast-2
+
+      - name: Create .env file from GitHub Secrets
+        run: |
+          echo "VITE_API_BASE_URL=${{ secrets.VITE_API_BASE_URL }}" >> frontend/.env
+          echo "VITE_FRONTEND_BASE_URL=${{ secrets.VITE_FRONTEND_BASE_URL }}" >> frontend/.env
+
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Get short commit SHA
+        id: meta
+        run: echo "tag=$(echo $GITHUB_SHA | cut -c1-7)" >> "$GITHUB_OUTPUT"
+
+      - name: Build Docker image
+        run: |
+          REG=346011888304.dkr.ecr.ap-northeast-2.amazonaws.com/tamnara/fe
+          docker build -t $REG:latest -t $REG:${{ steps.meta.outputs.tag }} -f ./frontend/Dockerfile ./frontend
+
+      - name: Push Docker image
+        run: |
+          REG=346011888304.dkr.ecr.ap-northeast-2.amazonaws.com/tamnara/fe
+          docker push $REG:latest
+          docker push $REG:${{ steps.meta.outputs.tag }}

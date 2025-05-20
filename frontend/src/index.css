@@ -1,0 +1,51 @@
+@charset "UTF-8";
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  font-family: Pretendard Variable, Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue',
+    'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', sans-serif !important;
+  min-height: 100vh;
+  user-select: none;
+}
+
+textarea {
+  font-family: inherit;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* swiper 버튼 배경, 크기, 둥근 모서리 */
+.swiper-custom .swiper-button-next,
+.swiper-custom .swiper-button-prev {
+  /* 수직 완전 중앙 */
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  margin-top: 0 !important;
+  
+  background-color: rgba(255, 255, 255, 0.5); /* 반투명 흰색 */
+  border-radius: 10px;                      /* 둥근 버튼 */
+  width: 1.5rem;                              /* 필요에 따라 크기 조절 */
+  height: 2rem;
+}
+
+/* hover 시 배경 더 진하게 */
+.swiper-custom .swiper-button-next:hover,
+.swiper-custom .swiper-button-prev:hover {
+  background-color: rgba(255, 255, 255, 0.8); /* 덜 투명한 흰색 */
+}
