@@ -8,7 +8,40 @@ on:
       - main
 
 jobs:
-  # 1. 공통 CI (모든 브랜치에서 실행)
+  # 0. 정밀 CI 테스트 (브랜치 전체)
+  test:
+    name: Frontend Type Check, Lint, Build & Unit Test
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type Check
+        run: npx tsc --noEmit
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build
+        run: npm run build
+
+      - name: Unit Test
+        run: npm run test
+
+  # 1. 간단 CI (기존 유지)
   frontend-ci:
     name: Frontend Build & Test
     runs-on: ubuntu-latest
@@ -35,19 +68,19 @@ jobs:
           echo "VITE_API_BASE_URL=${{ secrets.VITE_API_BASE_URL }}" >> frontend/.env
           echo "VITE_FRONTEND_BASE_URL=${{ secrets.VITE_FRONTEND_BASE_URL }}" >> frontend/.env
 
-  # 2. ECR Push (오직 main 브랜치에서만 실행)
+  # 2. ECR Push (main 브랜치에서만 실행)
   build-and-push:
     name: Docker Build & ECR Push (main only)
-    needs: frontend-ci
+    needs: [frontend-ci, test]  # ✅ 두 job 모두 성공해야 실행됨
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
 
     permissions:
-      id-token: write         # OIDC 인증 (AWS Assume Role용)
-      contents: read          # GitHub 리포지토리 읽기 권한
-      checks: write           # CI 체크 결과를 PR에 남길 수 있음
-      pull-requests: write    # PR에 코멘트 달기 등 가능
-      
+      id-token: write
+      contents: read
+      checks: write
+      pull-requests: write
+
     steps:
       - name: Checkout source code
         uses: actions/checkout@v3
