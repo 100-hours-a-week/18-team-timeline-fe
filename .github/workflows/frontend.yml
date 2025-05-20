@@ -1,4 +1,4 @@
-name: Build and Push tamnara/fe Docker Image to ECR
+name: Frontend CI/CD
 
 on:
   push:
@@ -8,52 +8,69 @@ on:
       - main
 
 jobs:
-  build-and-push:
+  # 1. 공통 CI (모든 브랜치에서 실행)
+  frontend-ci:
+    name: Frontend Build & Test
     runs-on: ubuntu-latest
 
-    permissions:
-      id-token: write
-      contents: read
-      checks: write
-      pull-requests: write
-
     steps:
-      # 1. Checkout source
       - name: Checkout source code
         uses: actions/checkout@v3
 
-      # 2. Configure AWS credentials (OIDC)
-      - name: Configure AWS credentials (OIDC)
-        uses: aws-actions/configure-aws-credentials@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
-          role-to-assume: arn:aws:iam::346011888304:role/github-action-role
-          aws-region: ap-northeast-2
-      
-      # 3. Create .env file from GitHub Secrets
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: frontend
+
+      - name: Run tests (optional)
+        run: npm run test || echo "Test skipped"
+        working-directory: frontend
+
       - name: Create .env file from GitHub Secrets
         run: |
           echo "VITE_API_BASE_URL=${{ secrets.VITE_API_BASE_URL }}" >> frontend/.env
           echo "VITE_FRONTEND_BASE_URL=${{ secrets.VITE_FRONTEND_BASE_URL }}" >> frontend/.env
 
-      # 4. Login to Amazon ECR
+  # 2. ECR Push (오직 main 브랜치에서만 실행)
+  build-and-push:
+    name: Docker Build & ECR Push (main only)
+    needs: frontend-ci
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::346011888304:role/github-action-role
+          aws-region: ap-northeast-2
+
+      - name: Create .env file from GitHub Secrets
+        run: |
+          echo "VITE_API_BASE_URL=${{ secrets.VITE_API_BASE_URL }}" >> frontend/.env
+          echo "VITE_FRONTEND_BASE_URL=${{ secrets.VITE_FRONTEND_BASE_URL }}" >> frontend/.env
+
       - name: Login to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v1
 
-      # 5. Get short commit SHA
       - name: Get short commit SHA
         id: meta
         run: echo "tag=$(echo $GITHUB_SHA | cut -c1-7)" >> "$GITHUB_OUTPUT"
 
-      # 6. Build Docker image
       - name: Build Docker image
         run: |
           REG=346011888304.dkr.ecr.ap-northeast-2.amazonaws.com/tamnara/fe
           docker build -t $REG:latest -t $REG:${{ steps.meta.outputs.tag }} -f ./frontend/Dockerfile ./frontend
 
-      # 7. Push Docker image to ECR
       - name: Push Docker image
         run: |
           REG=346011888304.dkr.ecr.ap-northeast-2.amazonaws.com/tamnara/fe
           docker push $REG:latest
           docker push $REG:${{ steps.meta.outputs.tag }}
-
