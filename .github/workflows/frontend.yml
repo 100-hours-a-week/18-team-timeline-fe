@@ -47,7 +47,7 @@ jobs:
       # 6. Build Docker image
       - name: Build Docker image
         run: |
-          REG=346011888304.dkr.ecr.ap-northeast-2.amazonaws.com/tamnara_fe
+          REG=346011888304.dkr.ecr.ap-northeast-2.amazonaws.com/tamnara/fe
           docker build -t $REG:latest -t $REG:${{ steps.meta.outputs.tag }} -f ./frontend/Dockerfile ./frontend
 
       # 7. Push Docker image to ECR
