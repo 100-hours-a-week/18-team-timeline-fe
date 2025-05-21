@@ -18,7 +18,7 @@ export default function MainPage({ initialCategory = 'all' }: MainPageProps) {
       </div>
       
       {/* 스크롤 가능한 컨테이너 - flex-grow로 나머지 공간 차지 */}
-      <div className="container mx-auto px-4 flex-grow overflow-y-auto pb-6 news-container">
+      <div className="container mx-auto px-4 flex-grow overflow-y-auto pb-20 news-container">
         <NewsList category={selectedCategory} />
       </div>
     </div>
