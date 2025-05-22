@@ -462,24 +462,16 @@ export const useTimelineData = ({ newsId }: UseTimelineDataProps): UseTimelineDa
           }
         );
 
+        if (response.status === 204) {
+          console.log('204 No Content - 업데이트할 뉴스가 없음');
+          await fetchNewsData(); // 강제로 데이터 재로딩
+          return Promise.resolve('업데이트할 뉴스가 없습니다.');
+        }
+
         if (response.data.success) {
           console.log('타임라인 업데이트 성공:', response.data);
 
-          // const updatedNewsData = response.data.data.news;
-          // //setNewsData(updatedNewsData);
-
-          // const transformedTimeline = updatedNewsData.timeline.map(transformTimelineData);
-          // setFormattedTimeline(transformedTimeline);
-
-          // const sourcesState: Record<string, boolean> = {};
-          // transformedTimeline.forEach((item: any) => {
-          //   sourcesState[item.id] = false;
-          // });
-          // setShowSources(sourcesState);
-
-          // setIsUpdateAvailable(false);
-
-          // ⭐ 업데이트 성공 후 강제로 fetchNewsData 호출 (중복 데이터 방지)
+          // 업데이트 성공 후 강제로 fetchNewsData 호출 (중복 데이터 방지)
           await fetchNewsData();
 
           return Promise.resolve(response.data.message);
@@ -496,6 +488,8 @@ export const useTimelineData = ({ newsId }: UseTimelineDataProps): UseTimelineDa
             const errorMessage = err.response.data?.message || '알 수 없는 오류가 발생했습니다.';
 
             switch (statusCode) {
+              case 204:
+                return Promise.reject(new Error('업데이트할 뉴스가 없습니다.'));
               case 400:
                 return Promise.reject(new Error('요청 형식이 올바르지 않습니다.'));
               case 401:
@@ -510,6 +504,8 @@ export const useTimelineData = ({ newsId }: UseTimelineDataProps): UseTimelineDa
                 return Promise.reject(new Error('마지막 업데이트 이후 24시간이 지나지 않았습니다.'));
               case 429:
                 return Promise.reject(new Error('요청 속도가 너무 빠릅니다. 잠시 후 다시 시도해주세요.'));
+              case 500:
+                return Promise.reject(new Error('AI 서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.'));
               default:
                 return Promise.reject(new Error(errorMessage));
             }
