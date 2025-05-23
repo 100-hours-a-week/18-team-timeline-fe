@@ -56,13 +56,15 @@ export const Modal = ({
 };
 
 type InputModalProps = ModalProps & {
-  password: string
-  onPasswordChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  text: string
+  disabled: boolean
+  onTextChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export const InputModal = ({
   isOpen, title, content, onConfirm, onCancel,
-  password, onPasswordChange
+  disabled,
+  text, onTextChange
 }: InputModalProps) => {
   if (!isOpen) return null;
 
@@ -74,21 +76,21 @@ export const InputModal = ({
           {content && <p className={contentClass}>{content}</p>}
         </div>
         <Input
-          placeholder='비밀번호를 입력하세요.'
-          type='password'
-          value={password}
-          onChange={onPasswordChange}
+          placeholder='회원탈퇴 문구를 입력하세요.'
+          type='text'
+          value={text}
+          onChange={onTextChange}
           className={inputClass}
         />
         <div className="flex justify-center gap-3">
           <button
             onClick={onConfirm}
-            disabled={!password.trim()}
+            disabled={disabled}
             className={clsx(
               buttonClass,
               {
-                'bg-modalBtnConfirm hover:bg-modalBtnConfirmHover': password.trim(),
-                'bg-modalBtnInactive': !password.trim(),
+                'bg-modalBtnConfirm hover:bg-modalBtnConfirmHover': !disabled,
+                'bg-modalBtnInactive': disabled,
               }
             )}
             
