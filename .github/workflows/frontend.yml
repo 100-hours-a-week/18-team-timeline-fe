@@ -74,7 +74,6 @@ jobs:
     name: Docker Build & ECR Push (main only)
     needs: [frontend-ci, test]  # ✅ 두 job 모두 성공해야 실행됨
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
 
     permissions:
       id-token: write
