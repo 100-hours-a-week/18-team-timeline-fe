@@ -63,8 +63,8 @@ type InputModalProps = ModalProps & {
 
 export const InputModal = ({
   isOpen, title, content, onConfirm, onCancel,
+  text, onTextChange,
   disabled,
-  text, onTextChange
 }: InputModalProps) => {
   if (!isOpen) return null;
 
@@ -88,12 +88,10 @@ export const InputModal = ({
             disabled={disabled}
             className={clsx(
               buttonClass,
-              {
-                'bg-modalBtnConfirm hover:bg-modalBtnConfirmHover': !disabled,
-                'bg-modalBtnInactive': disabled,
-              }
+              disabled ?
+              'bg-modalBtnInactive' :
+              'bg-modalBtnConfirm hover:bg-modalBtnConfirmHover'
             )}
-            
           >
             확인
           </button>
