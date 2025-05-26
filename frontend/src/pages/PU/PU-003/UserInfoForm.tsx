@@ -18,7 +18,7 @@ export const UserInfoForm = ({}: UserInfoFormProps) => {
 
   const {
     email,
-    password, setPassword,
+    text, setText,
     name, setName,
     checkNameDuplicate,
     isInputModalOpen, setIsInputModalOpen,
@@ -28,7 +28,10 @@ export const UserInfoForm = ({}: UserInfoFormProps) => {
 
   const { deleteData } = useRequestStore()
 
+  const disabled = !(text.trim() === "탈퇴하겠습니다.")
+
   const handleDeleteAccount = () => {
+    setText('')
     setIsInputModalOpen(true);
   };
 
@@ -38,16 +41,14 @@ export const UserInfoForm = ({}: UserInfoFormProps) => {
       const res = await deleteData(ENDPOINTS.USER_WITHDRAW);
       if (res?.success) {
         localStorage.clear()
-        alert("회원탈퇴 처리되었습니다.");
+        alert("회원 탈퇴 처리되었습니다.");
       }
     } catch (e) {
       console.error("유저 탈퇴 실패", e);
-      alert("비밀번호가 일치하지 않습니다.");
     }
   };
 
   const handleCancelDelete = () => {
-    setPassword('')
     setIsInputModalOpen(false);
   };
 
@@ -90,9 +91,10 @@ export const UserInfoForm = ({}: UserInfoFormProps) => {
       <InputModal
         isOpen={isInputModalOpen}
         title="정말 탈퇴하시겠습니까?"
-        content="회원탈퇴를 원하시면 비밀번호를 입력해 주세요."
-        password={password}
-        onPasswordChange={(e) => setPassword(e.target.value)}
+        content="'탈퇴하겠습니다.' 문구를 정확히 입력해 주세요."
+        text={text}
+        onTextChange={(e) => setText(e.target.value)}
+        disabled={disabled}
         onConfirm={handleConfirmDelete}
         onCancel={handleCancelDelete}
       />
