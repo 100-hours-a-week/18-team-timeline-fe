@@ -11,7 +11,7 @@ type UserInfoLogicProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTML
 
 export const useUserInfoLogic = ({ setToastMessage }: UserInfoLogicProps ) => {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState('')
+  const [text, setText] = useState('')
   const [name, setName] = useState('');
   const [errors, setErrors] = useState<{ name?: string }>({});
   const [isButtonActive, setIsButtonActive] = useState(false);
@@ -34,7 +34,7 @@ export const useUserInfoLogic = ({ setToastMessage }: UserInfoLogicProps ) => {
     const fetchUserInfo = async () => {
       try {
         const res = await getData(ENDPOINTS.USER_INFO);
-        setEmail(res.data.user.email);
+        setEmail(res.data.email);
       } catch (e) {
         console.error("유저 정보 조회 실패", e);
       }
@@ -86,7 +86,7 @@ export const useUserInfoLogic = ({ setToastMessage }: UserInfoLogicProps ) => {
 
   return {
     email,
-    password, setPassword,
+    text, setText,
     name, setName,
     checkNameDuplicate,
     errors, isButtonActive, handleSubmit,
