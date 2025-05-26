@@ -34,7 +34,7 @@ export const useUserInfoLogic = ({ setToastMessage }: UserInfoLogicProps ) => {
     const fetchUserInfo = async () => {
       try {
         const res = await getData(ENDPOINTS.USER_INFO);
-        setEmail(res.data.user.email);
+        setEmail(res.data.email);
       } catch (e) {
         console.error("유저 정보 조회 실패", e);
       }
