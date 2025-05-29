@@ -28,7 +28,8 @@ RUN rm -rf /usr/share/nginx/html/*
 COPY --from=builder /app/dist /usr/share/nginx/html
 
 # (옵션) SPA 대응 위해 nginx.conf도 커스텀 가능
-# COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/nginx.conf
+
 
 # 80포트 오픈
 EXPOSE 80
