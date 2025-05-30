@@ -176,10 +176,13 @@ jobs:
           SERVICE="${FAMILY}-service"
           CONTAINER_NAME="docker-v1-frontend"
           IMAGE="346011888304.dkr.ecr.ap-northeast-2.amazonaws.com/tamnara/fe:$TAG"
+          
+          # ✅ OTEL 값을 GitHub Secrets로부터 셸 변수에 주입 (중요 수정)
+          OTEL="${{ secrets.OTEL_EXPORTER_OTLP_ENDPOINT }}"
 
           TASK=$(aws ecs describe-task-definition --task-definition $FAMILY)
 
-          NEW_DEF=$(echo $TASK | jq --arg IMAGE "$IMAGE" --arg CONTAINER_NAME "$CONTAINER_NAME" --arg OTEL "$OTEL_EXPORTER_OTLP_ENDPOINT" '.taskDefinition |
+          NEW_DEF=$(echo $TASK | jq --arg IMAGE "$IMAGE" --arg CONTAINER_NAME "$CONTAINER_NAME" --arg OTEL "$OTEL" '.taskDefinition |
             {
               family: .family,
               networkMode: .networkMode,
