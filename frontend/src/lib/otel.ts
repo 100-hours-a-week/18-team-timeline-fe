@@ -5,13 +5,14 @@ import { registerInstrumentations } from '@opentelemetry/instrumentation';
 import { FetchInstrumentation } from '@opentelemetry/instrumentation-fetch';
 
 if (import.meta.env.VITE_OTEL_EXPORTER_OTLP_ENDPOINT) {
+  console.log('[OTEL] tracing initialized with endpoint:', import.meta.env.VITE_OTEL_EXPORTER_OTLP_ENDPOINT);
+
   const exporter = new OTLPTraceExporter({
     url: import.meta.env.VITE_OTEL_EXPORTER_OTLP_ENDPOINT + '/v1/traces',
-
   });
 
   const provider = new WebTracerProvider({
-    spanProcessors: [new BatchSpanProcessor(exporter)], // ✅ 정확한 속성명 (복수형)
+    spanProcessors: [new BatchSpanProcessor(exporter)],
   });
 
   provider.register();
@@ -20,5 +21,5 @@ if (import.meta.env.VITE_OTEL_EXPORTER_OTLP_ENDPOINT) {
     instrumentations: [new FetchInstrumentation()],
   });
 
-  console.log('[OTEL] tracing initialized');
+  console.log('[OTEL] tracing setup complete');
 }
