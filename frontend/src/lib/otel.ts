@@ -22,3 +22,16 @@ if (import.meta.env.VITE_OTEL_EXPORTER_OTLP_ENDPOINT) {
 
   console.log('[OTEL] tracing initialized');
 }
+
+
+import { trace } from '@opentelemetry/api';
+
+console.log('[OTEL] otel.ts 실행됨');
+
+const tracer = trace.getTracer('frontend-debug');
+
+const span = tracer.startSpan('manual-test-span');
+setTimeout(() => {
+  span.end();
+  console.log('[OTEL] 수동 span 종료');
+}, 2000);
