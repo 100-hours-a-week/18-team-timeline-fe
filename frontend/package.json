@@ -12,6 +12,11 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.201.1",
+    "@opentelemetry/instrumentation": "^0.201.1",
+    "@opentelemetry/instrumentation-fetch": "^0.201.1",
+    "@opentelemetry/sdk-trace-base": "^2.0.1",
+    "@opentelemetry/sdk-trace-web": "^2.0.1",
     "@types/jwt-decode": "^2.2.1",
     "@types/swiper": "^5.4.3",
     "axios": "^1.9.0",
