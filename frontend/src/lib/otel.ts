@@ -6,7 +6,8 @@ import { FetchInstrumentation } from '@opentelemetry/instrumentation-fetch';
 
 if (import.meta.env.VITE_OTEL_EXPORTER_OTLP_ENDPOINT) {
   const exporter = new OTLPTraceExporter({
-    url: import.meta.env.VITE_OTEL_EXPORTER_OTLP_ENDPOINT,
+    url: import.meta.env.VITE_OTEL_EXPORTER_OTLP_ENDPOINT + '/v1/traces',
+
   });
 
   const provider = new WebTracerProvider({
