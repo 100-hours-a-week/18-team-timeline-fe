@@ -1,4 +1,4 @@
-name: Frontend CI/CD
+name: Frontend CI/CD with SigNoz Support
 
 on:
   push:
@@ -13,7 +13,7 @@ on:
       - main
 
 permissions:
-  id-token: write
+  id-token: write  # ✅ OIDC 인증에 반드시 필요
   contents: read
   checks: write
   pull-requests: write
@@ -125,10 +125,13 @@ jobs:
         id: meta
         run: echo "tag=$(echo $GITHUB_SHA | cut -c1-7)" >> "$GITHUB_OUTPUT"
 
-      - name: Docker Build
+      - name: Docker Build with OTEL
         run: |
           REG=346011888304.dkr.ecr.ap-northeast-2.amazonaws.com/tamnara/fe
-          docker build -t $REG:latest -t $REG:${{ steps.meta.outputs.tag }} -f ./frontend/Dockerfile ./frontend
+          docker build \
+            --build-arg OTEL_EXPORTER_OTLP_ENDPOINT=${{ secrets.OTEL_EXPORTER_OTLP_ENDPOINT }} \
+            -t $REG:latest -t $REG:${{ steps.meta.outputs.tag }} \
+            -f ./frontend/Dockerfile ./frontend
 
       - name: Docker Push
         run: |
@@ -136,16 +139,13 @@ jobs:
           docker push $REG:latest
           docker push $REG:${{ steps.meta.outputs.tag }}
 
-      # 🚨 실행 권한 부여 후 Discord 알림 실행
-      - name: Ensure script executable
-        run: chmod +x .github/scripts/discord_notify.sh
-
       - name: Notify Discord - ECR Push 완료
         run: |
+          chmod +x .github/scripts/discord_notify.sh
           TAG=${{ steps.meta.outputs.tag }}
           REPO=346011888304.dkr.ecr.ap-northeast-2.amazonaws.com/tamnara/fe
           TITLE="*프론트 ECR Push 완료!*"
-          MSG="📦 Repository: $REPO:$TAG\\n👉 [ECR 보기](https://ap-northeast-2.console.aws.amazon.com/ecr/repositories/tamnara/fe?region=ap-northeast-2)"
+          MSG="📦 Repository: $REPO:$TAG\n👉 [ECR 보기](https://ap-northeast-2.console.aws.amazon.com/ecr/repositories/tamnara/fe?region=ap-northeast-2)"
           .github/scripts/discord_notify.sh success "$TITLE" "$MSG" "${{ secrets.DISCORD_WEBHOOK_URL }}" || true
 
   # 6. ECS 배포 (main 브랜치만)
@@ -159,7 +159,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Configure AWS credentials
+      - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: arn:aws:iam::346011888304:role/github-action-role
@@ -169,7 +169,7 @@ jobs:
         id: meta
         run: echo "tag=$(echo $GITHUB_SHA | cut -c1-7)" >> "$GITHUB_OUTPUT"
 
-      - name: ECS Deploy
+      - name: ECS Deploy with OTEL ENV
         run: |
           TAG=${{ steps.meta.outputs.tag }}
           FAMILY="docker-v1-frontend-cluster"
@@ -179,12 +179,20 @@ jobs:
 
           TASK=$(aws ecs describe-task-definition --task-definition $FAMILY)
 
-          NEW_DEF=$(echo $TASK | jq '.taskDefinition |
+          NEW_DEF=$(echo $TASK | jq --arg IMAGE "$IMAGE" --arg CONTAINER_NAME "$CONTAINER_NAME" --arg OTEL "$OTEL_EXPORTER_OTLP_ENDPOINT" '.taskDefinition |
             {
               family: .family,
               networkMode: .networkMode,
               executionRoleArn: .executionRoleArn,
-              containerDefinitions: (.containerDefinitions | map(if .name == "'"$CONTAINER_NAME"'" then .image = "'"$IMAGE"'" else . end)),
+              containerDefinitions: (
+                .containerDefinitions | map(
+                  if .name == $CONTAINER_NAME then
+                    .image = $IMAGE |
+                    .environment += [{"name":"OTEL_EXPORTER_OTLP_ENDPOINT","value":$OTEL}]
+                  else .
+                  end
+                )
+              ),
               requiresCompatibilities: .requiresCompatibilities,
               cpu: .cpu,
               memory: .memory
@@ -201,15 +209,13 @@ jobs:
             --service $SERVICE \
             --task-definition $NEW_TASK_ARN
 
-      - name: Ensure script executable
-        run: chmod +x .github/scripts/discord_notify.sh
-
       - name: Notify Discord - ECS 배포 완료
         run: |
+          chmod +x .github/scripts/discord_notify.sh
           TAG=${{ steps.meta.outputs.tag }}
           REPO=346011888304.dkr.ecr.ap-northeast-2.amazonaws.com/tamnara/fe
           TITLE="*프론트 ECS 배포 완료!*"
-          MSG="📦 $REPO:$TAG\\n👉 [ECR 보기](https://ap-northeast-2.console.aws.amazon.com/ecr/repositories/tamnara/fe?region=ap-northeast-2)"
+          MSG="📦 $REPO:$TAG\n👉 [ECR 보기](https://ap-northeast-2.console.aws.amazon.com/ecr/repositories/tamnara/fe?region=ap-northeast-2)"
           .github/scripts/discord_notify.sh success "$TITLE" "$MSG" "${{ secrets.DISCORD_WEBHOOK_URL }}" || true
 
   # 7. 실패 감지 후 Discord 알림
@@ -221,11 +227,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Ensure script executable
-        run: chmod +x .github/scripts/discord_notify.sh
-
       - name: Notify Discord - CI 실패
         run: |
+          chmod +x .github/scripts/discord_notify.sh
           TITLE="*프론트 CI 실패 알림*"
-          MSG="❌ 일부 Job이 실패했습니다.\\n👉 [로그 보기](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})"
+          MSG="❌ 일부 Job이 실패했습니다.\n👉 [로그 보기](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})"
           .github/scripts/discord_notify.sh failure "$TITLE" "$MSG" "${{ secrets.DISCORD_WEBHOOK_URL }}" || true
