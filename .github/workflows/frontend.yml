@@ -192,7 +192,7 @@ jobs:
                 .containerDefinitions | map(
                   if .name == $CONTAINER_NAME then
                     .image = $IMAGE |
-                    .environment += [{"name":"OTEL_EXPORTER_OTLP_ENDPOINT","value":$OTEL}]
+                    .environment += [{"name":"VITE_OTEL_EXPORTER_OTLP_ENDPOINT","value":$OTEL}]
                   else .
                   end
                 )
