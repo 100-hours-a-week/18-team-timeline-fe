@@ -8,6 +8,9 @@ WORKDIR /app
 # 소스 복사
 COPY . .
 
+# ✅ GitHub Actions에서 .env 생성되었다고 가정
+COPY .env .env
+
 # 의존성 설치 (package-lock.json 기준)
 RUN npm ci
 
