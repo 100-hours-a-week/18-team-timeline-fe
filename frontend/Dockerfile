@@ -34,5 +34,8 @@ COPY nginx.conf /etc/nginx/nginx.conf
 # 80포트 오픈
 EXPOSE 80
 
+# SigNoz(OpenTelemetry)용 환경 변수 설정
+ENV OTEL_EXPORTER_OTLP_ENDPOINT=$OTEL_EXPORTER_OTLP_ENDPOINT
+
 # Nginx 실행
 CMD ["nginx", "-g", "daemon off;"]
