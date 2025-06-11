@@ -32,7 +32,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({
       <h3 className="text-lg font-bold px-4 pt-4 flex-shrink-0">댓글</h3>
 
       {/* 댓글 목록 (flex-1로 남은 영역 차지, 내부 스크롤) */}
-      <div className="flex-1 overflow-y-auto space-y-4 px-4 pb-28 mt-2">
+      <div className="flex-1 overflow-y-auto space-y-4 px-4 pb-4 mt-2">
         {comments.map((comment) => (
           <div key={comment.id} className="bg-gray-300 p-4 rounded-xl shadow-sm">
             <div className="flex justify-between items-center mb-1 text-sm">
