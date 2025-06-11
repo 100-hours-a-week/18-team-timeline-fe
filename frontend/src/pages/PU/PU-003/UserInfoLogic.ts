@@ -4,6 +4,7 @@ import { ENDPOINTS } from "@/constants/url";
 import { validateUserInfo } from "../utils/validateUserInfo";
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from "@/constants/url";
+import { trace } from "@opentelemetry/api";
 
 type UserInfoLogicProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> & {
   setToastMessage: (msg: string) => void;
@@ -30,6 +31,11 @@ export const useUserInfoLogic = ({ setToastMessage }: UserInfoLogicProps ) => {
     }
 
     setName(userName);
+
+    const span = trace.getActiveSpan();
+    if (span) {
+      span.setAttribute("user_id", userName);
+    }
     
     const fetchUserInfo = async () => {
       try {

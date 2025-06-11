@@ -25,8 +25,9 @@ const App: React.FC = () => {
         <Sidebar />
         <Header />
         <Routes>
-          {/* 로그인 여부와 상관없이 접근 가능 */}
           <Route path="/" element={<Navigate to={currentPage} />} />
+          
+          {/* 로그인 여부와 상관없이 접근 가능 */}
           <Route path={ROUTES.MAIN} element={<MainPage />} />
           <Route path={ROUTES.SEARCH_RESULTS} element={<SearchResults searchQuery={''} />} />
           <Route path={ROUTES.NEWS_DETAIL} element={<NewsDetail />} />
