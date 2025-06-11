@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import type { Comment, NewsResponse, UserInfo } from '../types';
+import { API_BASE_URL } from '@/constants/url';
 
 interface UseCommentsProps {
   newsData: NewsResponse | null;
@@ -45,22 +46,45 @@ export const useComments = ({
   }, [newsData]);
   
   // 댓글 불러오기 함수
-  const loadComments = (pageNum: number) => {
+  const loadComments = async (pageNum: number) => {
     if (!newsData) return;
-    
-    const startIndex = (pageNum - 1) * 20;
-    const endIndex = startIndex + 20;
-    const newComments = newsData.comments.slice(startIndex, endIndex);
-    
-    if (pageNum === 1) {
-      setComments(newComments);
-    } else {
-      setComments(prev => [...prev, ...newComments]);
+  
+    const offset = (pageNum - 1) * 20;
+    try {
+      const res = await fetch(`${API_BASE_URL}/news/${newsData.id}/comments?offset=${offset}`);
+      const result = await res.json();
+  
+      if (res.ok && result.success) {
+        const currentUserId = userInfo?.id;
+  
+        const newComments: Comment[] = result.data.comments.map((comment: any) => ({
+          id: comment.id.toString(),
+          author: comment.userId === currentUserId
+            ? userInfo?.nickname || '나'
+            : `익명 ${comment.userId}`,
+          content: comment.content,
+          createdAt: comment.createdAt,
+          isMyComment: comment.userId === currentUserId
+        }));
+  
+        if (pageNum === 1) {
+          setComments(newComments);
+        } else {
+          setComments(prev => [...prev, ...newComments]);
+        }
+  
+        setHasMore(result.data.hasNext);
+        setPage(pageNum);
+      } else {
+        onToastShow?.(result.message || '댓글을 불러오지 못했습니다.', 'bottom');
+      }
+    } catch (err) {
+      console.error('댓글 로딩 실패:', err);
+      onToastShow?.('댓글을 불러오는 중 오류가 발생했습니다.', 'bottom');
     }
-    
-    setPage(pageNum);
-    setHasMore(endIndex < newsData.comments.length);
   };
+  
+  
   
   // 스크롤 감지 및 추가 댓글 로드
   useEffect(() => {

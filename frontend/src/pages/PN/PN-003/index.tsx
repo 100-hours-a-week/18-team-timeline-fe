@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Toast } from '@/components/ui/Toast';
 import TimelineHeader from './TimelineHeader';
@@ -6,8 +6,12 @@ import TimelineContainer from './TimelineContainer';
 import { useTimelineData } from './hooks/useTimelineData';
 import { useAuthStore } from '@/stores/authStore';
 import { useToast } from './hooks/useToast';
+import { useComments } from './hooks/useComments'; // useComments 훅 import
+import { useRequestStore } from '@/stores/requestStore';
+import { ENDPOINTS } from '@/constants/url';
 import SentimentAnalysis from './SentimentAnalysis';
-// import { formatRelativeTime } from '@/pages/PN/utils/dateUtils';
+import CommentSection from './CommentSection';
+import type { UserInfo } from './types';
 
 export default function NewsDetail() {
   // 주의: 파라미터 이름이 'id'로 설정되어 있습니다!
@@ -20,11 +24,40 @@ export default function NewsDetail() {
   const navigate = useNavigate();
   const { showToast, toastMessage, setToastMessage } = useToast();
   const { isLoggedIn, checkAuth } = useAuthStore();
+  const { getData } = useRequestStore();
   
-  // 로그인 상태 체크
+  // 사용자 정보 상태
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+  
+  // 로그인 상태 체크 및 사용자 정보 가져오기
   useEffect(() => {
     checkAuth();
-  }, [checkAuth]);
+    
+    // 로그인된 경우에만 사용자 정보 가져오기
+    if (isLoggedIn) {
+      const fetchUserInfo = async () => {
+        try {
+          const res = await getData(ENDPOINTS.USER_INFO);
+          setUserInfo({
+            id: res.data.id,
+            nickname: res.data.nickname,
+            email: res.data.email
+          });
+        } catch (error) {
+          console.error('사용자 정보 조회 실패:', error);
+          setUserInfo({
+            id: '',
+            nickname: localStorage.getItem('userName') || '사용자',
+            email: ''
+          });
+        }
+      };
+      
+      fetchUserInfo();
+    } else {
+      setUserInfo(null);
+    }
+  }, [checkAuth, isLoggedIn, getData]);
   
   // 타임라인 데이터 훅 사용
   const { 
@@ -41,6 +74,25 @@ export default function NewsDetail() {
     handleTimelineUpdate,
     formattedTimeline
   } = useTimelineData({ newsId });
+
+  // 댓글 관련 훅 사용
+  const {
+    comments,
+    commentText,
+    hasMore,
+    commentsEndRef,
+    commentListRef,
+    handleCommentChange,
+    handleSubmitComment,
+    handleDeleteComment
+  } = useComments({
+    newsData,
+    userInfo,
+    isLoggedIn,
+    onToastShow: (message, position) => {
+      setToastMessage(message);
+    }
+  });
 
   // 토스트 메시지 표시 함수
   const showToastMessage = (message: string) => {
@@ -163,7 +215,7 @@ export default function NewsDetail() {
                 </div>
                 <div className="absolute bottom-2 right-2 text-xs bg-black bg-opacity-50 text-white px-2 py-1 rounded max-w-[70%] overflow-hidden whitespace-nowrap text-ellipsis">
                   <a 
-                    href={newsData.image} 
+                    href={newsData.image } 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="hover:underline"
@@ -222,15 +274,27 @@ export default function NewsDetail() {
           </div>
         </div>
   
-        {/* 감정 분석 */}
+        {/* 감정 분석 및 댓글 */}
         <div 
-          className="bg-[#FFFFFF] rounded-xl mb-8 mx-4 p-4"
+          className="bg-[#FFFFFF] rounded-xl mb-28 mx-4 p-4"
           style={{ boxShadow: '0 -10px 8px -6px rgba(0, 0, 0, 0.1)' }}
+          ref={commentListRef}
         >
           <SentimentAnalysis 
             title={newsData.title}
             statistics={newsData.statistics}
           />
+
+          <CommentSection 
+            comments={comments}
+            commentText={commentText}
+            isLoggedIn={isLoggedIn}
+            hasMore={hasMore}
+            onCommentChange={handleCommentChange}
+            onSubmitComment={handleSubmitComment}
+            onDeleteComment={handleDeleteComment}
+            commentsEndRef={commentsEndRef}
+          />    
         </div>
       </div>
   
