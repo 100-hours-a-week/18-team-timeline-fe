@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { API_BASE_URL } from '@/constants/url';
 import { useAuthStore } from '@/stores/authStore';
+import type { NewsResponse } from '../types';
 
 // API 명세에 맞는 타입 정의
 export interface TimelineSource {
@@ -35,25 +36,11 @@ const transformTimelineData = (apiTimelineItem: any): TimelineCard => {
   };
 };
 
-// 뉴스 세부 정보 인터페이스 - 이미지 필드 추가
-interface NewsDetail {
-  title: string;
-  image: string; // 이미지 URL 필드 추가
-  updatedAt: string;
-  bookmarked: boolean;
-  timeline: any[]; // API 원본 타입
-  statistics: {
-    positive: number;
-    neutral: number;
-    negative: number;
-  };
-}
-
 interface ApiResponse {
   success: boolean;
   message: string;
   data: {
-    news: NewsDetail;
+    news: NewsResponse;
   };
 }
 
@@ -64,7 +51,7 @@ interface UseTimelineDataProps {
 
 // 훅에서 반환할 값들 - 이미지 필드 추가
 interface UseTimelineDataReturn {
-  newsData: NewsDetail | null;
+  newsData: NewsResponse | null;
   loading: boolean;
   error: string | null;
   bookmarked: boolean;
@@ -82,7 +69,7 @@ interface UseTimelineDataReturn {
  * 타임라인 데이터를 관리하는 커스텀 훅
  */
 export const useTimelineData = ({ newsId }: UseTimelineDataProps): UseTimelineDataReturn => {
-  const [newsData, setNewsData] = useState<NewsDetail | null>(null);
+  const [newsData, setNewsData] = useState<NewsResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [bookmarked, setBookmarked] = useState(false);
@@ -288,10 +275,11 @@ export const useTimelineData = ({ newsId }: UseTimelineDataProps): UseTimelineDa
         testDate.setHours(testDate.getHours() - 25); // 25시간 전 날짜로 설정
         const mockUpdatedAt = testDate.toISOString();
         
-        const mockData: NewsDetail = {
+        const mockData: NewsResponse = {
+          id: numericId,
           title: `뉴스 #${numericId} - 중요 사건 타임라인`,
-          image: `https://picsum.photos/seed/243572345/400/200`, // 임시 이미지 URL
           updatedAt: mockUpdatedAt, // 25시간 전으로 설정
+          image: `https://picsum.photos/seed/243572345/400/200`, // 임시 이미지 URL
           bookmarked: false,
           timeline: mockTimeline, // 원래 API 형태로는 아니지만 개발용으로 충분함
           statistics: {
