@@ -1,20 +1,20 @@
-import { useState, useEffect, type DetailedHTMLProps, type HTMLAttributes } from "react"
-import clsx from "clsx"
-import { Input } from "@/components/form/Input"
-import { Button } from "../components/ui/Button"
-import { Text } from "@/components/ui/Text"
-import { Link } from "react-router-dom"
-import { ROUTES, ENDPOINTS } from "@/constants/url"
-import { validateLogin } from "../utils/validateLogin"
-import { useNavigate } from 'react-router-dom';
-import { useRequestStore } from "@/stores/requestStore"
+import { useState, useEffect, type DetailedHTMLProps, type HTMLAttributes } from 'react'
+import clsx from 'clsx'
+import { Input } from '@/components/form/Input'
+import { Button } from '../components/ui/Button'
+import { Text } from '@/components/ui/Text'
+import { Link } from 'react-router-dom'
+import { ROUTES, ENDPOINTS } from '@/constants/url'
+import { validateLogin } from '../utils/validateLogin'
+import { useNavigate } from 'react-router-dom'
+import { useRequestStore } from '@/stores/requestStore'
 
 type ReactDivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
 type LoginFormProps = ReactDivProps & {}
 
 export const LoginForm = ({}: LoginFormProps) => {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({})
   const [isButtonActive, setIsButtonActive] = useState(false)
 
@@ -24,10 +24,8 @@ export const LoginForm = ({}: LoginFormProps) => {
     setIsButtonActive(result.isValid)
   }, [email, password])
 
-  const navigate = useNavigate();
-    const {
-      postData,
-    } = useRequestStore();
+  const navigate = useNavigate()
+  const { postData } = useRequestStore()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -39,33 +37,23 @@ export const LoginForm = ({}: LoginFormProps) => {
     }
 
     try {
-      const res = await postData(ENDPOINTS.LOGIN, {email, password})
+      const res = await postData(ENDPOINTS.LOGIN, { email, password })
       if (res?.success) {
-        navigate(ROUTES.MAIN);
+        navigate(ROUTES.MAIN)
       }
     } catch (error) {
-      console.error("로그인 실패", error);
-      alert("로그인 중 오류가 발생했습니다.");
+      console.error('로그인 실패', error)
+      alert('로그인 중 오류가 발생했습니다.')
     }
-  };
+  }
 
-  const formClass = clsx(
-    'w-full flex flex-col justify-center',
-    'space-y-3'
-  )
-  
-  const buttonClass = clsx(
-    'flex flex-col pt-8 space-y-1'
-  )
+  const formClass = clsx('w-full flex flex-col justify-center', 'space-y-3')
 
-  const navigationClass = clsx(
-    'w-full justify-center flex flex-row space-x-1',
-    'text-sm text-navText'
-  )
+  const buttonClass = clsx('flex flex-col pt-8 space-y-1')
 
-  const linkClass = clsx(
-    'hover:text-navTextHover'
-  )
+  const navigationClass = clsx('w-full justify-center flex flex-row space-x-1', 'text-sm text-navText')
+
+  const linkClass = clsx('hover:text-navTextHover')
 
   return (
     <form className={formClass} onSubmit={handleSubmit}>
@@ -86,10 +74,7 @@ export const LoginForm = ({}: LoginFormProps) => {
         helperText={errors.password}
       />
       <div className={buttonClass}>
-        <Button
-          text="로그인하기"
-          isActive={isButtonActive}
-        />
+        <Button text="로그인하기" isActive={isButtonActive} />
         <div className={navigationClass}>
           <Link to={ROUTES.SIGNUP} className={linkClass}>
             <Text>회원가입</Text>

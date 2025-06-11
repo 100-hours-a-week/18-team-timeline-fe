@@ -1,6 +1,6 @@
-import type { DetailedHTMLProps, HTMLAttributes } from "react"
-import { CheckBox } from "../components/ui/CheckBox"
-import clsx from "clsx"
+import type { DetailedHTMLProps, HTMLAttributes } from 'react'
+import { CheckBox } from '../components/ui/CheckBox'
+import clsx from 'clsx'
 
 type CheckSectionProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> & {
   checkedTerms: boolean
@@ -11,15 +11,13 @@ type CheckSectionProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLD
 }
 
 export const CheckSection = ({
-  checkedTerms, setCheckedTerms,
-  checkedPrivacy, setCheckedPrivacy,
-  className: _className
+  checkedTerms,
+  setCheckedTerms,
+  checkedPrivacy,
+  setCheckedPrivacy,
+  className: _className,
 }: CheckSectionProps) => {
-
-  const wrapperClass = clsx(
-    'flex flex-col space-y-1',
-    _className
-  )
+  const wrapperClass = clsx('flex flex-col space-y-1', _className)
 
   return (
     <div className={wrapperClass}>
