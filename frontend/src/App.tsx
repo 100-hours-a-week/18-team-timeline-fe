@@ -17,6 +17,7 @@ const App: React.FC = () => {
         <Sidebar />
         <Header />
         <Routes>
+          {/* 로그인 여부와 상관없이 접근 가능 */}
           <Route path="/" element={<Navigate to={currentPage} />} />
           <Route path={ROUTES.MAIN} element={<MainPage />} />
         </Routes>
