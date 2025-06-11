@@ -15,6 +15,7 @@ export const ROUTES = {
   KAKAO_CALLBACK: "/auth/kakao/callback",
   SIGNUP: '/signup',
   USER_INFO: '/user-info',
+  FIND_PASSWORD: 'find-password',
   SEARCH_RESULTS: '/search-results',
   NEWS_DETAIL: '/news/:id',
   getNewsDetailPath: (id: number) => `/news/${id}`,

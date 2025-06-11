@@ -7,6 +7,7 @@ import Main from '@/pages/PN/PN-001';
 import NewsDetail from '@/pages/PN/PN-002';
 import SignUp from '@/pages/PU/PU-001';
 import Login from '@/pages/PU/PU-002';
+import FindPassword from '@/pages/PU/PU-002-01';
 import UserInfo from '@/pages/PU/PU-003';
 import { Container } from './components/layout/Container';
 import { Header } from './components/layout/Header';
@@ -27,6 +28,7 @@ const App: React.FC = () => {
           <Route path={ROUTES.SIGNUP} element={<SignUp />} />
           <Route path={ROUTES.LOGIN} element={<Login />} />
           <Route path={ROUTES.USER_INFO} element={<UserInfo />} />
+          <Route path={ROUTES.FIND_PASSWORD} element={<FindPassword />} />
         </Routes>
       </Router>
     </Container>
