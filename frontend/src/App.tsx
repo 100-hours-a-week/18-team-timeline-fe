@@ -13,6 +13,7 @@ import { LogoutRoute } from './routes/LogoutRoute'
 import Login from './pages/PU/PU-002'
 import UserInfo from './pages/PU/PU-003'
 import { LoginRoute } from './routes/LoginRoute'
+import FindPassword from './pages/PU/PU-002-01'
 
 const App: React.FC = () => {
   const currentPage = usePageStore((state) => state.currentPage)
@@ -44,13 +45,24 @@ const App: React.FC = () => {
               </LogoutRoute>
             }
           />
+          <Route
+            path={ROUTES.FIND_PASSWORD}
+            element={
+              <LogoutRoute>
+                <FindPassword />
+              </LogoutRoute>
+            }
+          />
 
           {/* 로그인 상태에서만 접근 가능 */}
-          <Route path={ROUTES.USER_INFO} element={
-            <LoginRoute>
-              <UserInfo />
-            </LoginRoute>
-          } />
+          <Route
+            path={ROUTES.USER_INFO}
+            element={
+              <LoginRoute>
+                <UserInfo />
+              </LoginRoute>
+            }
+          />
         </Routes>
       </Router>
     </Container>
