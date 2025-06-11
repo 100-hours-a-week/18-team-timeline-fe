@@ -11,6 +11,8 @@ import NewsDetail from './pages/PN/PN-003'
 import SignUp from './pages/PU/PU-001'
 import { LogoutRoute } from './routes/LogoutRoute'
 import Login from './pages/PU/PU-002'
+import UserInfo from './pages/PU/PU-003'
+import { LoginRoute } from './routes/LoginRoute'
 
 const App: React.FC = () => {
   const currentPage = usePageStore((state) => state.currentPage)
@@ -42,6 +44,13 @@ const App: React.FC = () => {
               </LogoutRoute>
             }
           />
+
+          {/* 로그인 상태에서만 접근 가능 */}
+          <Route path={ROUTES.USER_INFO} element={
+            <LoginRoute>
+              <UserInfo />
+            </LoginRoute>
+          } />
         </Routes>
       </Router>
     </Container>
