@@ -2,10 +2,7 @@ import { useEffect, useState } from 'react'
 import type { DetailedHTMLProps, HTMLAttributes } from 'react'
 import clsx from 'clsx'
 
-type ReactDivProps = DetailedHTMLProps<
-  HTMLAttributes<HTMLDivElement>,
-  HTMLDivElement
->
+type ReactDivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
 
 type ContainerProps = ReactDivProps & {
   children: React.ReactNode
@@ -29,14 +26,12 @@ export const Container = ({ className: _className, children }: ContainerProps) =
   const wrapperClass = clsx(
     isSmall ? 'w-full' : 'w-full max-w-[390px]',
     'h-screen mx-auto bg-myWhite relative overflow-hidden',
-    _className
+    _className,
   )
-  
+
   return (
     <div className={containerClass}>
-      <div className={wrapperClass}>
-        {children}
-      </div>
+      <div className={wrapperClass}>{children}</div>
     </div>
   )
 }
