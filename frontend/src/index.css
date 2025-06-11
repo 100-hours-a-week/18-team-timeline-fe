@@ -10,10 +10,24 @@
   padding: 0;
 }
 
-html, body {
-  font-family: Pretendard Variable, Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue',
-    'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji',
-    'Segoe UI Symbol', sans-serif !important;
+html,
+body {
+  font-family:
+    Pretendard Variable,
+    Pretendard,
+    -apple-system,
+    BlinkMacSystemFont,
+    system-ui,
+    Roboto,
+    'Helvetica Neue',
+    'Segoe UI',
+    'Apple SD Gothic Neo',
+    'Noto Sans KR',
+    'Malgun Gothic',
+    'Apple Color Emoji',
+    'Segoe UI Emoji',
+    'Segoe UI Symbol',
+    sans-serif !important;
   min-height: 100vh;
   user-select: none;
 }
@@ -22,7 +36,8 @@ textarea {
   font-family: inherit;
 }
 
-ul, ol {
+ul,
+ol {
   list-style: none;
 }
 
@@ -37,10 +52,10 @@ a {
   top: 50% !important;
   transform: translateY(-50%) !important;
   margin-top: 0 !important;
-  
+
   background-color: rgba(255, 255, 255, 0.5); /* 반투명 흰색 */
-  border-radius: 10px;                      /* 둥근 버튼 */
-  width: 1.5rem;                              /* 필요에 따라 크기 조절 */
+  border-radius: 10px; /* 둥근 버튼 */
+  width: 1.5rem; /* 필요에 따라 크기 조절 */
   height: 2rem;
 }
 
