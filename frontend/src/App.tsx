@@ -10,6 +10,7 @@ import MainPage from './pages/PN/PN-001'
 import NewsDetail from './pages/PN/PN-003'
 import SignUp from './pages/PU/PU-001'
 import { LogoutRoute } from './routes/LogoutRoute'
+import Login from './pages/PU/PU-002'
 
 const App: React.FC = () => {
   const currentPage = usePageStore((state) => state.currentPage)
@@ -30,6 +31,14 @@ const App: React.FC = () => {
             element={
               <LogoutRoute>
                 <SignUp />
+              </LogoutRoute>
+            }
+          />
+          <Route
+            path={ROUTES.LOGIN}
+            element={
+              <LogoutRoute>
+                <Login />
               </LogoutRoute>
             }
           />
