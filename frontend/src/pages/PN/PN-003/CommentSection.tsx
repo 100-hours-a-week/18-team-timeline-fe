@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import type { Comment } from './types';
 import { formatRelativeTime } from '@/pages/PN/utils/dateUtils';
 
@@ -24,6 +24,19 @@ const CommentSection: React.FC<CommentSectionProps> = ({
   commentsEndRef,
 }) => {
   const commentInputRef = useRef<HTMLInputElement>(null);
+  const listRef = useRef<HTMLDivElement>(null); // 댓글 리스트 컨테이너
+
+  /* 댓글을 오래된 순(asc)으로 정렬 */
+  const sortedComments = [...comments].sort(
+    (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+  );
+
+  /* 최초 렌더링 및 댓글 수 변경 시 스크롤을 최하단으로 맞춤 */
+  useEffect(() => {
+    if (listRef.current) {
+      listRef.current.scrollTop = listRef.current.scrollHeight;
+    }
+  }, [sortedComments.length]);
 
   return (
     // 최대 높이를 제한하고, 내부에서 스크롤되는 컨테이너
@@ -32,8 +45,11 @@ const CommentSection: React.FC<CommentSectionProps> = ({
       <h3 className="text-lg font-bold px-4 pt-4 flex-shrink-0">댓글</h3>
 
       {/* 댓글 목록 (flex-1로 남은 영역 차지, 내부 스크롤) */}
-      <div className="flex-1 overflow-y-auto space-y-4 px-4 pb-4 mt-2">
-        {comments.map((comment) => (
+      <div
+        ref={listRef}
+        className="flex-1 overflow-y-auto space-y-4 px-4 pb-4 mt-2"
+      >
+        {sortedComments.map((comment) => (
           <div key={comment.id} className="bg-gray-300 p-4 rounded-xl shadow-sm">
             <div className="flex justify-between items-center mb-1 text-sm">
               <div className="flex items-center">
@@ -55,9 +71,12 @@ const CommentSection: React.FC<CommentSectionProps> = ({
           </div>
         ))}
 
-        {/* 무한 스크롤 감지용 엘리먼트 */}
+        {/* 스크롤 하단 감지용 엘리먼트 (항상 렌더) */}
+        <div ref={commentsEndRef} />
+
+        {/* 무한 스크롤 로더 */}
         {hasMore && (
-          <div ref={commentsEndRef} className="h-10 flex justify-center items-center text-gray-300">
+          <div className="h-10 flex justify-center items-center text-gray-300">
             댓글 불러오는 중...
           </div>
         )}
