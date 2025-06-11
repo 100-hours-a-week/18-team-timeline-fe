@@ -28,7 +28,7 @@ export const useComments = ({
   newsData,
   userInfo,
   isLoggedIn,
-  onToastShow
+  onToastShow,
 }: UseCommentsProps): UseCommentsReturn => {
   const [comments, setComments] = useState<Comment[]>([]);
   const [commentText, setCommentText] = useState('');
@@ -38,43 +38,48 @@ export const useComments = ({
   const commentListRef = useRef<HTMLDivElement>(null);
   const commentsEndRef = useRef<HTMLDivElement>(null);
 
-  // 초기 댓글 로드
+  /* -------------------------------------------------- */
+  /* 초기 댓글 로드                                        */
+  /* -------------------------------------------------- */
   useEffect(() => {
-    if (newsData) {
-      loadComments(1);
-    }
+    if (newsData) loadComments(1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newsData]);
 
-  // 댓글 불러오기 함수
+  /* -------------------------------------------------- */
+  /* 댓글 불러오기                                       */
+  /* -------------------------------------------------- */
   const loadComments = async (pageNum: number) => {
     if (!newsData) return;
 
     const offset = (pageNum - 1) * 20;
     try {
       const res = await fetch(
-        `${API_BASE_URL}/news/${newsData.id}/comments?offset=${offset}`
+        `${API_BASE_URL}/news/${newsData.id}/comments?offset=${offset}`,
       );
       const result = await res.json();
 
       if (res.ok && result.success) {
-        const currentUserId = userInfo?.id;
+        const currentUserNickname = userInfo?.nickname ?? null;
+        const currentUserId = userInfo?.id ?? null;
 
-        const newComments: Comment[] = result.data.comments.map((comment: any) => ({
-          id: comment.id.toString(),
-          author:
-            comment.userId === currentUserId
-              ? userInfo?.nickname || '나'
-              : `익명 ${comment.userId}`,
-          content: comment.content,
-          createdAt: comment.createdAt,
-          isMyComment: comment.userId === currentUserId
-        }));
+        const newComments: Comment[] = result.data.comments.map((comment: any) => {
+          /* 로그인 사용자의 댓글인지 판단 */
+          const isMine =
+            (currentUserId && comment.userId === currentUserId) ||
+            (currentUserNickname && comment.nickname === currentUserNickname);
 
-        if (pageNum === 1) {
-          setComments(newComments);
-        } else {
-          setComments(prev => [...prev, ...newComments]);
-        }
+          return {
+            id: comment.id.toString(),
+            author: isMine ? `${currentUserNickname || '나'}(나)` : `익명 ${comment.userId}`,
+            content: comment.content,
+            createdAt: comment.createdAt,
+            isMyComment: isMine,
+          } as Comment;
+        });
+
+        /* 첫 페이지인지 추가 페이지인지에 따라 댓글 병합 */
+        setComments(prev => (pageNum === 1 ? newComments : [...prev, ...newComments]));
 
         setHasMore(result.data.hasNext);
         setPage(pageNum);
@@ -87,41 +92,42 @@ export const useComments = ({
     }
   };
 
-  // 스크롤 감지 및 추가 댓글 로드
+  /* -------------------------------------------------- */
+  /* 무한 스크롤                                         */
+  /* -------------------------------------------------- */
   useEffect(() => {
     if (!commentListRef.current || !hasMore) return;
 
     const observer = new IntersectionObserver(
       entries => {
-        if (entries[0].isIntersecting) {
-          loadComments(page + 1);
-        }
+        if (entries[0].isIntersecting) loadComments(page + 1);
       },
-      { threshold: 0.5 }
+      { threshold: 0.5 },
     );
 
-    if (commentsEndRef.current) {
-      observer.observe(commentsEndRef.current);
-    }
+    const target = commentsEndRef.current;
+    if (target) observer.observe(target);
 
-    return () => {
-      observer.disconnect();
-    };
-  }, [commentListRef, commentsEndRef, hasMore, page]);
+    return () => observer.disconnect();
+  }, [hasMore, page]);
 
-  // 댓글 입력 핸들러
+  /* -------------------------------------------------- */
+  /* 입력 핸들러                                         */
+  /* -------------------------------------------------- */
   const handleCommentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
 
     if (value.length > 150) {
-      onToastShow && onToastShow('댓글 입력은 최대 150자까지 가능합니다.', 'commentInput');
+      onToastShow?.('댓글 입력은 최대 150자까지 가능합니다.', 'commentInput');
       return;
     }
 
     setCommentText(value);
   };
 
-  // 댓글 제출 핸들러
+  /* -------------------------------------------------- */
+  /* 댓글 작성                                           */
+  /* -------------------------------------------------- */
   const handleSubmitComment = async () => {
     if (!commentText.trim() || commentText.length > 150 || !isLoggedIn || !newsData) return;
 
@@ -132,31 +138,29 @@ export const useComments = ({
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('token') || ''}`
+          Authorization: `Bearer ${localStorage.getItem('token') || ''}`,
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
       });
 
       const result = await res.json();
 
       if (res.ok && result.success) {
-        // 서버에서 받은 commentId 사용
+        /* 내 댓글 객체 생성 */
         const newComment: Comment = {
           id: result.data.commentId.toString(),
-          author: `${userInfo?.nickname || '사용자'}(나)`,
+          author: `${userInfo?.nickname || '나'}(나)`,
           content: commentText.trim(),
           createdAt: new Date().toISOString(),
-          isMyComment: true
+          isMyComment: true,
         };
 
         setComments(prev => [...prev, newComment]);
         setCommentText('');
         onToastShow?.('댓글이 등록되었습니다.', 'bottom');
 
-        // 스크롤을 최하단으로 이동
-        setTimeout(() => {
-          commentsEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-        }, 100);
+        /* 스크롤 최하단 */
+        setTimeout(() => commentsEndRef.current?.scrollIntoView({ behavior: 'smooth' }), 100);
       } else {
         onToastShow?.(result.message || '댓글 등록에 실패했습니다.', 'commentInput');
       }
@@ -166,11 +170,16 @@ export const useComments = ({
     }
   };
 
-  // 댓글 삭제 핸들러 (로컬 업데이트 / 서버 연동 시 DELETE 호출 추가 가능)
+  /* -------------------------------------------------- */
+  /* 댓글 삭제 (프론트만)                                */
+  /* -------------------------------------------------- */
   const handleDeleteComment = (commentId: string) => {
     setComments(prev => prev.filter(comment => comment.id !== commentId));
   };
 
+  /* -------------------------------------------------- */
+  /* 반환                                                */
+  /* -------------------------------------------------- */
   return {
     comments,
     commentText,
@@ -180,6 +189,6 @@ export const useComments = ({
     commentListRef: commentListRef as React.RefObject<HTMLDivElement>,
     handleCommentChange,
     handleSubmitComment,
-    handleDeleteComment
+    handleDeleteComment,
   };
 };

@@ -39,9 +39,9 @@ export default function NewsDetail() {
         try {
           const res = await getData(ENDPOINTS.USER_INFO);
           setUserInfo({
-            id: res.data.id,
-            nickname: res.data.nickname,
-            email: res.data.email
+            id: res.data.user.userId,
+            nickname: res.data.user.username,
+            email: res.data.user.email
           });
         } catch (error) {
           console.error('사용자 정보 조회 실패:', error);
@@ -58,7 +58,7 @@ export default function NewsDetail() {
       setUserInfo(null);
     }
   }, [checkAuth, isLoggedIn, getData]);
-  
+
   // 타임라인 데이터 훅 사용
   const { 
     newsData, 
