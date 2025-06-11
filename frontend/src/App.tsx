@@ -15,6 +15,7 @@ import UserInfo from './pages/PU/PU-003'
 import { LoginRoute } from './routes/LoginRoute'
 import FindPassword from './pages/PU/PU-002-01'
 import SearchResults from './pages/PN/PN-002'
+import ResetPassword from './pages/PU/PU-002-02'
 
 const App: React.FC = () => {
   const currentPage = usePageStore((state) => state.currentPage)
@@ -26,7 +27,7 @@ const App: React.FC = () => {
         <Header />
         <Routes>
           <Route path="/" element={<Navigate to={currentPage} />} />
-          
+
           {/* 로그인 여부와 상관없이 접근 가능 */}
           <Route path={ROUTES.MAIN} element={<MainPage />} />
           <Route path={ROUTES.SEARCH_RESULTS} element={<SearchResults searchQuery={''} />} />
@@ -54,6 +55,14 @@ const App: React.FC = () => {
             element={
               <LogoutRoute>
                 <FindPassword />
+              </LogoutRoute>
+            }
+          />
+          <Route
+            path={ROUTES.RESET_PASSWORD}
+            element={
+              <LogoutRoute>
+                <ResetPassword />
               </LogoutRoute>
             }
           />
