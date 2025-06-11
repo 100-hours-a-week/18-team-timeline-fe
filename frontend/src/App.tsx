@@ -14,6 +14,7 @@ import Login from './pages/PU/PU-002'
 import UserInfo from './pages/PU/PU-003'
 import { LoginRoute } from './routes/LoginRoute'
 import FindPassword from './pages/PU/PU-002-01'
+import SearchResults from './pages/PN/PN-002'
 
 const App: React.FC = () => {
   const currentPage = usePageStore((state) => state.currentPage)
@@ -24,8 +25,10 @@ const App: React.FC = () => {
         <Sidebar />
         <Header />
         <Routes>
+          {/* 로그인 여부와 상관없이 접근 가능 */}
           <Route path="/" element={<Navigate to={currentPage} />} />
           <Route path={ROUTES.MAIN} element={<MainPage />} />
+          <Route path={ROUTES.SEARCH_RESULTS} element={<SearchResults searchQuery={''} />} />
           <Route path={ROUTES.NEWS_DETAIL} element={<NewsDetail />} />
 
           {/* 로그아웃 상태에서만 접근 가능 */}
