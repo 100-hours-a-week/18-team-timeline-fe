@@ -5,6 +5,8 @@ import usePageStore from './stores/pageStore'
 import { Container } from './components/layout/Container'
 import { Header } from './components/layout/Header'
 import { Sidebar } from './components/layout/Sidebar'
+import { ROUTES } from './constants/url'
+import MainPage from './pages/PN/PN-001'
 
 const App: React.FC = () => {
   const currentPage = usePageStore((state) => state.currentPage)
@@ -16,6 +18,7 @@ const App: React.FC = () => {
         <Header />
         <Routes>
           <Route path="/" element={<Navigate to={currentPage} />} />
+          <Route path={ROUTES.MAIN} element={<MainPage />} />
         </Routes>
       </Router>
     </Container>
