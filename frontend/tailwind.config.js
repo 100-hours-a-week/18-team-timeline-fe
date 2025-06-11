@@ -16,15 +16,16 @@ export default {
         ccLine: '#DDDDDD',
 
         // CC-001
-        headerColor: '#F2F2F2',
-        headerTextColor: '#000000',
-        headerIconColor: '#000000',
+        headerBackground: '#F2A359',
+        headerLogo: '#EEEEEE',
+        headerIcon: '#EEEEEE',
 
         // CC-002
-        menuColor: '#F2F2F2',
-        menuItemColor: '#000000',
-        menuItemHoverColor: '#AAAAAA',
-        menuMetaTextColor: '#6F6F6F',
+        menuBackground: '#EEEEEE',
+        menuTitle: '#2A4759',
+        menuItem: '#2A4759',
+        menuItemHover: '#F2A359',
+        menuMetaText: '#2A4759',
 
         // CC-003
         modalBg: '#F5F5F5',
@@ -38,8 +39,8 @@ export default {
         modalBtnCancelHover: '#577F98',
 
         // CC-004
-        toastColor: '#9A9A9A',
-        toastTextColor: '#FFFFFF',
+        toastBg: '#2A4759',
+        toastText: '#FFFFFF',
 
         // PU
         puBg: '#FCFAF7',
@@ -61,9 +62,9 @@ export default {
         btnActiveBg: '#F2A359',
         btnKakaoBg: '#FEE500',
 
-        checkBoxBgColor: '#D9D9D9',
-        checkBoxLabelColor: '#000000',
-        checkBoxMetaTextColor: '#6F6F6F',
+        checkBoxBg: '#F2A359',
+        checkBoxLabel: '#2A4759',
+        checkBoxMetaText: '#4F4F4F',
 
         navText: '#2A4759',
         navTextHover: '#F2A359',
