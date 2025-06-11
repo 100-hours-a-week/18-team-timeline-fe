@@ -34,6 +34,7 @@ export const ENDPOINTS = {
   USER_INFO: '/users/me',
   USER_PASSWORD: '/users/me/password',
   USER_WITHDRAW: '/users/me/state',
+  PASSWORD_RESET: '/auth/password-reset-tokens',
   NEWS: '/news',
   NEWS_HOTISSUE: '/news/hotissue',
   NEWS_DETAIL: '/news/:id',
