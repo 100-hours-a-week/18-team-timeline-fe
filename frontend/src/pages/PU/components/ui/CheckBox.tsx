@@ -1,4 +1,4 @@
-import { type DetailedHTMLProps, type HTMLAttributes } from "react";
+import type { HTMLAttributes } from "react";
 import clsx from "clsx";
 
 type CheckBoxProps = Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> & {
@@ -17,9 +17,9 @@ export const CheckBox = ({
   };
 
   const wrapperClass = clsx('flex space-x-1', className);
-  const checkClass = clsx('w-4 h-4 my-0.5 accent-checkBoxBgColor cursor-pointer')
-  const labelClass = clsx('text-sm cursor-pointer select-none')
-  const metaTextClass = clsx('text-xs font-light text-checkBoxMetaTextColor')
+  const checkClass = clsx('w-4 h-4 my-0.5 accent-checkBoxBg cursor-pointer')
+  const labelClass = clsx('text-sm cursor-pointer select-none text-checkBoxLabel')
+  const metaTextClass = clsx('text-xs font-light text-checkBoxMetaText')
 
   return (
     <div className={wrapperClass} {...props}>

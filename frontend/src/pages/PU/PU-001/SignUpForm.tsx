@@ -30,8 +30,8 @@ export const SignUpForm = ({}: SignUpFormProps) => {
   const formClass = clsx('w-full flex flex-col justify-center', 'space-y-3')
   const checkClass = clsx('pt-3')
   const buttonClass = clsx('flex flex-col pt-8 space-y-1')
-  const navigationClass = clsx('w-full justify-center flex flex-row space-x-1', 'text-sm text-navigationTextColor')
-  const linkClass = clsx('hover:text-navigationTextHoverColor')
+  const navigationClass = clsx('w-full justify-center flex flex-row space-x-1', 'text-sm text-navText')
+  const linkClass = clsx('hover:text-navTextHover')
   const verificationClass = clsx(
     'transition-all duration-300 ease-in-out',
     showVerificationInput ? 'max-h-[56px] opacity-100' : 'max-h-0 opacity-0'

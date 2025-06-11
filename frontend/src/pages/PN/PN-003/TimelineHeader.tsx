@@ -20,8 +20,8 @@ const TimelineHeader: React.FC<TimelineHeaderProps> = ({
   return (
     <div className="w-full bg-white p-4">
       <div className="flex justify-between items-center mb-1">
-        <h2 className="text-lg font-bold flex-grow">{title}</h2>
-        <div className="flex items-center space-x-6">
+        <h2 className="text-lg font-bold flex-grow text-black">{title}</h2>
+        <div className="flex items-center space-x-2">
           <button
             onClick={onShare}
             aria-label="공유하기"

@@ -37,8 +37,8 @@ const TimelineCard: React.FC<TimelineCardProps> = ({
       <div className="relative bg-white rounded-lg shadow-sm p-5 z-20">
         <div className="flex justify-between items-start">
           <div>
-            <h3 className="font-bold truncate max-w-[250px]">{data.title}</h3>
-            <p className="text-xs text-gray-500 mt-1">
+            <h3 className="font-bold text-black max-w-[250px]">{data.title}</h3>
+            <p className="text-xs text-[#F2A359] mt-1">
               {data.startDate} ~ {data.endDate}
             </p>
           </div>
@@ -48,12 +48,12 @@ const TimelineCard: React.FC<TimelineCardProps> = ({
             aria-label={showSources ? '소스 숨기기' : '소스 보기'}
           >
             {showSources ? (
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
                 <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
               </svg>
             ) : (
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
                 <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
               </svg>
@@ -62,12 +62,12 @@ const TimelineCard: React.FC<TimelineCardProps> = ({
         </div>
         
         <div className="mt-2">
-          <p className="text-sm text-gray-800 whitespace-pre-line">{data.content}</p>
+          <p className="text-sm text-gray-800 whitespace-pre-line text-black">{data.content}</p>
         </div>
         
         {showSources && data.sources.length > 0 && (
           <div className="mt-4 pt-4 border-t border-gray-200">
-            <h4 className="text-xs font-semibold mb-2">출처:</h4>
+            <h4 className="text-xs text-black font-semibold mb-2">출처:</h4>
             <ul className="space-y-2">
               {data.sources.map((source, index) => (
                 <li key={index} className="text-xs">

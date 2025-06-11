@@ -60,11 +60,11 @@ export const LoginForm = ({}: LoginFormProps) => {
 
   const navigationClass = clsx(
     'w-full justify-center flex flex-row space-x-1',
-    'text-sm text-navigationTextColor'
+    'text-sm text-navText'
   )
 
   const linkClass = clsx(
-    'hover:text-navigationTextHoverColor'
+    'hover:text-navTextHover'
   )
 
   return (

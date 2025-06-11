@@ -6,7 +6,8 @@ import TimelineContainer from './TimelineContainer';
 import { useTimelineData } from './hooks/useTimelineData';
 import { useAuthStore } from '@/stores/authStore';
 import { useToast } from './hooks/useToast';
-import { formatRelativeTime } from '@/pages/PN/utils/dateUtils';
+import SentimentAnalysis from './SentimentAnalysis';
+// import { formatRelativeTime } from '@/pages/PN/utils/dateUtils';
 
 export default function NewsDetail() {
   // 주의: 파라미터 이름이 'id'로 설정되어 있습니다!
@@ -35,8 +36,8 @@ export default function NewsDetail() {
     toggleSources,
     isUpdating,
     isUpdateAvailable,
-    handleToggleBookmark,
-    handleShare,
+    // handleToggleBookmark,
+    // handleShare,
     handleTimelineUpdate,
     formattedTimeline
   } = useTimelineData({ newsId });
@@ -49,20 +50,24 @@ export default function NewsDetail() {
   // 북마크 토글 핸들러 (토스트 메시지 추가)
   const onToggleBookmark = async () => {
     try {
-      await handleToggleBookmark();
-      showToastMessage(bookmarked ? '북마크가 해제되었습니다.' : '북마크에 추가되었습니다.');
+      // await handleToggleBookmark();
+      // showToastMessage(bookmarked ? '북마크가 해제되었습니다.' : '북마크에 추가되었습니다.');
+      showToastMessage('업데이트 예정입니다.');
     } catch (err) {
-      showToastMessage('북마크 업데이트에 실패했습니다.');
+      // showToastMessage('북마크 업데이트에 실패했습니다.');
+      showToastMessage('업데이트 예정입니다.');
     }
   };
 
   // 공유하기 핸들러 (토스트 메시지 추가)
   const onShare = async () => {
     try {
-      await handleShare();
-      showToastMessage('URL이 복사되었습니다!');
+      // await handleShare();
+      // showToastMessage('URL이 복사되었습니다!');
+      showToastMessage('업데이트 예정입니다.');
     } catch (err) {
-      showToastMessage('URL 복사에 실패했습니다.');
+      // showToastMessage('URL 복사에 실패했습니다.');
+      showToastMessage('업데이트 예정입니다.');
     }
   };
 
@@ -131,123 +136,108 @@ export default function NewsDetail() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FDFAF7] pb-20">
-      {/* 타임라인 컨텐츠 */}
-      <div className="container mx-auto px-0 pb-6">
-        {/* 타임라인 헤더 */}
-        <TimelineHeader 
-          title={newsData.title}
-          updatedAt={newsData.updatedAt}
-          bookmarked={bookmarked}
-          onToggleBookmark={onToggleBookmark}
-          onShare={onShare}
-        />
-        
-        {/* 나머지 컨텐츠에는 패딩 적용 */}
-        <div className="px-4">
-          {/* 메인 이미지/비디오 */}
-          {newsData.image && (
-            <div className="relative mt-4 mb-6 rounded-lg overflow-hidden">
-              <div className="aspect-w-16 aspect-h-9 w-full">
-                <img 
-                  src={newsData.image} 
-                  alt={newsData.title} 
-                  className="w-full h-full object-cover rounded-lg"
-                />
-              </div>
-              <div className="absolute bottom-2 right-2 text-xs bg-black bg-opacity-50 text-white px-2 py-1 rounded">
-                이미지 출처: {newsData.image}
-              </div>
-            </div>
-          )}
-
-          {/* 마지막 업데이트 시간 표시 */}
-          <div className="text-center text-sm text-gray-500 mb-3">
-            {formatRelativeTime(newsData.updatedAt)} 업데이트
+    <div className="flex flex-col h-screen bg-[#FDFAF7]">  
+      {/* 나머지 영역 - 스크롤 */}
+      <div className="flex-grow overflow-y-auto">
+        <div className="container mx-auto px-0 pb-6">
+          {/* 타임라인 헤더 */}
+          <div className="shadow-sm bg-white z-10">
+            <TimelineHeader 
+              title={newsData.title}
+              updatedAt={newsData.updatedAt}
+              bookmarked={bookmarked}
+              onToggleBookmark={onToggleBookmark}
+              onShare={onShare}
+            />
           </div>
-
-          {/* 타임라인 업데이트 버튼 */}
-          <div className="flex justify-center mb-6">
-            <button
-              onClick={handleTimelineUpdateWithToast}
-              disabled={isUpdating || !isUpdateAvailable || !isLoggedIn}
-              className={`px-6 py-2 rounded-full transition-colors flex items-center ${
-                isUpdating 
-                  ? 'bg-black text-white cursor-wait' 
-                  : isUpdateAvailable && isLoggedIn
-                    ? 'bg-black text-white hover:bg-gray-800' 
-                    : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-              }`}
+          <div className="px-4">
+            {/* 메인 이미지 */}
+            {newsData.image && (
+              <div className="relative mt-4 mb-6 rounded-lg overflow-hidden">
+                <div className="aspect-w-16 aspect-h-9 w-full">
+                  <img 
+                    src={newsData.image} 
+                    alt={newsData.title} 
+                    className="w-full h-full object-cover rounded-lg"
+                  />
+                </div>
+                <div className="absolute bottom-2 right-2 text-xs bg-black bg-opacity-50 text-white px-2 py-1 rounded max-w-[70%] overflow-hidden whitespace-nowrap text-ellipsis">
+                  <a 
+                    href={newsData.image} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="hover:underline"
+                  >
+                    이미지 출처: {newsData.image}
+                  </a>
+                </div>
+              </div>
+            )}
+  
+            {/* 타임라인 업데이트 버튼 */}
+            <div 
+              className="flex justify-center pb-4"
+              style={{ boxShadow: '0 10px 8px -6px rgba(0, 0, 0, 0.1)' }}
             >
-              {isUpdating ? (
-                <>
-                  <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  업데이트 중...
-                </>
-              ) : (
-                <>
-                  {isUpdateAvailable && (
-                    <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+              <button
+                onClick={handleTimelineUpdateWithToast}
+                disabled={isUpdating || !isUpdateAvailable || !isLoggedIn}
+                className={`px-6 py-2 rounded-full transition-colors flex items-center ${
+                  isUpdating 
+                    ? 'bg-black text-white cursor-wait' 
+                    : isUpdateAvailable && isLoggedIn
+                      ? 'bg-black text-white hover:bg-gray-800' 
+                      : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                }`}
+                >
+                {isUpdating ? (
+                  <>
+                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
-                  )}
-                  {!isLoggedIn ? '로그인 필요' : '타임라인 업데이트'}
-                </>
-              )}
-            </button>
+                    업데이트 중...
+                  </>
+                ) : (
+                  <>
+                    {isUpdateAvailable && (
+                      <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                      </svg>
+                    )}
+                    {!isLoggedIn ? '로그인 필요' : '타임라인 업데이트'}
+                  </>
+                )}
+              </button>
+            </div>
+  
+            {/* 타임라인 컨테이너 */}
+            <div className="rounded-xl">
+              <TimelineContainer 
+                timeline={formattedTimeline} 
+                showSources={showSources}
+                toggleSources={toggleSources}
+              />
+            </div>
           </div>
-
-          {/* 타임라인 컨테이너 */}
-          <TimelineContainer 
-            timeline={formattedTimeline} 
-            showSources={showSources}
-            toggleSources={toggleSources}
+        </div>
+  
+        {/* 감정 분석 */}
+        <div 
+          className="bg-[#FFFFFF] rounded-xl mb-8 mx-4 p-4"
+          style={{ boxShadow: '0 -10px 8px -6px rgba(0, 0, 0, 0.1)' }}
+        >
+          <SentimentAnalysis 
+            title={newsData.title}
+            statistics={newsData.statistics}
           />
         </div>
       </div>
-      
-      {/* 감정 분석 결과 */}
-      {/* <div className="container mx-auto px-4 py-6">
-        <div className="mt-12 mb-4">
-          <h3 className="text-lg font-bold whitespace-pre-line">
-            {`${newsData.title},\n다른 사람들은 어떻게 생각할까?`}
-          </h3> */}
-          
-          {/* 감정 분석 통계 */}
-          {/* <div className="mt-6 mb-8">
-            <div className="h-8 bg-gray-200 rounded-full overflow-hidden flex">
-              <div 
-                className="bg-black h-full" 
-                style={{ width: `${newsData.statistics.negative}%` }}
-              ></div>
-              <div 
-                className="bg-gray-400 h-full" 
-                style={{ width: `${newsData.statistics.neutral}%` }}
-              ></div>
-              <div 
-                className="bg-gray-600 h-full" 
-                style={{ width: `${newsData.statistics.positive}%` }}
-              ></div>
-            </div>
-            <div className="flex justify-between mt-2 text-sm text-gray-600">
-              <span>긍정</span>
-              <span>중립</span>
-              <span>부정</span>
-            </div>
-            <div className="text-xs text-center mt-4 text-gray-500">
-              *BERT 기반 모델을 활용하여 긍정/중립/부정으로 분류했습니다.
-            </div>
-          </div>
-        </div>
-      </div> */}
-      
+  
       {/* 토스트 메시지 */}
       {showToast && (
         <Toast message={toastMessage} />
       )}
     </div>
-  );
+  );  
 }

@@ -110,11 +110,19 @@ export const useTimelineData = ({ newsId }: UseTimelineDataProps): UseTimelineDa
     // 마지막 업데이트 시간과 현재 시간의 차이를 밀리초로 계산
     const timeDiff = now.getTime() - updatedAt.getTime();
     
-    // 24시간(86400000 밀리초)이 지났는지 확인
-    const hoursPassed = timeDiff / (1000 * 60 * 60);
-    console.log(`마지막 업데이트로부터 ${hoursPassed.toFixed(2)}시간이 지났습니다.`);
+    // // 24시간(86400000 밀리초)이 지났는지 확인
+    // const hoursPassed = timeDiff / (1000 * 60 * 60);
+    // console.log(`마지막 업데이트로부터 ${hoursPassed.toFixed(2)}시간이 지났습니다.`);
     
-    return hoursPassed >= 24;
+    // return hoursPassed >= 24;
+
+    console.log('updatedAt (UTC):', updatedAt.toISOString());
+    console.log('now (UTC):', now.toISOString());
+  
+    // 테스트용 2분 뒤 업데이트
+    console.log(`업데이트로부터 ${(timeDiff / 1000).toFixed(0)}초가 지났습니다.`);
+  
+    return timeDiff >= 2 * 60 * 1000; // 2분 (120000 ms)
   }, []);
 
   // 데이터를 가져오는 함수
@@ -358,7 +366,7 @@ export const useTimelineData = ({ newsId }: UseTimelineDataProps): UseTimelineDa
     if (!newsId || !newsData) return Promise.reject(new Error('뉴스 데이터가 없습니다.'));
     
     // 숫자 ID 추출
-    const numericId = newsId.replace(/\D/g, '');
+    // const numericId = newsId.replace(/\D/g, '');
     
     try {
       setIsUpdating(true);
@@ -449,7 +457,7 @@ export const useTimelineData = ({ newsId }: UseTimelineDataProps): UseTimelineDa
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${token}`,
             },
-            timeout: 10000,
+            timeout: 1000000000,
             withCredentials: false,
           }
         );
@@ -457,19 +465,22 @@ export const useTimelineData = ({ newsId }: UseTimelineDataProps): UseTimelineDa
         if (response.data.success) {
           console.log('타임라인 업데이트 성공:', response.data);
 
-          const updatedNewsData = response.data.data.news;
-          setNewsData(updatedNewsData);
+          // const updatedNewsData = response.data.data.news;
+          // //setNewsData(updatedNewsData);
 
-          const transformedTimeline = updatedNewsData.timeline.map(transformTimelineData);
-          setFormattedTimeline(transformedTimeline);
+          // const transformedTimeline = updatedNewsData.timeline.map(transformTimelineData);
+          // setFormattedTimeline(transformedTimeline);
 
-          const sourcesState: Record<string, boolean> = {};
-          transformedTimeline.forEach(item => {
-            sourcesState[item.id] = false;
-          });
-          setShowSources(sourcesState);
+          // const sourcesState: Record<string, boolean> = {};
+          // transformedTimeline.forEach((item: any) => {
+          //   sourcesState[item.id] = false;
+          // });
+          // setShowSources(sourcesState);
 
-          setIsUpdateAvailable(false);
+          // setIsUpdateAvailable(false);
+
+          // ⭐ 업데이트 성공 후 강제로 fetchNewsData 호출 (중복 데이터 방지)
+          await fetchNewsData();
 
           return Promise.resolve(response.data.message);
         } else {
@@ -520,174 +531,6 @@ export const useTimelineData = ({ newsId }: UseTimelineDataProps): UseTimelineDa
       setIsUpdating(false);
     }
   };
-  
-  // // 타임라인 업데이트 핸들러
-  // const handleTimelineUpdate = async () => {
-  //   if (!newsId || !newsData) return Promise.reject(new Error('뉴스 데이터가 없습니다.'));
-    
-  //   // 인증 상태 재확인
-  //   checkAuth();
-    
-  //   // 로그인 여부 확인
-  //   if (!isLoggedIn) {
-  //     return Promise.reject(new Error('인증되지 않은 사용자입니다. 로그인이 필요합니다.'));
-  //   }
-    
-  //   // 업데이트 가능 여부 확인
-  //   if (!isUpdateAvailable) {
-  //     console.log('업데이트할 수 없습니다: 마지막 업데이트로부터 24시간이 지나지 않았습니다.');
-  //     return Promise.reject(new Error('마지막 업데이트 이후 24시간이 지나지 않았습니다.'));
-  //   }
-    
-  //   // 숫자 ID 추출
-  //   const numericId = newsId.replace(/\D/g, '');
-    
-  //   try {
-  //     setIsUpdating(true);
-      
-  //     // 실제 API 호출
-  //     try {
-  //       // 로컬 스토리지에서 토큰 가져오기
-  //       const token = localStorage.getItem('token');
-        
-  //       if (!token) {
-  //         return Promise.reject(new Error('인증 토큰이 없습니다. 다시 로그인해주세요.'));
-  //       }
-        
-  //       // API 명세에 따른 PATCH 요청
-  //       const response = await axios.patch(
-  //         `${API_BASE_URL}/news/${numericId}`, 
-  //         {}, // 요청 body (필요한 경우 추가)
-  //         {
-  //           headers: {
-  //             'Content-Type': 'application/json',
-  //             'Authorization': `Bearer ${token}`, // 토큰 추가
-  //           }
-  //         }
-  //       );
-        
-  //       // API 성공 여부 확인
-  //       if (response.data.success) {
-  //         console.log('타임라인 업데이트 성공:', response.data);
-          
-  //         // 업데이트된 뉴스 데이터로 상태 갱신
-  //         const updatedNewsData = response.data.data.news;
-  //         setNewsData(updatedNewsData);
-          
-  //         // 타임라인 데이터 변환
-  //         const transformedTimeline = updatedNewsData.timeline.map(transformTimelineData);
-  //         setFormattedTimeline(transformedTimeline);
-          
-  //         // 소스 표시 상태 초기화
-  //         const sourcesState: Record<string, boolean> = {};
-  //         transformedTimeline.forEach(item => {
-  //           sourcesState[item.id] = false;
-  //         });
-  //         setShowSources(sourcesState);
-          
-  //         // 업데이트 가능 여부 재설정 (방금 업데이트했으므로 false)
-  //         setIsUpdateAvailable(false);
-          
-  //         return Promise.resolve(response.data.message);
-  //       } else {
-  //         console.error('타임라인 업데이트 실패:', response.data.message);
-  //         return Promise.reject(new Error(response.data.message));
-  //       }
-  //     } catch (err) {
-  //       console.error('타임라인 업데이트 API 호출 오류:', err);
-        
-  //       // Axios 에러 처리
-  //       if (axios.isAxiosError(err)) {
-  //         // HTTP 상태 코드에 따른 오류 메시지 처리
-  //         if (err.response) {
-  //           const statusCode = err.response.status;
-  //           const errorMessage = err.response.data?.message || '알 수 없는 오류가 발생했습니다.';
-            
-  //           switch (statusCode) {
-  //             case 400:
-  //               return Promise.reject(new Error('요청 형식이 올바르지 않습니다.'));
-  //             case 401:
-  //               // 인증 실패 시 로그아웃 처리
-  //               useAuthStore.getState().logout();
-  //               return Promise.reject(new Error('인증되지 않은 사용자입니다. 다시 로그인해주세요.'));
-  //             case 404:
-  //               return Promise.reject(new Error('요청하신 타임라인을 찾을 수 없습니다.'));
-  //             case 405:
-  //               return Promise.reject(new Error('요청 방식이 잘못되었습니다.'));
-  //             case 409:
-  //               // 409 Conflict - 마지막 업데이트 이후 24시간이 지나지 않았을 때
-  //               setIsUpdateAvailable(false); // 업데이트 가능 상태 업데이트
-  //               return Promise.reject(new Error('마지막 업데이트 이후 24시간이 지나지 않았습니다.'));
-  //             case 429:
-  //               return Promise.reject(new Error('요청 속도가 너무 빠릅니다. 잠시 후 다시 시도해주세요.'));
-  //             default:
-  //               return Promise.reject(new Error(errorMessage));
-  //           }
-  //         } else if (err.request) {
-  //           // 요청은 만들어졌으나 응답을 받지 못한 경우
-  //           return Promise.reject(new Error('서버에 연결할 수 없습니다. 네트워크 연결을 확인해주세요.'));
-  //         } else {
-  //           // 요청 설정 중 오류 발생
-  //           return Promise.reject(new Error('요청 준비 중 오류가 발생했습니다.'));
-  //         }
-  //       }
-        
-  //       // 개발 환경 임시 코드 (API 구현 전) - 이 부분은 로그인 상태에서만 실행되도록 수정
-  //       if (process.env.NODE_ENV === 'development' && isLoggedIn) {
-  //         console.log('타임라인 업데이트 시뮬레이션 (개발 환경)');
-          
-  //         if (newsData) {
-  //           // 새 타임라인 항목 추가
-  //           const newTimelineItem: TimelineCard = {
-  //             id: `timeline-${Date.now()}`,
-  //             title: '새로 추가된 이벤트',
-  //             content: '타임라인이 업데이트되었습니다. 이것은 최신 이벤트입니다.',
-  //             sources: [
-  //               {
-  //                 name: '새 언론사',
-  //                 url: 'https://example.com/new-source'
-  //               }
-  //             ],
-  //             startDate: new Date().toISOString().split('T')[0],
-  //             endDate: new Date().toISOString().split('T')[0]
-  //           };
-            
-  //           // 새 타임라인 항목을 기존 타임라인의 맨 앞에 추가
-  //           const updatedTimeline = [newTimelineItem, ...formattedTimeline];
-  //           setFormattedTimeline(updatedTimeline);
-            
-  //           // 소스 표시 상태 업데이트
-  //           setShowSources(prev => ({
-  //             ...prev,
-  //             [newTimelineItem.id]: false
-  //           }));
-            
-  //           // 뉴스 데이터의 업데이트 시간 갱신
-  //           const updatedNewsData = {
-  //             ...newsData,
-  //             updatedAt: new Date().toISOString()
-  //           };
-  //           setNewsData(updatedNewsData);
-            
-  //           // 업데이트 가능 여부 재설정
-  //           setIsUpdateAvailable(false);
-            
-  //           return Promise.resolve('데이터가 성공적으로 업데이트되었습니다.');
-  //         }
-  //       } else {
-  //         // 개발 환경이 아니거나 로그인 상태가 아니면 오류 반환
-  //         return Promise.reject(new Error('인증되지 않은 사용자입니다. 로그인이 필요합니다.'));
-  //       }
-        
-  //       return Promise.reject(err);
-  //     }
-  //   } catch (err) {
-  //     console.error('타임라인 업데이트 오류:', err);
-  //     return Promise.reject(err);
-  //   } finally {
-  //     setIsUpdating(false);
-  //   }
-  // };
 
   return {
     newsData,

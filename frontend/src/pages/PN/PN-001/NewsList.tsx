@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { API_BASE_URL, ENDPOINTS } from '@/constants/url';
+import { formatRelativeTime } from '../utils/dateUtils';
 
 interface News {
   id: string;
@@ -74,8 +75,6 @@ export default function NewsList({ category }: NewsListProps) {
     fetchNews();
   }, [category]);
 
-  const formatDate = (dateString: string) => new Date(dateString).toLocaleDateString();
-
   const NewsItem = ({ newsItem }: { newsItem: News }) => (
     <a href={`/news/${newsItem.id}`} className="group flex flex-row items-center w-full overflow-hidden bg-white rounded-lg mb-4">
       <div className="flex-shrink-0 w-[120px] h-[100px] flex items-center justify-center pl-3 mt-2 mb-2">
@@ -89,7 +88,9 @@ export default function NewsList({ category }: NewsListProps) {
       </div>
       <div className="p-4 flex-grow flex flex-col items-end text-right">
         <div className="flex justify-between items-start w-full">
-          <h3 className="text-lg font-semibold text-[20px] mb-1">{newsItem.title}</h3>
+        <h3 className="w-full text-lg font-semibold text-[20px] leading-tight mb-2 line-clamp-2 text-right text-black">
+          {newsItem.title}
+        </h3>
           {newsItem.bookmarked && (
             <span className="text-yellow-500 ml-2">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -98,8 +99,12 @@ export default function NewsList({ category }: NewsListProps) {
             </span>
           )}
         </div>
-        <p className="text-gray-600 text-[14px] mb-1 w-full text-right">{newsItem.summary}</p>
-        <div className="text-[10px] text-[#F2A359]">{formatDate(newsItem.updatedAt)}</div>
+        <p className="text-gray-600 text-[14px] leading-snug mb-2 w-full text-right line-clamp-2">
+          {newsItem.summary}
+        </p>
+        <div className="w-full text-[10px] text-[#F2A359] text-right">
+          {formatRelativeTime(newsItem.updatedAt)} 업데이트
+        </div>
       </div>
     </a>
   );
