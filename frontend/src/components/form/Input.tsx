@@ -3,13 +3,13 @@ import clsx from "clsx";
 import { Text } from "../ui/Text";
 
 const containerClass = clsx('w-full flex flex-col justify-center');
-const labelClass = clsx('text-base font-semibold text-labelTextColor')
+const labelClass = clsx('text-base font-semibold text-labelText')
 const inputClass = clsx(
-  'h-8 bg-inputBgColor border border-inputBorderColor rounded-[5px]',
-  'focus:outline-none focus:ring-1 focus:ring-inputBorderFocusColor',
-  'inline-block text-sm placeholder-inputPlaceholderColor px-2'
+  'h-8 bg-inputBg border border-inputBorder rounded-[5px]',
+  'focus:outline-none focus:ring-1 focus:ring-inputBorderFocus',
+  'inline-block text-sm text-myBlack placeholder-inputPlaceholder px-2'
 );
-const helperClass = clsx('px-2 text-sm text-helperTextColor leading-snug');
+const helperClass = clsx('px-2 text-sm text-helperText leading-snug');
 
 type InputProps = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> & {
   labelName?: string;
@@ -32,7 +32,7 @@ export const Input = ({
       {labelName && (
         <Text className={labelClass}>
           {labelName}
-          {required && <span className="text-labelSpanColor">*</span>}
+          {required && <span className="text-labelRequired">*</span>}
         </Text>
       )}
       <input
@@ -70,8 +70,8 @@ export const ButtonInput = ({
     'flex w-full, space-x-1'
   )
   const buttonClass = clsx(
-    'w-[80px] text-buttonTextColor text-sm rounded-[5px]',
-    isValid ? 'bg-buttonActiveColor' : 'bg-buttonInactiveColor'
+    'w-[80px] text-btnText text-sm rounded-[5px]',
+    isValid ? 'bg-btnActiveBg' : 'bg-btnInactiveBg'
   )
 
   return (
@@ -79,7 +79,7 @@ export const ButtonInput = ({
       {labelName && (
         <Text className={labelClass}>
           {labelName}
-          {required && <span className="text-labelSpanColor">*</span>}
+          {required && <span className="text-labelRequired">*</span>}
         </Text>
       )}
       <div className={rowClass}>
