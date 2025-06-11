@@ -13,13 +13,7 @@ interface IconProps extends React.ComponentProps<'svg'> {
   variant?: Variant
 }
 
-export const Icon: FC<IconProps> = ({
-  name,
-  size = 24,
-  className,
-  variant = 'outline',
-  ...props
-}) => {
+export const Icon: FC<IconProps> = ({ name, size = 24, className, variant = 'outline', ...props }) => {
   const IconComponent = variant === 'solid' ? SolidIcons[name] : OutlineIcons[name]
 
   if (!IconComponent) {
@@ -27,12 +21,5 @@ export const Icon: FC<IconProps> = ({
     return null
   }
 
-  return (
-    <IconComponent
-      className={clsx('inline-block', className)}
-      width={size}
-      height={size}
-      {...props}
-    />
-  )
+  return <IconComponent className={clsx('inline-block', className)} width={size} height={size} {...props} />
 }
