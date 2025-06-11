@@ -1,31 +1,24 @@
-import { useState, type DetailedHTMLProps, type InputHTMLAttributes } from "react";
-import clsx from "clsx";
-import { Text } from "../ui/Text";
+import { useState, type DetailedHTMLProps, type InputHTMLAttributes } from 'react'
+import clsx from 'clsx'
+import { Text } from '../ui/Text'
 
-const containerClass = clsx('w-full flex flex-col justify-center');
+const containerClass = clsx('w-full flex flex-col justify-center')
 const labelClass = clsx('text-base font-semibold text-labelTextColor')
 const inputClass = clsx(
   'h-8 bg-inputBgColor border border-inputBorderColor rounded-[5px]',
   'focus:outline-none focus:ring-1 focus:ring-inputBorderFocusColor',
-  'inline-block text-sm placeholder-inputPlaceholderColor px-2'
-);
-const helperClass = clsx('px-2 text-sm text-helperTextColor leading-snug');
+  'inline-block text-sm placeholder-inputPlaceholderColor px-2',
+)
+const helperClass = clsx('px-2 text-sm text-helperTextColor leading-snug')
 
 type InputProps = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> & {
-  labelName?: string;
-  helperText?: string;
-  required?: boolean;
-};
+  labelName?: string
+  helperText?: string
+  required?: boolean
+}
 
-export const Input = ({
-  id,
-  labelName,
-  className,
-  helperText,
-  required = false,
-  ...props
-}: InputProps) => {
-  const [isTouched, setIsTouched] = useState(false);
+export const Input = ({ id, labelName, className, helperText, required = false, ...props }: InputProps) => {
+  const [isTouched, setIsTouched] = useState(false)
 
   return (
     <label htmlFor={id} className={clsx(containerClass, className)}>
@@ -35,24 +28,16 @@ export const Input = ({
           {required && <span className="text-labelSpanColor">*</span>}
         </Text>
       )}
-      <input
-        id={id}
-        className={inputClass}
-        onFocus={() => setIsTouched(true)}
-        required={required}
-        {...props}
-      />
-      {isTouched && helperText && (
-        <Text className={helperClass}>*{helperText}</Text>
-      )}
+      <input id={id} className={inputClass} onFocus={() => setIsTouched(true)} required={required} {...props} />
+      {isTouched && helperText && <Text className={helperClass}>*{helperText}</Text>}
     </label>
-  );
-};
+  )
+}
 
 type ButtonInputProps = InputProps & {
   isValid: boolean
-  onClick?: () => void;
-};
+  onClick?: () => void
+}
 
 export const ButtonInput = ({
   id,
@@ -64,14 +49,12 @@ export const ButtonInput = ({
   onClick,
   ...props
 }: ButtonInputProps) => {
-  const [isTouched, setIsTouched] = useState(false);
+  const [isTouched, setIsTouched] = useState(false)
 
-  const rowClass = clsx(
-    'flex w-full, space-x-1'
-  )
+  const rowClass = clsx('flex w-full, space-x-1')
   const buttonClass = clsx(
     'w-[80px] text-buttonTextColor text-sm rounded-[5px]',
-    isValid ? 'bg-buttonActiveColor' : 'bg-buttonInactiveColor'
+    isValid ? 'bg-buttonActiveColor' : 'bg-buttonInactiveColor',
   )
 
   return (
@@ -90,18 +73,11 @@ export const ButtonInput = ({
           required={required}
           {...props}
         />
-        <button
-          type="button"
-          disabled={!isValid}
-          onClick={isValid ? onClick : undefined}
-          className={buttonClass}
-        >
+        <button type="button" disabled={!isValid} onClick={isValid ? onClick : undefined} className={buttonClass}>
           인증
         </button>
       </div>
-      {isTouched && helperText && (
-        <Text className={helperClass}>*{helperText}</Text>
-      )}
+      {isTouched && helperText && <Text className={helperClass}>*{helperText}</Text>}
     </label>
-  );
-};
+  )
+}
