@@ -17,8 +17,8 @@ export const Header = ({ className: _className }: HeaderProps) => {
     _className,
   )
 
-  const iconClass = "text-headerIcon cursor-pointer"
-  const logoClass = "text-2xl font-extrabold cursor-pointer text-headerLogo"
+  const iconClass = 'text-headerIcon cursor-pointer'
+  const logoClass = 'text-2xl font-extrabold cursor-pointer text-headerLogo'
 
   return (
     <div className={className}>
@@ -34,7 +34,7 @@ export const Header = ({ className: _className }: HeaderProps) => {
       </Link>
       <Link to={ROUTES.SEARCH_RESULTS}>
         <Icon name="MagnifyingGlassIcon" size={24} variant="solid" className={iconClass} />
-      </Link> 
+      </Link>
     </div>
   )
 }
