@@ -25,15 +25,11 @@ export interface Comment {
 export interface NewsResponse {
   id: string;
   title: string;
-  lastUpdated: string;
-  imageUrl?: string;
-  videoUrl?: string;
-  sourceUrl: string;
-  sourceName: string;
-  isBookmarked: boolean;
+  image?: string;
+  updatedAt: string;
+  bookmarked: boolean;
   timeline: TimelineCard[];
-  comments: Comment[];
-  sentiment: {
+  statistics: {
     positive: number;
     neutral: number;
     negative: number;
@@ -62,8 +58,8 @@ export interface NewsSearchResponse {
 // 사용자 정보 타입
 export interface UserInfo {
   id: string;
-  name: string;
   nickname: string;
+  email: string;
 }
 
 // 토스트 메시지 위치 타입
