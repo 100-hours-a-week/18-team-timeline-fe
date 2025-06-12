@@ -2,7 +2,7 @@ import { useState, useEffect, type DetailedHTMLProps, type HTMLAttributes } from
 import { ENDPOINTS } from '@/constants/url'
 import { useRequestStore } from '@/stores/requestStore'
 import { validateFindPassword } from '../utils/validateFindPassword'
-import { userMessage } from '@/constants/userMessage'
+import { FindPasswordMessage } from '@/constants/PU/findPasswordMessage'
 
 type FindPasswordLogicProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> & {
   setToastMessage: (msg: string) => void
@@ -37,11 +37,11 @@ export const useFindPasswordLogic = ({ setToastMessage }: FindPasswordLogicProps
     try {
       const res = await postData(ENDPOINTS.FIND_PASSWORD, { email })
       if (res?.success) {
-        setToastMessage(userMessage.FIND_PASSWORD_TOAST_SUCCESS)
+        setToastMessage(FindPasswordMessage.TOAST_SUCCESS)
       }
     } catch (error) {
       console.error('이메일 확인 중 오류 발생:', error)
-      setToastMessage(userMessage.FIND_PASSWORD_TOAST_FAIL)
+      setToastMessage(FindPasswordMessage.TOAST_FAIL)
       setEmail('')
     }
   }

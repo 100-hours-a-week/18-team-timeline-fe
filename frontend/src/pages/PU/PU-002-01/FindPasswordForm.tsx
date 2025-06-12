@@ -1,4 +1,3 @@
-import { Input } from '@/components/form/Input'
 import { useState, type DetailedHTMLProps, type HTMLAttributes } from 'react'
 import clsx from 'clsx'
 import { Link } from 'react-router-dom'
@@ -8,6 +7,8 @@ import { Text } from '@/components/ui/Text'
 import { useFindPasswordLogic } from './useFindPasswordLogic'
 import { Toast } from '@/components/ui/Toast'
 import { EmailInput } from '../components/form/EmailInput'
+import { NavigationLink } from '@/constants/navigationLink'
+import { FindPasswordMessage } from '@/constants/PU/findPasswordMessage'
 
 type ReactDivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
 type FindPasswordFormProps = ReactDivProps & {}
@@ -26,10 +27,10 @@ export const FindPasswordForm = ({}: FindPasswordFormProps) => {
       <form className={formClass} onSubmit={handleSubmit}>
         <EmailInput value={email} onChange={(e) => setEmail(e.target.value)} helperText={errors.email} />
         <div className={buttonClass}>
-          <Button text={'이메일 확인하기'} isActive={isButtonActive}></Button>
+          <Button text={FindPasswordMessage.BTN_NAME} isActive={isButtonActive}></Button>
           <div className={navigationClass}>
             <Link to={ROUTES.LOGIN} className={linkClass}>
-              <Text>로그인하러 가기</Text>
+              <Text>{NavigationLink.LOGIN}</Text>
             </Link>
           </div>
         </div>
