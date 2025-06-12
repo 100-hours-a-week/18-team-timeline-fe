@@ -3,13 +3,16 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { ROUTES, ENDPOINTS } from '@/constants/url'
 import { useRequestStore } from '@/stores/useRequestStore'
 import { validateResetPassword } from '../utils/validateResetPassword'
+import { useAuthStore } from '@/stores/useAuthStore'
+import { ResetPasswordMessage } from '@/constants/PU/resetPasswordMessage'
 
 type ResetPasswordLogicProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> & {
   setToastMessage: (msg: string) => void
 }
 
 export const useResetPasswordLogic = ({ setToastMessage }: ResetPasswordLogicProps) => {
-  const [resetActionText, setresetActionText] = useState('재설정')
+  const isLogin = useAuthStore((state) => state.isLoggedIn)
+
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [passwordCheck, setPasswordCheck] = useState('')
@@ -32,23 +35,31 @@ export const useResetPasswordLogic = ({ setToastMessage }: ResetPasswordLogicPro
   }, [password, passwordCheck])
 
   useEffect(() => {
-    if (!sessionStorage.getItem('email') !== null) {
-      setEmail(sessionStorage.getItem('email') ?? '')
-      return
-    }
-
-    setresetActionText('변경')
-
     const fetchUserInfo = async () => {
       try {
         const res = await getData(ENDPOINTS.USER_INFO)
-        setEmail(res.data.email)
-      } catch (e) {
-        console.error('회원 정보 조회 실패', e)
+        setEmail(res.data.user.email)
+      } catch (err) {
+        console.error('회원 정보 조회 실패', err)
       }
     }
-    fetchUserInfo()
-  }, [])
+
+    const checkTokenValid = async () => {
+      try {
+        const res = await getData(ENDPOINTS.CHECK_TOKEN_VALID(token))
+        setEmail(res.data.email)
+      } catch (err) {
+        navigate(ROUTES.MAIN)
+        console.error('토큰 유효성 확인 실패', err)
+      }
+    }
+
+    if (isLogin) {
+      fetchUserInfo()
+    } else {
+      checkTokenValid()
+    }
+  }, [token, isLogin])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -57,24 +68,30 @@ export const useResetPasswordLogic = ({ setToastMessage }: ResetPasswordLogicPro
       setErrors(result.errors)
       return
     }
+
     try {
-      const res = await postData(ENDPOINTS.RESET_PASSWORD(token), { password })
+      const res = await postData(isLogin ? ENDPOINTS.RESET_PASSWORD_LOGIN : ENDPOINTS.RESET_PASSWORD_LOGOUT(token), {
+        password,
+      })
       if (res?.success) {
-        setToastMessage(`비밀번호가 ${resetActionText}되었습니다.`)
-        sessionStorage.removeItem('email')
+        setToastMessage(ResetPasswordMessage.TOAST_SUCCESS(isLogin))
         navigate(ROUTES.LOGIN)
       }
     } catch (error) {
-      console.error(`비밀번호 ${resetActionText} 실패`, error)
+      console.error(`${ResetPasswordMessage.TITLE(isLogin)} 실패`, error)
+
       setPassword('')
       setPasswordCheck('')
-      navigate(ROUTES.FIND_PASSWORD)
-      alert(`비밀번호 ${resetActionText} 중 오류가 발생했습니다.`)
+
+      if (!isLogin) {
+        navigate(ROUTES.MAIN)
+      }
+
+      setToastMessage(ResetPasswordMessage.TOAST_FAIL(isLogin))
     }
   }
 
   return {
-    resetActionText,
     email,
     password,
     setPassword,
