@@ -1,7 +1,7 @@
 import { useState, useEffect, type DetailedHTMLProps, type HTMLAttributes } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { ROUTES, ENDPOINTS } from '@/constants/url'
-import { useRequestStore } from '@/stores/requestStore'
+import { useRequestStore } from '@/stores/useRequestStore'
 import { validateResetPassword } from '../utils/validateResetPassword'
 
 type ResetPasswordLogicProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> & {

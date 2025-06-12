@@ -1,5 +1,5 @@
 import { useEffect, useState, type DetailedHTMLProps, type HTMLAttributes } from 'react'
-import { useRequestStore } from '@/stores/requestStore'
+import { useRequestStore } from '@/stores/useRequestStore'
 import { ENDPOINTS } from '@/constants/url'
 import { validateUserInfo } from '../utils/validateUserInfo'
 import { useNavigate } from 'react-router-dom'

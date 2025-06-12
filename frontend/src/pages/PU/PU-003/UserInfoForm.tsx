@@ -7,7 +7,7 @@ import { Text } from '@/components/ui/Text'
 import { StaticField } from '../components/ui/StaticField'
 import { InputModal } from '@/components/ui/Modal'
 import { useUserInfoLogic } from './UserInfoLogic'
-import { useRequestStore } from '@/stores/requestStore'
+import { useRequestStore } from '@/stores/useRequestStore'
 import { ENDPOINTS } from '@/constants/url'
 import { Toast } from '@/components/ui/Toast'
 

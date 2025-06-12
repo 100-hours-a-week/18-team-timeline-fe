@@ -3,7 +3,7 @@ import { useEffect, useState, type DetailedHTMLProps, type HTMLAttributes } from
 import clsx from 'clsx'
 import { validateFindPassword } from '../utils/validateFindPassword'
 import { Link, useNavigate } from 'react-router-dom'
-import { useRequestStore } from '@/stores/requestStore'
+import { useRequestStore } from '@/stores/useRequestStore'
 import { ENDPOINTS, ROUTES } from '@/constants/url'
 import { Button } from '../components/ui/Button'
 import { Text } from '@/components/ui/Text'
