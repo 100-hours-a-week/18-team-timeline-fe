@@ -26,8 +26,7 @@ export const KakaoCallback = () => {
         const token = authHeader.replace('Bearer ', '')
 
         handleToken(token)
-        navigate(ROUTES.MAIN)
-        window.location.reload()
+        navigate(ROUTES.MAIN, { replace: true })
       } catch (err) {
         console.error('카카오 콜백 처리 실패', err)
         alert('로그인에 실패했습니다.')
