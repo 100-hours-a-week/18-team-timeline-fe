@@ -16,7 +16,7 @@ export const ROUTES = {
   SIGNUP: '/signup',
   USER_INFO: '/user-info',
   FIND_PASSWORD: 'find-password',
-  SEARCH_RESULTS: '/search-results',
+  SEARCH_RESULTS: '/news/search',
   NEWS_DETAIL: '/news/:id',
   getNewsDetailPath: (id: number) => `/news/${id}`,
 }
@@ -29,7 +29,7 @@ export const ENDPOINTS = {
   SIGNUP: '/users',
   CHECK_EMAIL: (email: string) => `/users/check-email?email=${encodeURIComponent(email)}`,
   CHECK_NAME: (name: string) => `/users/check-nickname?nickname=${name}`,
-  SEND_CODE: '/auth/email-verification-codes',
+  SEND_CODE: '/auth/email-verification-codes',  
   CHECK_CODE: '/auth/email-verification-codes/verify',
   USER_INFO: '/users/me',
   USER_PASSWORD: '/users/me/password',
