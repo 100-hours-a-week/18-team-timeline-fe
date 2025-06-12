@@ -185,9 +185,12 @@ const SearchResults: React.FC<SearchResultsProps> = ({ searchQuery }) => {
               메인으로 돌아가기
             </button>
           </div>
-          
+        </div>
+
+        {/* 통합된 검색 결과 박스 */}
+        <div className="bg-white rounded-lg shadow-sm mb-8">
           {/* 검색 조건 표시 */}
-          <div className="bg-white shadow-sm rounded-lg p-4">
+          <div className="px-4 pt-4">
             <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
               <svg 
                 className="h-4 w-4" 
@@ -219,8 +222,8 @@ const SearchResults: React.FC<SearchResultsProps> = ({ searchQuery }) => {
             </p>
           </div>
           
-          {/* 타임라인 생성 버튼 / 스피너 */}
-          <div className="flex justify-end my-4">
+          {/* 타임라인 생성 버튼 */}
+          <div className="flex justify-center py-4">
             {isCreating ? (
               <svg
                 className="animate-spin h-6 w-6 text-blue-600"
@@ -252,9 +255,9 @@ const SearchResults: React.FC<SearchResultsProps> = ({ searchQuery }) => {
               </button>
             )}
           </div>
-          
+
           {/* 검색 결과 목록 */}
-          <div className="bg-white shadow-sm rounded-lg px-2 py-2">
+          <div className="px-2 pb-4">
             {isValidSearch && tags.length > 0 && (
               <SearchNewsList tags={tags} />
             )}

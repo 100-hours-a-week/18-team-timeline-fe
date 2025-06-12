@@ -177,6 +177,7 @@ export default function SearchNewsList({ tags }: SearchNewsListProps) {
           overflow-y-auto
           max-h-[70vh]
           pr-1
+          pb-16
           scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100
         "
       >
