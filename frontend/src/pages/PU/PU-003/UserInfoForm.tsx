@@ -69,6 +69,7 @@ export const UserInfoForm = ({}: UserInfoFormProps) => {
       <form className={formClass} onSubmit={handleSubmit}>
         <StaticField label="이메일" content={email} />
         <NicknameInput
+          isLabel={true}
           value={name}
           onChange={(e) => setName(e.target.value)}
           onBlur={checkNameDuplicate}
