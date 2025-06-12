@@ -12,6 +12,7 @@ import { ENDPOINTS } from '@/constants/url'
 import { Toast } from '@/components/ui/Toast'
 import { UserInfoMessage } from '@/constants/PU/userInfoMessage'
 import { NavigationLink } from '@/constants/navigationLink'
+import { NicknameInput } from '../components/form/NicknameInput'
 
 type UserInfoFormProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> & {}
 
@@ -67,11 +68,7 @@ export const UserInfoForm = ({}: UserInfoFormProps) => {
     <>
       <form className={formClass} onSubmit={handleSubmit}>
         <StaticField label="이메일" content={email} />
-        <Input
-          labelName="닉네임"
-          required={true}
-          placeholder="닉네임을 입력하세요."
-          maxLength={10}
+        <NicknameInput
           value={name}
           onChange={(e) => setName(e.target.value)}
           onBlur={checkNameDuplicate}
