@@ -93,7 +93,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({ searchQuery }) => {
           </div>
           
           {/* 검색 조건 표시 */}
-          <div className="bg-white rounded-lg shadow-sm p-4">
+          <div className="bg-white shadow-sm rounded-lg p-4">
             <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
               <svg 
                 className="h-4 w-4" 
@@ -124,13 +124,13 @@ const SearchResults: React.FC<SearchResultsProps> = ({ searchQuery }) => {
               * 태그들은 OR 조건으로 검색됩니다.
             </p>
           </div>
-        </div>
-
-        {/* 검색 결과 목록 */}
-        <div className="bg-white rounded-lg shadow-sm p-4">
-          {isValidSearch && tags.length > 0 && (
-            <SearchNewsList tags={tags} />
-          )}
+          
+          {/* 검색 결과 목록 */}
+          <div className="bg-white shadow-sm rounded-lg px-2 py-4">
+            {isValidSearch && tags.length > 0 && (
+              <SearchNewsList tags={tags} />
+            )}
+          </div>
         </div>
       </div>
     </main>

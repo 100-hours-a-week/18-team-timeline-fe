@@ -180,18 +180,6 @@ export default function SearchNewsList({ tags }: SearchNewsListProps) {
           scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100
         "
       >
-        {/* 태그 배지 */}
-        <div className="mb-4 flex flex-wrap gap-2">
-          {tags.map(tag => (
-            <span
-              key={tag}
-              className="px-3 py-1 bg-gray-100 text-gray-800 text-sm rounded-full"
-            >
-              #{tag}
-            </span>
-          ))}
-        </div>
-
         {/* 상태 메시지 */}
         {error && (
           <div className="bg-red-100 border text-red-700 px-4 py-3 rounded mb-4">
