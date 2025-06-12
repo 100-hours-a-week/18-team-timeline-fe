@@ -3,6 +3,7 @@ import { useSearchParams, useNavigate } from 'react-router-dom'
 import { ENDPOINTS, ROUTES } from '@/constants/url'
 import { handleToken } from '@/utils/handleToken'
 import { axiosInstance } from '@/lib/axios'
+import { PUMessage } from '@/constants/PU/puMessage'
 
 export const KakaoCallback = () => {
   const [searchParams] = useSearchParams()
@@ -29,7 +30,7 @@ export const KakaoCallback = () => {
         navigate(ROUTES.MAIN, { replace: true })
       } catch (err) {
         console.error('카카오 콜백 처리 실패', err)
-        alert('로그인에 실패했습니다.')
+        alert(PUMessage.KAKAO_BTN_LOGIN_FAIL)
         navigate(ROUTES.LOGIN)
       }
     }
