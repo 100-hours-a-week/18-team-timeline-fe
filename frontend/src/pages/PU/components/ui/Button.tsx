@@ -2,6 +2,7 @@ import type { DetailedHTMLProps, HTMLAttributes } from 'react'
 import clsx from 'clsx'
 import { useRequestStore } from '@/stores/requestStore'
 import { ENDPOINTS } from '@/constants/url'
+import { PUMessage } from '@/constants/PU/puMessage'
 
 type ReactDivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
 type ButtonProps = ReactDivProps & {
@@ -23,7 +24,7 @@ export const Button = ({ text, isActive = false, className: _className }: Button
 
 type KakaoButtonProps = ButtonProps & {}
 
-export const KaKaoButton = ({ text = '카카오로 시작하기', className: _className }: KakaoButtonProps) => {
+export const KaKaoButton = ({ text = PUMessage.KAKAO_BTN_NAME, className: _className }: KakaoButtonProps) => {
   const { getData } = useRequestStore()
 
   const className = clsx(buttonClass, 'bg-btnKakaoBg text-myBlack', _className)
@@ -33,12 +34,12 @@ export const KaKaoButton = ({ text = '카카오로 시작하기', className: _cl
       const res = await getData<{ data: { loginUrl: string } }>(ENDPOINTS.KAKAO_LOGIN)
       const kakaoUrl = res?.data?.loginUrl
 
-      if (!kakaoUrl) throw new Error('카카오 로그인 URL이 존재하지 않습니다.')
+      if (!kakaoUrl) throw new Error(PUMessage.KAKAO_BTN_URL_NOT_EXIST)
 
       window.location.href = kakaoUrl
     } catch (error) {
-      console.error('카카오 로그인 요청 실패', error)
-      alert('카카오 로그인 중 오류가 발생했습니다.')
+      console.error('카카오 로그인 요청 실패:', error)
+      alert(PUMessage.KAKAO_BTN_LOGIN_FAIL)
     }
   }
 
