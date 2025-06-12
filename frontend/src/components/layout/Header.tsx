@@ -17,8 +17,8 @@ export const Header = ({ className: _className }: HeaderProps) => {
     _className,
   )
 
-  const iconClass = "text-headerIcon cursor-pointer"
-  const logoClass = "text-2xl font-extrabold cursor-pointer text-headerLogo"
+  const iconClass = 'text-headerIcon cursor-pointer'
+  const logoClass = 'text-2xl font-extrabold cursor-pointer text-headerLogo'
 
   return (
     <div className={className}>

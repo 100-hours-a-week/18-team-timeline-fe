@@ -10,6 +10,15 @@ interface SentimentAnalysisProps {
 }
 
 const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({ title, statistics }) => {
+  if (
+    !statistics ||
+    statistics.positive == null ||
+    statistics.neutral == null ||
+    statistics.negative == null
+  ) {
+    return <div className="text-gray-500 text-sm">감정 분석 데이터를 불러오는 중입니다.</div>;
+  }
+
   return (
     <div className="mt-6 mb-4">
       <h3 className="text-lg text-black font-bold whitespace-pre-line">

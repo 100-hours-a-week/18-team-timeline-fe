@@ -1,24 +1,25 @@
-export const FRONTEND_BASE_URL = import.meta.env.VITE_FRONTEND_BASE_URL;
-export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+export const FRONTEND_BASE_URL = import.meta.env.VITE_FRONTEND_BASE_URL
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
 if (!FRONTEND_BASE_URL) {
-  throw new Error('환경 변수 VITE_FRONTEND_BASE_URL이 설정되지 않았습니다.');
+  throw new Error('환경 변수 VITE_FRONTEND_BASE_URL이 설정되지 않았습니다.')
 }
 
 if (!API_BASE_URL) {
-  throw new Error('환경 변수 VITE_API_BASE_URL이 설정되지 않았습니다.');
+  throw new Error('환경 변수 VITE_API_BASE_URL이 설정되지 않았습니다.')
 }
 
 export const ROUTES = {
   MAIN: '/main',
   LOGIN: '/login',
-  KAKAO_CALLBACK: "/auth/kakao/callback",
+  KAKAO_CALLBACK: '/auth/kakao/callback',
   SIGNUP: '/signup',
   USER_INFO: '/user-info',
+  FIND_PASSWORD: 'find-password',
   SEARCH_RESULTS: '/search-results',
   NEWS_DETAIL: '/news/:id',
   getNewsDetailPath: (id: number) => `/news/${id}`,
-};
+}
 
 export const ENDPOINTS = {
   LOGIN: '/auth/login',
@@ -33,6 +34,7 @@ export const ENDPOINTS = {
   USER_INFO: '/users/me',
   USER_PASSWORD: '/users/me/password',
   USER_WITHDRAW: '/users/me/state',
+  PASSWORD_RESET: '/auth/password-reset-tokens',
   NEWS: '/news',
   NEWS_HOTISSUE: '/news/hotissue',
   NEWS_DETAIL: '/news/:id',
@@ -60,6 +62,6 @@ export const ENDPOINTS = {
   },
 
   getCommentURL: (id: number) => `/news/${id}/comments`,
-};
+}
 
 export const INQUIRY_URL = 'https://ktb.goorm.io/'

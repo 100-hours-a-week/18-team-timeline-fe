@@ -5,19 +5,9 @@ type ReactDivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivEl
 
 type TextProps = ReactDivProps & {}
 
-export const Text: FC<TextProps> = ({
-  className,
-  children,
-  ...props
-}) => {
+export const Text: FC<TextProps> = ({ className, children, ...props }) => {
   return (
-    <div
-      className={clsx(
-        'tracking-[-0.02em]',
-        className
-      )}
-      {...props}
-    >
+    <div className={clsx('tracking-[-0.02em]', className)} {...props}>
       {children}
     </div>
   )

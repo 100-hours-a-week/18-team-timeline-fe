@@ -1,69 +1,70 @@
-import { useState, type DetailedHTMLProps, type HTMLAttributes } from "react";
-import clsx from "clsx";
-import { Input } from "@/components/form/Input";
-import { Button } from "../components/ui/Button";
-import { Link } from "react-router-dom";
-import { Text } from "@/components/ui/Text";
-import { StaticField } from "../components/ui/StaticField";
-import { InputModal } from "@/components/ui/Modal";
-import { useUserInfoLogic } from "./UserInfoLogic";
-import { useRequestStore } from "@/stores/requestStore";
-import { ENDPOINTS } from "@/constants/url";
-import { Toast } from "@/components/ui/Toast";
+import { useState, type DetailedHTMLProps, type HTMLAttributes } from 'react'
+import clsx from 'clsx'
+import { Input } from '@/components/form/Input'
+import { Button } from '../components/ui/Button'
+import { Link } from 'react-router-dom'
+import { Text } from '@/components/ui/Text'
+import { StaticField } from '../components/ui/StaticField'
+import { InputModal } from '@/components/ui/Modal'
+import { useUserInfoLogic } from './UserInfoLogic'
+import { useRequestStore } from '@/stores/requestStore'
+import { ENDPOINTS } from '@/constants/url'
+import { Toast } from '@/components/ui/Toast'
 
 type UserInfoFormProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> & {}
 
 export const UserInfoForm = ({}: UserInfoFormProps) => {
-  const [toastMessage, setToastMessage] = useState("")
+  const [toastMessage, setToastMessage] = useState('')
 
   const {
     email,
-    text, setText,
-    name, setName,
+    text,
+    setText,
+    name,
+    setName,
     checkNameDuplicate,
-    isInputModalOpen, setIsInputModalOpen,
-    errors, isButtonActive, handleSubmit,
-  } = useUserInfoLogic({ setToastMessage });
-
+    isInputModalOpen,
+    setIsInputModalOpen,
+    errors,
+    isButtonActive,
+    handleSubmit,
+  } = useUserInfoLogic({ setToastMessage })
 
   const { deleteData } = useRequestStore()
 
-  const disabled = !(text.trim() === "탈퇴하겠습니다.")
+  const disabled = !(text.trim() === '탈퇴하겠습니다.')
 
   const handleDeleteAccount = () => {
     setText('')
-    setIsInputModalOpen(true);
-  };
+    setIsInputModalOpen(true)
+  }
 
   const handleConfirmDelete = async () => {
-    setIsInputModalOpen(false);
+    setIsInputModalOpen(false)
     try {
-      const res = await deleteData(ENDPOINTS.USER_WITHDRAW);
+      const res = await deleteData(ENDPOINTS.USER_WITHDRAW)
       if (res?.success) {
         localStorage.clear()
-        alert("회원 탈퇴 처리되었습니다.");
+        alert('회원 탈퇴 처리되었습니다.')
       }
     } catch (e) {
-      console.error("유저 탈퇴 실패", e);
+      console.error('유저 탈퇴 실패', e)
     }
-  };
+  }
 
   const handleCancelDelete = () => {
-    setIsInputModalOpen(false);
-  };
+    setIsInputModalOpen(false)
+  }
 
-  const formClass = clsx("w-full flex flex-col justify-center", "space-y-3");
-  const buttonClass = clsx("flex flex-col pt-8 space-y-1");
-  const navigationClass = clsx("w-full justify-center flex flex-row space-x-1", "text-sm text-navText");
-  const linkClass = clsx("hover:text-navTextHover");
+  const formClass = clsx('w-full flex flex-col justify-center', 'space-y-3')
+  const buttonClass = clsx('flex flex-col pt-8 space-y-1')
+  const navigationClass = clsx('w-full justify-center flex flex-row space-x-1', 'text-sm text-navText')
+  const linkClass = clsx('hover:text-navTextHover')
 
   return (
     <>
       <form className={formClass} onSubmit={handleSubmit}>
-        <StaticField
-          label="이메일"
-          content={email}
-        />
+        <StaticField label="이메일" content={email} />
         <Input
           labelName="닉네임"
           required={true}
@@ -101,5 +102,5 @@ export const UserInfoForm = ({}: UserInfoFormProps) => {
 
       {toastMessage && <Toast message={toastMessage} />}
     </>
-  );
-};
+  )
+}
