@@ -248,11 +248,17 @@ const SearchResults: React.FC<SearchResultsProps> = ({ searchQuery }) => {
             ) : (
               <button
                 onClick={handleCreateTimeline}
-                disabled={!isValidSearch}
-                className="px-4 py-2 bg-gray-600 text-white rounded-3xl disabled:opacity-40 hover:bg-gray-800 transition-colors"
-              >
-                타임라인 생성하기
-              </button>
+                disabled={!isValidSearch || !isLoggedIn}
+                className={`px-4 py-2 rounded-3xl transition-colors flex items-center
+                  ${!isLoggedIn
+                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed'      // 로그인 X
+                    : !isValidSearch
+                      ? 'bg-gray-600 text-white opacity-40 cursor-not-allowed' // 태그 조건 X
+                      : 'bg-gray-600 text-white hover:bg-gray-800'        // 정상
+                  }`}
+                >
+                  {!isLoggedIn ? '타임라인 생성(로그인 필요)' : '타임라인 생성하기'}
+                </button>
             )}
           </div>
 
