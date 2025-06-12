@@ -77,7 +77,7 @@ export const LoginForm = ({}: LoginFormProps) => {
               <Text>{NavigationLink.SIGNUP}</Text>
             </Link>
             <Text>|</Text>
-            <Link to={''} className={linkClass}>
+            <Link to={ROUTES.FIND_PASSWORD} className={linkClass}>
               <Text>{NavigationLink.FIND_PASSWORD}</Text>
             </Link>
           </div>
