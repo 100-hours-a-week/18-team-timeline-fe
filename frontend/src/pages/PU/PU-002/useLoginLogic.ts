@@ -5,11 +5,6 @@ import { useRequestStore } from '@/stores/requestStore'
 import { validateLogin } from '../utils/validateLogin'
 import { LoginMessage } from '@/constants/PU/loginMessage'
 
-export const isEmailValid = (email: string): boolean => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-  return !!email.trim() && emailRegex.test(email)
-}
-
 type LoginLogicProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> & {
   setToastMessage: (msg: string) => void
 }
