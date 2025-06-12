@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom'
 import './App.css'
 import usePageStore from './stores/pageStore'
@@ -16,8 +16,13 @@ import { KakaoCallback } from './pages/PU/auth/KakaoCallback'
 import UserInfo from './pages/PU/PU-003'
 import FindPassword from './pages/PU/PU-002-01'
 import SearchResults from './pages/PN/PN-002'
+import { useAuthStore } from './stores/authStore'
 
 const App: React.FC = () => {
+  useEffect(() => {
+    useAuthStore.getState().checkAuth()
+  }, [])
+
   const currentPage = usePageStore((state) => state.currentPage)
 
   return (
