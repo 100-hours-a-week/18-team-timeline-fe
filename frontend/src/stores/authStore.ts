@@ -1,3 +1,4 @@
+import { handleToken } from '@/utils/handleToken'
 import { create } from 'zustand'
 
 interface AuthState {
@@ -18,7 +19,7 @@ function isTokenValid(token: string | null): boolean {
     const now = Math.floor(Date.now() / 1000)
     return exp > now
   } catch (err) {
-    console.error('토큰 파싱 오류:', err)
+    console.error('토큰 파싱 오류', err)
     return false
   }
 }
@@ -38,7 +39,7 @@ export const useAuthStore = create<AuthState>((set) => {
     isLoggedIn: initialLoginState,
 
     login: (token: string) => {
-      localStorage.setItem('token', token)
+      handleToken(token)
       set({ isLoggedIn: true })
     },
 

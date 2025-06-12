@@ -17,7 +17,7 @@ export const handleToken = (token: string): void => {
     const decoded = jwtDecode<TokenJwtPayload>(token)
 
     if (isTokenExpired(decoded.exp)) {
-      console.log('액세스 토큰이 만로되었습니다.')
+      console.log('액세스 토큰이 만료되었습니다.')
       localStorage.removeItem('token')
       localStorage.removeItem('userId')
       localStorage.removeItem('userName')
@@ -38,7 +38,7 @@ export const handleToken = (token: string): void => {
       })
     }
   } catch (error) {
-    console.error('JWT 처리 중 오류 발생:', error)
+    console.error('JWT 처리 중 오류 발생', error)
     localStorage.clear()
   }
 }

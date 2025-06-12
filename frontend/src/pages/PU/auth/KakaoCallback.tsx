@@ -4,6 +4,7 @@ import { ENDPOINTS, ROUTES } from '@/constants/url'
 import { handleToken } from '@/utils/handleToken'
 import { axiosInstance } from '@/lib/axios'
 import { PUMessage } from '@/constants/PU/puMessage'
+import { useAuthStore } from '@/stores/authStore'
 
 export const KakaoCallback = () => {
   const [searchParams] = useSearchParams()
@@ -20,13 +21,18 @@ export const KakaoCallback = () => {
 
         const authHeader = res.headers['authorization']
 
+        if (res.status !== 200) {
+          throw new Error(`로그인 실패: ${res.status}`)
+        }        
+        console.log(res)
+
         if (!authHeader || !authHeader.startsWith('Bearer ')) {
           throw new Error('Authorization 헤더가 없습니다.')
         }
 
         const token = authHeader.replace('Bearer ', '')
 
-        handleToken(token)
+        useAuthStore.getState().login(token)
         navigate(ROUTES.MAIN, { replace: true })
       } catch (err) {
         console.error('카카오 콜백 처리 실패', err)
