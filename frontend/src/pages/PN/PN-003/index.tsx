@@ -69,8 +69,8 @@ export default function NewsDetail() {
     toggleSources,
     isUpdating,
     isUpdateAvailable,
-    // handleToggleBookmark,
-    // handleShare,
+    handleToggleBookmark,
+    handleShare,
     handleTimelineUpdate,
     formattedTimeline
   } = useTimelineData({ newsId });
@@ -114,12 +114,10 @@ export default function NewsDetail() {
   // 공유하기 핸들러 (토스트 메시지 추가)
   const onShare = async () => {
     try {
-      // await handleShare();
-      // showToastMessage('URL이 복사되었습니다!');
-      showToastMessage('업데이트 예정입니다.');
+      await handleShare();
+      showToastMessage('URL이 복사되었습니다!');
     } catch (err) {
-      // showToastMessage('URL 복사에 실패했습니다.');
-      showToastMessage('업데이트 예정입니다.');
+      showToastMessage('URL 복사에 실패했습니다.');
     }
   };
 
