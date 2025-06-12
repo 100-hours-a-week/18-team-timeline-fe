@@ -3,25 +3,25 @@ import type { DetailedHTMLProps, HTMLAttributes, ChangeEvent } from 'react'
 
 type ReactDivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
 
-type EmailInputProps = ReactDivProps & {
+type PasswordInputProps = ReactDivProps & {
   isLabel?: boolean
   value: string
   onChange: (e: ChangeEvent<HTMLInputElement>) => void
   helperText: string | undefined
 }
 
-export const EmailInput = ({ isLabel = false, value, onChange, helperText }: EmailInputProps) => {
+export const PasswordInput = ({ isLabel = false, value, onChange, helperText }: PasswordInputProps) => {
   return (
     <Input
       {...(isLabel
         ? {
-            labelName: '이메일',
+            labelName: '비밀번호',
             required: true,
           }
         : {})}
-      id="email"
-      type="text"
-      placeholder="이메일을 입력하세요."
+      id="password"
+      type="password"
+      placeholder="비밀번호를 입력하세요."
       value={value}
       onChange={onChange}
       helperText={helperText}
