@@ -5,6 +5,7 @@ import { validateUserInfo } from '../utils/validateUserInfo'
 import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '@/constants/url'
 import { trace } from '@opentelemetry/api'
+import { UserInfoMessage } from '@/constants/PU/userInfoMessage'
 
 type UserInfoLogicProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> & {
   setToastMessage: (msg: string) => void
@@ -25,7 +26,6 @@ export const useUserInfoLogic = ({ setToastMessage }: UserInfoLogicProps) => {
 
   useEffect(() => {
     if (!userName) {
-      alert('로그인 정보가 없습니다. 다시 로그인해주세요.')
       navigate(ROUTES.LOGIN)
       return
     }
@@ -66,7 +66,7 @@ export const useUserInfoLogic = ({ setToastMessage }: UserInfoLogicProps) => {
     const res = await getData(ENDPOINTS.CHECK_NAME(name))
 
     if (!res.data.available) {
-      setErrors((prev) => ({ ...prev, name: '이미 사용 중인 닉네임입니다.' }))
+      setErrors((prev) => ({ ...prev, name: UserInfoMessage.EMAIL_ALREADY_EXISTS }))
       setIsNameChecked(false)
     } else {
       setErrors((prev) => ({ ...prev, name: undefined }))
@@ -81,12 +81,12 @@ export const useUserInfoLogic = ({ setToastMessage }: UserInfoLogicProps) => {
       const res = await patchData(ENDPOINTS.USER_INFO, { nickname: name })
       if (res?.success) {
         localStorage.setItem('userName', name)
-        setToastMessage('회원정보가 수정되었습니다.')
+        setToastMessage(UserInfoMessage.TOAST_SUCCESS)
         window.location.reload()
       }
     } catch (error) {
       console.error('닉네임 수정 실패', error)
-      setToastMessage('회원정보 수정에 실패하였습니다.')
+      setToastMessage(UserInfoMessage.TOAST_FAIL)
     }
   }
 
