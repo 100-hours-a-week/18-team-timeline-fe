@@ -23,6 +23,13 @@ function isTokenValid(token: string | null): boolean {
   }
 }
 
+function clearAuthStorage() {
+  localStorage.removeItem('token')
+  localStorage.removeItem('userId')
+  localStorage.removeItem('userName')
+  localStorage.removeItem('role')
+}
+
 export const useAuthStore = create<AuthState>((set) => {
   const token = localStorage.getItem('token')
   const initialLoginState = isTokenValid(token)
@@ -36,7 +43,7 @@ export const useAuthStore = create<AuthState>((set) => {
     },
 
     logout: () => {
-      localStorage.removeItem('token')
+      clearAuthStorage()
       set({ isLoggedIn: false })
     },
 
@@ -44,7 +51,7 @@ export const useAuthStore = create<AuthState>((set) => {
       const token = localStorage.getItem('token')
       const isValid = isTokenValid(token)
       set({ isLoggedIn: isValid })
-      if (!isValid) localStorage.removeItem('token')
+      if (!isValid) clearAuthStorage()
     },
   }
 })
