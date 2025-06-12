@@ -71,7 +71,7 @@ export const useComments = ({
 
           return {
             id: comment.id.toString(),
-            author: isMine ? `${currentUserNickname || '나'}(나)` : `익명 ${comment.userId}`,
+            author: isMine ? `${currentUserNickname || '나'}(나)` : `${comment.username}`,
             content: comment.content,
             createdAt: comment.createdAt,
             isMyComment: isMine,
