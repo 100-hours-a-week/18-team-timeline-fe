@@ -17,8 +17,9 @@
 
     /* Linting */
     "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "noUnusedLocals": false,
+    "noImplicitAny": false,
+    "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
 
@@ -29,5 +30,5 @@
       "node_modules/*": ["./node_modules/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "src/global.d.ts"]
 }

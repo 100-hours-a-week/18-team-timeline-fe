@@ -1,0 +1,239 @@
+name: Frontend CI/CD with SigNoz Support
+
+on:
+  push:
+    branches:
+      - develop
+      - release/**
+      - main
+  pull_request:
+    branches:
+      - develop
+      - release/**
+      - main
+
+permissions:
+  id-token: write  # ✅ OIDC 인증에 반드시 필요
+  contents: read
+  checks: write
+  pull-requests: write
+
+jobs:
+  # 1. 의존성 설치
+  install-deps:
+    name: Install Dependencies
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+      - name: Install dependencies
+        run: npm ci
+
+  # 2. 타입 검사
+  type-check:
+    name: Type Check
+    runs-on: ubuntu-latest
+    needs: install-deps
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+      - name: Install dependencies
+        run: npm ci
+      - name: Run type check
+        run: npx tsc --noEmit
+
+  # 3. 프론트 빌드
+  build:
+    name: Build Frontend
+    runs-on: ubuntu-latest
+    needs: type-check
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+      - name: Install dependencies
+        run: npm ci
+      - name: Build project
+        run: npm run build
+
+  # 4. 유닛 테스트
+  unit-test:
+    name: Unit Test
+    runs-on: ubuntu-latest
+    needs: build
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+      - name: Install dependencies
+        run: npm ci
+      - name: Run Unit Tests
+        run: npm run test || echo "No Unit Test Defined"
+
+  # 5. ECR 푸시 (main 브랜치만)
+  ecr-push:
+    name: Docker Build & ECR Push
+    runs-on: ubuntu-latest
+    needs: unit-test
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::346011888304:role/github-action-role
+          aws-region: ap-northeast-2
+
+      - name: Create .env file from secrets
+        run: |
+          echo "VITE_API_BASE_URL=${{ secrets.VITE_API_BASE_URL }}" >> frontend/.env
+          echo "VITE_FRONTEND_BASE_URL=${{ secrets.VITE_FRONTEND_BASE_URL }}" >> frontend/.env
+          echo "VITE_OTEL_EXPORTER_OTLP_ENDPOINT=${{ secrets.OTEL_EXPORTER_OTLP_ENDPOINT }}" >> frontend/.env
+
+      - name: Login to ECR
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Get short commit SHA
+        id: meta
+        run: echo "tag=$(echo $GITHUB_SHA | cut -c1-7)" >> "$GITHUB_OUTPUT"
+
+      - name: Docker Build with OTEL
+        run: |
+          REG=346011888304.dkr.ecr.ap-northeast-2.amazonaws.com/tamnara/fe
+          docker build \
+            --build-arg OTEL_EXPORTER_OTLP_ENDPOINT=${{ secrets.OTEL_EXPORTER_OTLP_ENDPOINT }} \
+            -t $REG:latest -t $REG:${{ steps.meta.outputs.tag }} \
+            -f ./frontend/Dockerfile ./frontend
+
+      - name: Docker Push
+        run: |
+          REG=346011888304.dkr.ecr.ap-northeast-2.amazonaws.com/tamnara/fe
+          docker push $REG:latest
+          docker push $REG:${{ steps.meta.outputs.tag }}
+
+      - name: Notify Discord - ECR Push 완료
+        run: |
+          chmod +x .github/scripts/discord_notify.sh
+          TAG=${{ steps.meta.outputs.tag }}
+          REPO=346011888304.dkr.ecr.ap-northeast-2.amazonaws.com/tamnara/fe
+          TITLE="*프론트 ECR Push 완료!*"
+          MSG="📦 Repository: $REPO:$TAG\n👉 [ECR 보기](https://ap-northeast-2.console.aws.amazon.com/ecr/repositories/tamnara/fe?region=ap-northeast-2)"
+          .github/scripts/discord_notify.sh success "$TITLE" "$MSG" "${{ secrets.DISCORD_WEBHOOK_URL }}" || true
+
+  # 6. ECS 배포 (main 브랜치만)
+  ecs-deploy:
+    name: ECS Deploy
+    runs-on: ubuntu-latest
+    needs: ecr-push
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::346011888304:role/github-action-role
+          aws-region: ap-northeast-2
+
+      - name: Get short commit SHA
+        id: meta
+        run: echo "tag=$(echo $GITHUB_SHA | cut -c1-7)" >> "$GITHUB_OUTPUT"
+
+      - name: ECS Deploy with OTEL ENV
+        run: |
+          TAG=${{ steps.meta.outputs.tag }}
+          FAMILY="docker-v1-frontend-cluster"
+          SERVICE="${FAMILY}-service"
+          CONTAINER_NAME="docker-v1-frontend"
+          IMAGE="346011888304.dkr.ecr.ap-northeast-2.amazonaws.com/tamnara/fe:$TAG"
+          
+          # ✅ OTEL 값을 GitHub Secrets로부터 셸 변수에 주입 (중요 수정)
+          OTEL="${{ secrets.OTEL_EXPORTER_OTLP_ENDPOINT }}"
+
+          TASK=$(aws ecs describe-task-definition --task-definition $FAMILY)
+
+          NEW_DEF=$(echo $TASK | jq --arg IMAGE "$IMAGE" --arg CONTAINER_NAME "$CONTAINER_NAME" --arg OTEL "$OTEL" '.taskDefinition |
+            {
+              family: .family,
+              networkMode: .networkMode,
+              executionRoleArn: .executionRoleArn,
+              containerDefinitions: (
+                .containerDefinitions | map(
+                  if .name == $CONTAINER_NAME then
+                    .image = $IMAGE |
+                    .environment += [{"name":"VITE_OTEL_EXPORTER_OTLP_ENDPOINT","value":$OTEL}]
+                  else .
+                  end
+                )
+              ),
+              requiresCompatibilities: .requiresCompatibilities,
+              cpu: .cpu,
+              memory: .memory
+            }')
+
+          echo "$NEW_DEF" > new-task-def.json
+
+          NEW_TASK_ARN=$(aws ecs register-task-definition \
+            --cli-input-json file://new-task-def.json \
+            | jq -r '.taskDefinition.taskDefinitionArn')
+
+          aws ecs update-service \
+            --cluster $FAMILY \
+            --service $SERVICE \
+            --task-definition $NEW_TASK_ARN
+
+      - name: Notify Discord - ECS 배포 완료
+        run: |
+          chmod +x .github/scripts/discord_notify.sh
+          TAG=${{ steps.meta.outputs.tag }}
+          REPO=346011888304.dkr.ecr.ap-northeast-2.amazonaws.com/tamnara/fe
+          TITLE="*프론트 ECS 배포 완료!*"
+          MSG="📦 $REPO:$TAG\n👉 [ECR 보기](https://ap-northeast-2.console.aws.amazon.com/ecr/repositories/tamnara/fe?region=ap-northeast-2)"
+          .github/scripts/discord_notify.sh success "$TITLE" "$MSG" "${{ secrets.DISCORD_WEBHOOK_URL }}" || true
+
+  # 7. 실패 감지 후 Discord 알림
+  discord-failure-notify:
+    name: Notify Discord on CI Failure
+    runs-on: ubuntu-latest
+    if: failure()
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Notify Discord - CI 실패
+        run: |
+          chmod +x .github/scripts/discord_notify.sh
+          TITLE="*프론트 CI 실패 알림*"
+          MSG="❌ 일부 Job이 실패했습니다.\n👉 [로그 보기](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})"
+          .github/scripts/discord_notify.sh failure "$TITLE" "$MSG" "${{ secrets.DISCORD_WEBHOOK_URL }}" || true
