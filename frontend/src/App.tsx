@@ -18,6 +18,7 @@ import FindPassword from './pages/PU/PU-002-01'
 import SearchResults from './pages/PN/PN-002'
 import { useAuthStore } from './stores/useAuthStore'
 import ResetPassword from './pages/PU/PU-002-02'
+import { ResetPasswordRoute } from './routes/ResetPasswordRoute'
 
 const App: React.FC = () => {
   useEffect(() => {
@@ -72,14 +73,9 @@ const App: React.FC = () => {
               </LogoutRoute>
             }
           />
-          <Route
-            path={ROUTES.RESET_PASSWORD}
-            element={
-              <LogoutRoute>
-                <ResetPassword />
-              </LogoutRoute>
-            }
-          />
+          <Route element={<ResetPasswordRoute />}>
+            <Route path={ROUTES.RESET_PASSWORD} element={<ResetPassword />} />
+          </Route>
 
           {/* 로그인 상태에서만 접근 가능 */}
           <Route
