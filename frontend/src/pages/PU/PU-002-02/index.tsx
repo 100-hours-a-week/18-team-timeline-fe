@@ -1,11 +1,13 @@
+import { ResetPasswordMessage } from '@/constants/PU/resetPasswordMessage'
 import { Wrapper } from '../components/layout/Wrapper'
 import { ResetPasswordForm } from './ResetPasswordForm'
+import { useAuthStore } from '@/stores/useAuthStore'
 
 export default function ResetPasswordPage() {
-  const resetActionText = localStorage.getItem('token') ? '변경' : '재설정'
+  const title = ResetPasswordMessage.TITLE(useAuthStore((state) => state.isLoggedIn))
   return (
     <div className="wrap bg-puBg">
-      <Wrapper title={`비밀번호 ${resetActionText}`} className="px-8">
+      <Wrapper title={title} className="px-8">
         <ResetPasswordForm />
       </Wrapper>
     </div>
