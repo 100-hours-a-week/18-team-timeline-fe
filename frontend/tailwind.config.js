@@ -19,6 +19,12 @@ export default {
         headerBackground: '#F2A359',
         headerLogo: '#EEEEEE',
         headerIcon: '#EEEEEE',
+        searchBarBg: '#FFFFFF',
+        searchBarIcon: '#EEEEEE',
+        keywordBoxBg: '#FFFFFF',
+        keywordBoxLine: '#EEEEEE',
+        keywordBg: '#F2A359',
+        keywordText: '#FFFFFF',
 
         // CC-002
         menuBackground: '#EEEEEE',
