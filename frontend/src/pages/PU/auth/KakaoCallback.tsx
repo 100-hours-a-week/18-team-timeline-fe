@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import { ENDPOINTS, ROUTES } from '@/constants/url'
-import { handleToken } from '@/utils/handleToken'
 import { axiosInstance } from '@/lib/axios'
 import { PUMessage } from '@/constants/PU/puMessage'
 import { useAuthStore } from '@/stores/useAuthStore'
