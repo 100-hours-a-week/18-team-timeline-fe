@@ -42,7 +42,7 @@ const App: React.FC = () => {
 
           {/* 로그인 여부와 상관없이 접근 가능 */}
           <Route path={ROUTES.MAIN} element={<MainPage />} />
-          <Route path={ROUTES.SEARCH_RESULTS} element={<SearchResults searchQuery={''} />} />
+          <Route path={ROUTES.SEARCH_RESULTS} element={<SearchResults />} />
           <Route path={ROUTES.NEWS_DETAIL} element={<NewsDetail />} />
 
           {/* 로그아웃 상태에서만 접근 가능 */}

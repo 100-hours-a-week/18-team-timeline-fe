@@ -2,7 +2,7 @@ import { useEffect, type DetailedHTMLProps, type HTMLAttributes } from 'react'
 import { Icon } from '../../ui/Icon'
 import { Text } from '../../ui/Text'
 import clsx from 'clsx'
-import { Link } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { ROUTES } from '@/constants/url'
 import { useSearchBarStore } from '@/stores/useSearchBarStore'
 import { SearchBox } from './SearchBox'
@@ -14,54 +14,73 @@ type ReactDivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivEl
 type SearchBarProps = ReactDivProps & {}
 
 export const SearchBar = ({ className: _className }: SearchBarProps) => {
+  const location = useLocation()
+  const navigate = useNavigate()
+
+  const isSearchResultsPage = location.pathname === ROUTES.SEARCH_RESULTS
+
   const keywords = useSearchStore((state) => state.keywords)
-  const closeSearch = useSearchBarStore((state) => state.close)
   const clearKeywords = useSearchStore((state) => state.clearKeywords)
   const toastMessage = useSearchStore((state) => state.toastMessage)
-  const setToastMessage = useSearchStore((state) => state.setToastMessage)
   const hideToast = useSearchStore((state) => state.hideToast)
 
-  useEffect(() => {
-    if (toastMessage === '') return
-    const timeout = setTimeout(() => {
-      setToastMessage(toastMessage)
-    }, 0)
+  const closeSearch = useSearchBarStore((state) => state.close)
 
-    return () => clearTimeout(timeout)
-  }, [toastMessage])
+  useEffect(() => {
+    if (toastMessage !== '') {
+      const timer = setTimeout(() => {
+        hideToast()
+      }, 2000)
+      return () => clearTimeout(timer)
+    }
+  }, [toastMessage, hideToast])
 
   useEffect(() => {
     hideToast()
-  }, [])
+  }, [hideToast])
 
-  const className = clsx(
+  const handleBack = () => {
+    clearKeywords()
+    if (isSearchResultsPage) {
+      closeSearch()
+      navigate(ROUTES.MAIN)
+    } else {
+      closeSearch()
+    }
+  }
+
+  const handleConfirm = () => {
+    if (keywords.length === 0) return
+    const tagsParam = keywords.map(encodeURIComponent).join(',')
+    navigate(`${ROUTES.SEARCH_RESULTS}?tags=${tagsParam}`)
+  }
+
+  const containerClass = clsx(
     'top-0 w-full h-[48px] bg-searchBarBg',
     'flex items-center justify-between px-[20px]',
     _className,
   )
 
-  const searchBarClass = clsx('flex-col')
+  const wrapperClass = clsx('flex-col')
   const iconClass = clsx('text-SearchBarIcon cursor-pointer w-[32px] text-base font-medium')
 
   return (
     <>
-      <div className={searchBarClass}>
-        <div className={className}>
+      <div className={wrapperClass}>
+        <div className={containerClass}>
           <Icon
             name="ArrowLeftIcon"
             size={20}
             variant="solid"
             className={clsx(iconClass, 'mr-3')}
-            onClick={() => {
-              clearKeywords()
-              closeSearch()
-            }}
+            onClick={handleBack}
           />
-
           <SearchBox />
-          <Link to={ROUTES.SEARCH_RESULTS}>
-            <Text className={clsx(iconClass, 'ml-3')}>확인</Text>
-          </Link>
+          <div>
+            <Text className={clsx(iconClass, 'ml-3')} onClick={handleConfirm}>
+              확인
+            </Text>
+          </div>
         </div>
         {keywords.length > 0 && <KeywordBox />}
       </div>
