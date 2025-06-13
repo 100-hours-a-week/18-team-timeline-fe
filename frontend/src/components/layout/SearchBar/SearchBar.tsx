@@ -9,6 +9,7 @@ import { SearchBox } from './SearchBox'
 import { KeywordBox } from './KeywordBox'
 import { Toast } from '@/components/ui/Toast'
 import { useSearchStore } from '@/stores/useSearchStore'
+import { SearchBarMessage } from '@/constants/SearchBarMessage'
 
 type ReactDivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
 type SearchBarProps = ReactDivProps & {}
@@ -50,7 +51,11 @@ export const SearchBar = ({ className: _className }: SearchBarProps) => {
   }
 
   const handleConfirm = () => {
-    if (keywords.length === 0) return
+    if (keywords.length === 0) {
+      useSearchStore.getState().setToastMessage(SearchBarMessage.INVALID_KEYWORD)
+      return
+    }
+
     const tagsParam = keywords.map(encodeURIComponent).join(',')
     navigate(`${ROUTES.SEARCH_RESULTS}?tags=${tagsParam}`)
   }
