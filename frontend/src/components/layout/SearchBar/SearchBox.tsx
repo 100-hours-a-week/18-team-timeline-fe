@@ -15,36 +15,43 @@ export const SearchBox = ({ className: _className }: SearchBoxProps) => {
   const [isComposing, setIsComposing] = useState(false)
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value)
-  }
+    const value = e.target.value
 
-  const handleCompositionStart = () => {
-    setIsComposing(true)
-  }
+    if (value.endsWith(' ')) {
+      const trimmed = value.trim()
+      const result = validateSearchKeyword(trimmed)
 
-  const handleCompositionEnd = () => {
-    setIsComposing(false)
+      if (!result.isValid) {
+        setInputValue('')
+        return
+      }
+
+      addKeyword(trimmed)
+    } else {
+      setInputValue(value)
+    }
   }
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (isComposing) return
 
     const key = e.key
-
-    if (key === 'Enter' || key === 'Tab' || key === ' ' || key === 'Spacebar') {
+    if (key === 'Enter' || key === 'Tab') {
       e.preventDefault()
       const trimmed = inputValue.trim()
-
       const result = validateSearchKeyword(trimmed)
+
       if (!result.isValid) {
         setInputValue('')
-        addKeyword(trimmed)
         return
       }
 
       addKeyword(trimmed)
     }
   }
+
+  const handleCompositionStart = () => setIsComposing(true)
+  const handleCompositionEnd = () => setIsComposing(false)
 
   const SearchBoxClass = clsx('w-full bg-SearchBoxBg')
 
