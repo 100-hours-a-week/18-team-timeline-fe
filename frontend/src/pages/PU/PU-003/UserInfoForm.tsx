@@ -8,7 +8,7 @@ import { StaticField } from '../components/ui/StaticField'
 import { InputModal } from '@/components/ui/Modal'
 import { useUserInfoLogic } from './useUserInfoLogic'
 import { useRequestStore } from '@/stores/useRequestStore'
-import { ENDPOINTS } from '@/constants/url'
+import { ENDPOINTS, ROUTES } from '@/constants/url'
 import { Toast } from '@/components/ui/Toast'
 import { UserInfoMessage } from '@/constants/PU/userInfoMessage'
 import { NavigationLink } from '@/constants/navigationLink'
@@ -78,7 +78,7 @@ export const UserInfoForm = ({}: UserInfoFormProps) => {
         <div className={buttonClass}>
           <Button text={UserInfoMessage.BTN_NAME} isActive={isButtonActive} />
           <div className={navigationClass}>
-            <Link to={''} className={linkClass}>
+            <Link to={ROUTES.RESET_PASSWORD} className={linkClass}>
               <Text>{NavigationLink.RESET_PASSWORD}</Text>
             </Link>
             <Text>|</Text>
