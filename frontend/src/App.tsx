@@ -19,6 +19,8 @@ import SearchResults from './pages/PN/PN-002'
 import { useAuthStore } from './stores/useAuthStore'
 import ResetPassword from './pages/PU/PU-002-02'
 import { ResetPasswordRoute } from './routes/ResetPasswordRoute'
+import { SearchBar } from './components/layout/SearchBar/SearchBar'
+import { useSearchBarStore } from './stores/useSearchBarStore'
 
 const App: React.FC = () => {
   useEffect(() => {
@@ -27,11 +29,14 @@ const App: React.FC = () => {
 
   const currentPage = usePageStore((state) => state.currentPage)
 
+  const isSearchOpen = useSearchBarStore((state) => state.isOpen)
+
   return (
     <Container>
       <Router>
         <Sidebar />
-        <Header />
+        {isSearchOpen ? <SearchBar /> : <Header />}
+
         <Routes>
           <Route path="/" element={<Navigate to={currentPage} />} />
 
