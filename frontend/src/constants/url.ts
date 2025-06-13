@@ -31,7 +31,7 @@ export const ENDPOINTS = {
   SIGNUP: '/users',
   CHECK_EMAIL: (email: string) => `/users/check-email?email=${encodeURIComponent(email)}`,
   CHECK_NAME: (name: string) => `/users/check-nickname?nickname=${name}`,
-  SEND_CODE: '/auth/email-verification-codes',  
+  SEND_CODE: '/auth/email-verification-codes',
   CHECK_CODE: '/auth/email-verification-codes/verify',
   USER_INFO: '/users/me',
   USER_WITHDRAW: '/users/me/state',
@@ -68,4 +68,5 @@ export const ENDPOINTS = {
   getCommentURL: (id: number) => `/news/${id}/comments`,
 }
 
-export const INQUIRY_URL = 'https://ktb.goorm.io/'
+export const INQUIRY_URL =
+  'https://docs.google.com/forms/d/e/1FAIpQLSeNJ17hGr-tUwyohQzNWToqAhJTXROMd60R_5eulhyax2aWcA/viewform'

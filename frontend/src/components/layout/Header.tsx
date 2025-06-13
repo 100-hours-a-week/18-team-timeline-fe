@@ -5,9 +5,9 @@ import clsx from 'clsx'
 import { Link } from 'react-router-dom'
 import { ROUTES } from '@/constants/url'
 import { useSidebarStore } from '@/stores/useSidebarStore'
+import { useSearchBarStore } from '@/stores/useSearchBarStore'
 
 type ReactDivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
-
 type HeaderProps = ReactDivProps & {}
 
 export const Header = ({ className: _className }: HeaderProps) => {
@@ -19,6 +19,7 @@ export const Header = ({ className: _className }: HeaderProps) => {
 
   const iconClass = 'text-headerIcon cursor-pointer'
   const logoClass = 'text-2xl font-extrabold cursor-pointer text-headerLogo'
+  const openSearch = useSearchBarStore((state) => state.open)
 
   return (
     <div className={className}>
@@ -32,9 +33,9 @@ export const Header = ({ className: _className }: HeaderProps) => {
       <Link to={ROUTES.MAIN}>
         <Text className={logoClass}>탐나라</Text>
       </Link>
-      <Link to={ROUTES.SEARCH_RESULTS}>
+      <button onClick={openSearch}>
         <Icon name="MagnifyingGlassIcon" size={24} variant="solid" className={iconClass} />
-      </Link>
+      </button>
     </div>
   )
 }
