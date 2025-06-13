@@ -1,6 +1,6 @@
 import type { PropsWithChildren } from 'react'
 import { Navigate } from 'react-router-dom'
-import { useAuthStore } from '@/stores/authStore'
+import { useAuthStore } from '@/stores/useAuthStore'
 import { ROUTES } from '@/constants/url'
 
 export const LoginRoute = ({ children }: PropsWithChildren) => {

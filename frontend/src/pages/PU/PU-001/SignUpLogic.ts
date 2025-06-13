@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ROUTES, ENDPOINTS } from '@/constants/url'
-import { useRequestStore } from '@/stores/requestStore'
+import { useRequestStore } from '@/stores/useRequestStore'
 import { validateSignUp } from '../utils/validateSignUp'
 
 export const isEmailValid = (email: string): boolean => {

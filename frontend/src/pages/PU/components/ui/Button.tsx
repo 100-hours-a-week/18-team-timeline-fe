@@ -1,6 +1,6 @@
 import type { DetailedHTMLProps, HTMLAttributes } from 'react'
 import clsx from 'clsx'
-import { useRequestStore } from '@/stores/requestStore'
+import { useRequestStore } from '@/stores/useRequestStore'
 import { ENDPOINTS } from '@/constants/url'
 import { PUMessage } from '@/constants/PU/puMessage'
 

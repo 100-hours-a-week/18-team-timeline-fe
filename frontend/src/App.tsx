@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom'
 import './App.css'
-import usePageStore from './stores/pageStore'
+import usePageStore from './stores/usePageStore'
 import { Container } from './components/layout/Container'
 import { Header } from './components/layout/Header'
 import { Sidebar } from './components/layout/Sidebar'
@@ -16,7 +16,9 @@ import { KakaoCallback } from './pages/PU/auth/KakaoCallback'
 import UserInfo from './pages/PU/PU-003'
 import FindPassword from './pages/PU/PU-002-01'
 import SearchResults from './pages/PN/PN-002'
-import { useAuthStore } from './stores/authStore'
+import { useAuthStore } from './stores/useAuthStore'
+import ResetPassword from './pages/PU/PU-002-02'
+import { ResetPasswordRoute } from './routes/ResetPasswordRoute'
 
 const App: React.FC = () => {
   useEffect(() => {
@@ -71,6 +73,9 @@ const App: React.FC = () => {
               </LogoutRoute>
             }
           />
+          <Route element={<ResetPasswordRoute />}>
+            <Route path={ROUTES.RESET_PASSWORD} element={<ResetPassword />} />
+          </Route>
 
           {/* 로그인 상태에서만 접근 가능 */}
           <Route

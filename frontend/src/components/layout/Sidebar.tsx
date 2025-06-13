@@ -1,12 +1,12 @@
 import { useEffect, useRef } from 'react'
-import { useSidebarStore } from '@/stores/sidebarStore'
+import { useSidebarStore } from '@/stores/useSidebarStore'
 import clsx from 'clsx'
 import { Link } from 'react-router-dom'
 import { INQUIRY_URL, ROUTES } from '@/constants/url'
 import { Icon } from '../ui/Icon'
 import { Text } from '../ui/Text'
 import { LogoutButton } from '../ui/Button'
-import { useAuthStore } from '@/stores/authStore'
+import { useAuthStore } from '@/stores/useAuthStore'
 
 export const Sidebar = () => {
   const isOpen = useSidebarStore((state) => state.isOpen)
