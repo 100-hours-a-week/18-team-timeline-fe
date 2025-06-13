@@ -25,7 +25,7 @@ export const FindPasswordForm = ({}: FindPasswordFormProps) => {
   return (
     <>
       <form className={formClass} onSubmit={handleSubmit}>
-        <EmailInput value={email} onChange={(e) => setEmail(e.target.value)} helperText={errors.email} />
+        <EmailInput isLabel={true} value={email} onChange={(e) => setEmail(e.target.value)} helperText={errors.email} />
         <div className={buttonClass}>
           <Button text={FindPasswordMessage.BTN_NAME} isActive={isButtonActive}></Button>
           <div className={navigationClass}>
