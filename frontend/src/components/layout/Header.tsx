@@ -4,7 +4,7 @@ import { Text } from '../ui/Text'
 import clsx from 'clsx'
 import { Link } from 'react-router-dom'
 import { ROUTES } from '@/constants/url'
-import { useSidebarStore } from '@/stores/sidebarStore'
+import { useSidebarStore } from '@/stores/useSidebarStore'
 
 type ReactDivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
 
@@ -34,7 +34,7 @@ export const Header = ({ className: _className }: HeaderProps) => {
       </Link>
       <Link to={ROUTES.SEARCH_RESULTS}>
         <Icon name="MagnifyingGlassIcon" size={24} variant="solid" className={iconClass} />
-      </Link> 
+      </Link>
     </div>
   )
 }

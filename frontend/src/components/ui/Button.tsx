@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { useRequestStore } from '@/stores/requestStore'
+import { useRequestStore } from '@/stores/useRequestStore'
 import clsx from 'clsx'
 import type { DetailedHTMLProps, HTMLAttributes } from 'node_modules/@types/react'
 import { ENDPOINTS, ROUTES } from '@/constants/url'

@@ -4,10 +4,10 @@ import { Toast } from '@/components/ui/Toast';
 import TimelineHeader from './TimelineHeader';
 import TimelineContainer from './TimelineContainer';
 import { useTimelineData } from './hooks/useTimelineData';
-import { useAuthStore } from '@/stores/authStore';
+import { useAuthStore } from '@/stores/useAuthStore';
 import { useToast } from './hooks/useToast';
 import { useComments } from './hooks/useComments'; // useComments 훅 import
-import { useRequestStore } from '@/stores/requestStore';
+import { useRequestStore } from '@/stores/useRequestStore';
 import { ENDPOINTS } from '@/constants/url';
 import SentimentAnalysis from './SentimentAnalysis';
 import CommentSection from './CommentSection';
