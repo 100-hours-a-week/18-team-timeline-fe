@@ -2,7 +2,7 @@ import { useEffect, type DetailedHTMLProps, type HTMLAttributes } from 'react'
 import { Icon } from '../../ui/Icon'
 import { Text } from '../../ui/Text'
 import clsx from 'clsx'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { ROUTES } from '@/constants/url'
 import { useSearchBarStore } from '@/stores/useSearchBarStore'
 import { SearchBox } from './SearchBox'
@@ -17,6 +17,7 @@ type SearchBarProps = ReactDivProps & {}
 export const SearchBar = ({ className: _className }: SearchBarProps) => {
   const location = useLocation()
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
 
   const isSearchResultsPage = location.pathname === ROUTES.SEARCH_RESULTS
 
@@ -24,29 +25,38 @@ export const SearchBar = ({ className: _className }: SearchBarProps) => {
   const clearKeywords = useSearchStore((state) => state.clearKeywords)
   const toastMessage = useSearchStore((state) => state.toastMessage)
   const hideToast = useSearchStore((state) => state.hideToast)
-
   const closeSearch = useSearchBarStore((state) => state.close)
 
-  useEffect(() => {
-    if (toastMessage !== '') {
-      const timer = setTimeout(() => {
-        hideToast()
-      }, 2000)
-      return () => clearTimeout(timer)
-    }
-  }, [toastMessage, hideToast])
+  const tagsParam = searchParams.get('tags')
+  const tagsFromQuery = tagsParam
+    ? tagsParam
+        .split(',')
+        .map((tag) => decodeURIComponent(tag.trim()))
+        .filter(Boolean)
+    : []
 
   useEffect(() => {
     hideToast()
   }, [hideToast])
 
+  useEffect(() => {
+    if (!isSearchResultsPage) return
+
+    const store = useSearchStore.getState()
+    const hasKeywords = store.keywords.length > 0
+
+    if (!hasKeywords && tagsFromQuery.length > 0) {
+      store.setKeywords(tagsFromQuery)
+    }
+
+    store.setInputValue('')
+  }, [location.key])
+
   const handleBack = () => {
     clearKeywords()
+    closeSearch()
     if (isSearchResultsPage) {
-      closeSearch()
       navigate(ROUTES.MAIN)
-    } else {
-      closeSearch()
     }
   }
 

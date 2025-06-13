@@ -1,12 +1,11 @@
 import type { DetailedHTMLProps, HTMLAttributes } from 'react'
 import clsx from 'clsx'
-import { useSearchStore } from '@/stores/useSearchStore'
 import { Keyword } from './Keyword'
+import { useSearchStore } from '@/stores/useSearchStore'
 
 type ReactDivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
-type KeywordBoxProps = ReactDivProps & {}
 
-export const KeywordBox = ({ className: _className }: KeywordBoxProps) => {
+export const KeywordBox = ({ className: _className }: ReactDivProps) => {
   const keywords = useSearchStore((state) => state.keywords)
 
   const className = clsx(

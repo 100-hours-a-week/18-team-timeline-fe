@@ -3,7 +3,10 @@ import { validateSearchKeyword } from '@/utils/validSearchBox'
 import { create } from 'zustand'
 
 interface SearchStoreState {
+  isInitialized: boolean
+  setInitialized: (value: boolean) => void
   keywords: string[]
+  setKeywords: (keywords: string[]) => void
   inputValue: string
   toastMessage: string
   setInputValue: (value: string) => void
@@ -15,7 +18,11 @@ interface SearchStoreState {
 }
 
 export const useSearchStore = create<SearchStoreState>((set, get) => ({
+  isInitialized: false,
+  setInitialized: (value) => set({ isInitialized: value }),
+
   keywords: [],
+  setKeywords: (keywords) => set({ keywords }),
   inputValue: '',
   toastMessage: '',
 

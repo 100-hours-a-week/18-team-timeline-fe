@@ -27,6 +27,7 @@ export const SearchBox = ({ className: _className }: SearchBoxProps) => {
       }
 
       addKeyword(trimmed)
+      console.log(useSearchStore.getState().keywords)
     } else {
       setInputValue(value)
     }
