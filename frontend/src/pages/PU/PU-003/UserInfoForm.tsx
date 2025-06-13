@@ -6,10 +6,13 @@ import { Link } from 'react-router-dom'
 import { Text } from '@/components/ui/Text'
 import { StaticField } from '../components/ui/StaticField'
 import { InputModal } from '@/components/ui/Modal'
-import { useUserInfoLogic } from './UserInfoLogic'
+import { useUserInfoLogic } from './useUserInfoLogic'
 import { useRequestStore } from '@/stores/useRequestStore'
-import { ENDPOINTS } from '@/constants/url'
+import { ENDPOINTS, ROUTES } from '@/constants/url'
 import { Toast } from '@/components/ui/Toast'
+import { UserInfoMessage } from '@/constants/PU/userInfoMessage'
+import { NavigationLink } from '@/constants/navigationLink'
+import { NicknameInput } from '../components/form/NicknameInput'
 
 type UserInfoFormProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> & {}
 
@@ -32,7 +35,7 @@ export const UserInfoForm = ({}: UserInfoFormProps) => {
 
   const { deleteData } = useRequestStore()
 
-  const disabled = !(text.trim() === '탈퇴하겠습니다.')
+  const disabled = !(text.trim() === UserInfoMessage.WITHDRAW_VALID_INPUT)
 
   const handleDeleteAccount = () => {
     setText('')
@@ -45,10 +48,10 @@ export const UserInfoForm = ({}: UserInfoFormProps) => {
       const res = await deleteData(ENDPOINTS.USER_WITHDRAW)
       if (res?.success) {
         localStorage.clear()
-        alert('회원 탈퇴 처리되었습니다.')
+        setToastMessage(UserInfoMessage.WITHDRAW_SUCCESS)
       }
-    } catch (e) {
-      console.error('유저 탈퇴 실패', e)
+    } catch (err) {
+      console.error('유저 탈퇴 실패', err)
     }
   }
 
@@ -65,25 +68,22 @@ export const UserInfoForm = ({}: UserInfoFormProps) => {
     <>
       <form className={formClass} onSubmit={handleSubmit}>
         <StaticField label="이메일" content={email} />
-        <Input
-          labelName="닉네임"
-          required={true}
-          placeholder="닉네임을 입력하세요."
-          maxLength={10}
+        <NicknameInput
+          isLabel={true}
           value={name}
           onChange={(e) => setName(e.target.value)}
           onBlur={checkNameDuplicate}
           helperText={errors.name}
         />
         <div className={buttonClass}>
-          <Button text="수정하기" isActive={isButtonActive} />
+          <Button text={UserInfoMessage.BTN_NAME} isActive={isButtonActive} />
           <div className={navigationClass}>
-            <Link to={''} className={linkClass}>
-              <Text>비밀번호 변경</Text>
+            <Link to={ROUTES.RESET_PASSWORD} className={linkClass}>
+              <Text>{NavigationLink.RESET_PASSWORD}</Text>
             </Link>
             <Text>|</Text>
             <button type="button" className={linkClass} onClick={handleDeleteAccount}>
-              <Text>회원탈퇴</Text>
+              <Text>{NavigationLink.WITHDRAW}</Text>
             </button>
           </div>
         </div>
@@ -91,8 +91,8 @@ export const UserInfoForm = ({}: UserInfoFormProps) => {
 
       <InputModal
         isOpen={isInputModalOpen}
-        title="정말 탈퇴하시겠습니까?"
-        content="'탈퇴하겠습니다.' 문구를 정확히 입력해 주세요."
+        title={UserInfoMessage.MODAL_TITLE}
+        content={UserInfoMessage.MODAL_CONTENT}
         text={text}
         onTextChange={(e) => setText(e.target.value)}
         disabled={disabled}
