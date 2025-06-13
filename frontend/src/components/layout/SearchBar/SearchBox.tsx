@@ -13,21 +13,12 @@ export const SearchBox = ({ className: _className }: SearchBoxProps) => {
   const addKeyword = useSearchStore((state) => state.addKeyword)
 
   const [isComposing, setIsComposing] = useState(false)
-
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
 
     if (value.endsWith(' ')) {
       const trimmed = value.trim()
-      const result = validateSearchKeyword(trimmed)
-
-      if (!result.isValid) {
-        setInputValue('')
-        return
-      }
-
       addKeyword(trimmed)
-      console.log(useSearchStore.getState().keywords)
     } else {
       setInputValue(value)
     }
@@ -39,15 +30,7 @@ export const SearchBox = ({ className: _className }: SearchBoxProps) => {
     const key = e.key
     if (key === 'Enter' || key === 'Tab') {
       e.preventDefault()
-      const trimmed = inputValue.trim()
-      const result = validateSearchKeyword(trimmed)
-
-      if (!result.isValid) {
-        setInputValue('')
-        return
-      }
-
-      addKeyword(trimmed)
+      addKeyword(inputValue.trim())
     }
   }
 

@@ -7,14 +7,14 @@ interface SearchStoreState {
   setInitialized: (value: boolean) => void
   keywords: string[]
   setKeywords: (keywords: string[]) => void
+  addKeyword: (keyword: string) => void
+  removeKeyword: (keyword: string) => void
   inputValue: string
-  toastMessage: string
   setInputValue: (value: string) => void
+  toastMessage: string
   setToastMessage: (message: string) => void
   hideToast: () => void
   clearKeywords: () => void
-  addKeyword: (keyword: string) => void
-  removeKeyword: (keyword: string) => void
 }
 
 export const useSearchStore = create<SearchStoreState>((set, get) => ({
@@ -34,14 +34,16 @@ export const useSearchStore = create<SearchStoreState>((set, get) => ({
   addKeyword: (keyword) => {
     const trimmed = keyword.trim()
     const result = validateSearchKeyword(trimmed)
-
+    console.log('유효성 검사1:', result.isValid)
+    
     const keywords = get().keywords
     if (keywords.length >= SearchBarMessage.VALID_KEYWORD_CNT) {
       set({ inputValue: '', toastMessage: '' })
       setTimeout(() => set({ toastMessage: SearchBarMessage.TOO_MANY_KEYWORDS }), 0)
       return
     }
-
+    
+    console.log('유효성 검사2:', result.isValid)
     if (!result.isValid) {
       const message =
         result.reason === 'jamo'
