@@ -3,7 +3,7 @@ import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import usePageStore from '../../stores/usePageStore'
 import { Container } from './Container'
 import { Header } from './Header'
-import { Sidebar } from './Sidebar'
+import { SidebarMenu } from './SidebarMenu/SidebarMenu'
 import { ROUTES } from '../../constants/url'
 import { LogoutRoute } from '../../routes/LogoutRoute'
 import { LoginRoute } from '../../routes/LoginRoute'
@@ -45,7 +45,7 @@ export const AppContent = () => {
 
   return (
     <Container>
-      <Sidebar />
+      <SidebarMenu />
       {isSearchOpen ? <SearchBar /> : <Header />}
 
       <Routes>

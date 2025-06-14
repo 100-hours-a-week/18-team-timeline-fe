@@ -4,7 +4,7 @@ import { Text } from '../ui/Text'
 import clsx from 'clsx'
 import { Link } from 'react-router-dom'
 import { ROUTES } from '@/constants/url'
-import { useSidebarStore } from '@/stores/useSidebarStore'
+import { useSidebarMenuStore } from '@/stores/useSidebarMenuStore'
 import { useSearchBarStore } from '@/stores/useSearchBarStore'
 
 type ReactDivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
@@ -18,24 +18,32 @@ export const Header = ({ className: _className }: HeaderProps) => {
   )
 
   const iconClass = 'text-headerIcon cursor-pointer'
+  const iconsClass = 'flex gap-4'
   const logoClass = 'text-2xl font-extrabold cursor-pointer text-headerLogo'
-  const openSearch = useSearchBarStore((state) => state.open)
 
   return (
     <div className={className}>
-      <Icon
-        name="Bars3Icon"
-        size={24}
-        variant="solid"
-        className={iconClass}
-        onClick={() => useSidebarStore.getState().toggle()}
-      />
+      <div className={iconsClass}>
+        <Icon
+          name="Bars3Icon"
+          size={24}
+          variant="solid"
+          className={iconClass}
+          onClick={() => useSidebarMenuStore.getState().toggle()}
+        />
+      </div>
       <Link to={ROUTES.MAIN}>
         <Text className={logoClass}>탐나라</Text>
       </Link>
-      <button onClick={openSearch}>
-        <Icon name="MagnifyingGlassIcon" size={24} variant="solid" className={iconClass} />
-      </button>
+      <div className={iconsClass}>
+        <Icon
+          name="MagnifyingGlassIcon"
+          size={24}
+          variant="solid"
+          className={iconClass}
+          onClick={() => useSearchBarStore.getState().toggle()}
+        />
+      </div>
     </div>
   )
 }
