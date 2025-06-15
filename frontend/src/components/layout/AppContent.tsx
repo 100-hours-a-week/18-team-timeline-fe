@@ -21,6 +21,7 @@ import { ResetPasswordRoute } from '../../routes/ResetPasswordRoute'
 import { SearchBar } from './SearchBar/SearchBar'
 import { useSearchBarStore } from '../../stores/useSearchBarStore'
 import { useSearchStore } from '../../stores/useSearchStore'
+import { SidebarAlarm } from './SidebarAlarm/SidebarAlarm'
 
 export const AppContent = () => {
   const location = useLocation()
@@ -46,6 +47,9 @@ export const AppContent = () => {
   return (
     <Container>
       <SidebarMenu />
+      <LoginRoute>
+        <SidebarAlarm />
+      </LoginRoute>
       {isSearchOpen ? <SearchBar /> : <Header />}
 
       <Routes>
