@@ -22,7 +22,6 @@ export const SidebarMenu = () => {
         close()
       }
     }
-
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [isOpen, close])
@@ -48,7 +47,7 @@ export const SidebarMenu = () => {
       <div className={metaClass}>
         <div className={lineClass} />
         <div className={clsx(metaItemClass, 'pt-4 pb-8')}>
-          <Link to={INQUIRY_URL} className="text-menuItem" onClick={close}>
+          <Link to={INQUIRY_URL} className="text-menuItem" onClick={close} target="_blank" rel="noopener noreferrer">
             문의하기
           </Link>
           <Text className="text-menuMetaText">v2.2.0 25.06.16</Text>

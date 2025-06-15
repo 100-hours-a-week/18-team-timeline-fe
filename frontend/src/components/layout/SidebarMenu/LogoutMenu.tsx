@@ -1,10 +1,12 @@
 import { LogoutButton } from '@/components/ui/Button'
 import { Text } from '@/components/ui/Text'
 import { ROUTES } from '@/constants/url'
+import { useSidebarMenuStore } from '@/stores/useSidebarMenuStore'
 import clsx from 'clsx'
 import { Link } from 'react-router-dom'
 
 export const LogoutMenu = () => {
+  const close = useSidebarMenuStore((state) => state.close)
   const lineClass = 'border-t border-ccLine'
   const menuClass = 'relative mx-4 flex flex-col'
   const titleClass = 'text-menuTitle text-2xl font-bold flex flex-col pl-1 pt-10 pb-4'
