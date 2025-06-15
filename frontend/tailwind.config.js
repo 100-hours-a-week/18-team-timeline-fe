@@ -50,6 +50,7 @@ export default {
 
         // CC-005
         alarmBarBg: '#F9F9F9',
+        alarmBarMetaText: '#AAAAAA',
         alarmBarHeader: '#FFFFFF',
         alarmTabSelect: '#000000',
         alarmTabNotSelect: '#AAAAAA',

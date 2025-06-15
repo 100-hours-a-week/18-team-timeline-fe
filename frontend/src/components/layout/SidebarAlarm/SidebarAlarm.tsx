@@ -101,6 +101,7 @@ export const SidebarAlarm = () => {
     )
 
   const menuClass = 'relative flex flex-col overflow-y-auto h-full'
+  const metaTextClass = 'text-center text-sm text-alarmBarMetaText mt-10'
 
   return (
     <div ref={SidebarAlarmRef} className={wrapperClass}>
@@ -120,9 +121,9 @@ export const SidebarAlarm = () => {
 
       <div className={menuClass}>
         {isLoading ? (
-          <div className="text-center text-sm text-gray-400">불러오는 중...</div>
+          <div className={metaTextClass}>불러오는 중...</div>
         ) : filteredAlarms.length === 0 ? (
-          <div className="text-center text-sm text-gray-400">알림이 없습니다.</div>
+          <div className={metaTextClass}>알림이 없습니다.</div>
         ) : (
           filteredAlarms.map((alarm) => (
             <AlarmCard
