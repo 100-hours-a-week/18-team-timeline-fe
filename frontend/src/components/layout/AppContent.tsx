@@ -27,6 +27,7 @@ export const AppContent = () => {
   const location = useLocation()
   const currentPage = usePageStore((state) => state.currentPage)
   const isSearchOpen = useSearchBarStore((state) => state.isOpen)
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn)
 
   useEffect(() => {
     useAuthStore.getState().checkAuth()
@@ -47,9 +48,7 @@ export const AppContent = () => {
   return (
     <Container>
       <SidebarMenu />
-      <LoginRoute>
-        <SidebarAlarm />
-      </LoginRoute>
+      {isLoggedIn && <SidebarAlarm />}
       {isSearchOpen ? <SearchBar /> : <Header />}
 
       <Routes>
