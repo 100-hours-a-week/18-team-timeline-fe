@@ -37,21 +37,17 @@ export const AlarmCard = ({
     handleNavigate()
   }
 
-  const wrapperClass = clsx(
-    'w-full flex flex-col px-4 py-6 border-[0.5px]',
-    isChecked ? 'bg-alarmCardCheckedBg border-alarmCardCheckedBg' : 'bg-alarmCardBg border-alarmCardBg',
-  )
+  const wrapperClass = clsx('w-full flex flex-col px-4 py-6 border-[0.5px] bg-alarmCardBg border-alarmCardBorder')
   const clickable = targetType && targetId !== undefined
-  const navigationClass = clsx(
-    clickable && 'cursor-pointer',
-    isChecked ? 'hover:bg-alarmCardCheckedHoverBg' : 'hover:bg-alarmCardHoverBg'
-  )
+  const navigationClass = clsx(clickable && 'cursor-pointer hover:bg-alarmCardHoverBg')
 
   const titleBoxClass = 'flex justify-between items-center gap-2'
-  const titleClass =
-    'text-xl font-semibold text-alarmCardTitle truncate whitespace-nowrap overflow-hidden max-w-[224px]'
-  const contentClass = 'text-xs text-alarmCardContent max-w-[280px]'
-  const dateClass = 'text-xs text-alarmCardDate flex-shrink-0'
+  const titleClass = clsx(
+    'text-xl font-semibold truncate whitespace-nowrap overflow-hidden max-w-[224px]',
+    !isChecked ? 'text-alarmCardTitle' : 'text-alarmCardChecked',
+  )
+  const contentClass = clsx('text-xs max-w-[280px]', !isChecked ? 'text-alarmCardContent' : 'text-alarmCardChecked')
+  const dateClass = clsx('text-xs flex-shrink-0', !isChecked ? 'text-alarmCardDate' : 'text-alarmCardChecked')
 
   return (
     <div key={key} className={clsx(wrapperClass, navigationClass)} onClick={handleClick}>

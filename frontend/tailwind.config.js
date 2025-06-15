@@ -49,14 +49,14 @@ export default {
         toastText: '#FFFFFF',
 
         // CC-005
-        alarmBarBg: '#FAFAFA',
+        alarmBarBg: '#F9F9F9',
         alarmBarHeader: '#FFFFFF',
         alarmTabSelect: '#000000',
         alarmTabNotSelect: '#AAAAAA',
         alarmCardBg: '#FFFFFF',
-        alarmCardHoverBg: '#FAF6F4',
-        alarmCardCheckedBg: '#EEEEEE',
-        alarmCardCheckedHoverBg: '#F1E9E4',
+        alarmCardBorder: '#EEEEEE',
+        alarmCardHoverBg: '#F1EFEC',
+        alarmCardChecked: '#AAAAAA',
         alarmCardTitle: '#2A4759',
         alarmCardContent: '#4F4F4F',
         alarmCardDate: '#4F4F4F',
