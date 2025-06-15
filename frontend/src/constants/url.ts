@@ -24,6 +24,8 @@ export const ROUTES = {
 }
 
 export const ENDPOINTS = {
+  ALARM: '/users/me/alarms',
+  ALARM_CHECK: (alarmId: number) => `/users/me/alarms/${alarmId}`,
   LOGIN: '/auth/login',
   KAKAO_LOGIN: '/auth/kakao/login-url',
   KAKAO_LOGIN_CALLBACK: (code: string) => `/auth/kakao/callback?code=${code}`,

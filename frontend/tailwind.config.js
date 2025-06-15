@@ -48,6 +48,20 @@ export default {
         toastBg: '#2A4759',
         toastText: '#FFFFFF',
 
+        // CC-005
+        alarmBarBg: '#F9F9F9',
+        alarmBarMetaText: '#AAAAAA',
+        alarmBarHeader: '#FFFFFF',
+        alarmTabSelect: '#000000',
+        alarmTabNotSelect: '#AAAAAA',
+        alarmCardBg: '#FFFFFF',
+        alarmCardBorder: '#EEEEEE',
+        alarmCardHoverBg: '#F1EFEC',
+        alarmCardChecked: '#AAAAAA',
+        alarmCardTitle: '#2A4759',
+        alarmCardContent: '#4F4F4F',
+        alarmCardDate: '#4F4F4F',
+
         // PU
         puBg: '#FCFAF7',
         puWrapper: '#FFFFFF',
