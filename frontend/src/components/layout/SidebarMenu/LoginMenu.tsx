@@ -21,6 +21,9 @@ export const LoginMenu = () => {
         <Link to={ROUTES.USER_INFO} className={navItemClass} onClick={close}>
           회원정보 수정
         </Link>
+        <Link to={ROUTES.POLL} className={navItemClass} onClick={close}>
+          투표하기
+        </Link>
         <LogoutButton className={clsx(navItemClass, 'block text-left')} onClick={close} />
       </nav>
     </div>

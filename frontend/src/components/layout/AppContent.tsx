@@ -81,6 +81,9 @@ export const AppContent = () => {
         <Route element={<LoginRoute />}>
           <Route path={ROUTES.USER_INFO} element={<UserInfo />} />
         </Route>
+        <Route element={<LoginRoute />}>
+          <Route path={ROUTES.POLL} element={<PollPage />} />
+        </Route>
       </Routes>
     </Container>
   )

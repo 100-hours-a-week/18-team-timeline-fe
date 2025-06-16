@@ -21,6 +21,7 @@ export const ROUTES = {
   SEARCH_RESULTS: '/search-results',
   NEWS_DETAIL: '/news/:id',
   getNewsDetailPath: (id: number) => `/news/${id}`,
+  POLL:`/polls`,
 }
 
 export const ENDPOINTS = {
@@ -46,6 +47,9 @@ export const ENDPOINTS = {
   NEWS_DETAIL: '/news/:id',
   BOOKMARK: '/news/:id/bookmark',
   COMMENT: '/news/:id/comments',
+  POLL_FETCH: (pollId: number) => `/polls/${pollId}`,
+  POLL_SUBMIT: (pollId: number) => `/polls/${pollId}/vote`,
+  POLL_STATS_FETCH: (pollId: number) => `/poll/{${pollId}/stats`,
 
   // 뉴스
   getNewsOffsetURL: (category?: string, offset: number = 0) => {
