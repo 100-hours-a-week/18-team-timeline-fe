@@ -6,11 +6,9 @@ import { AppContent } from './components/layout/AppContent'
 
 const App: React.FC = () => {
   return (
-    <Container>
-      <Router>
-        <AppContent />
-      </Router>
-    </Container>
+    <Router>
+      <AppContent />
+    </Router>
   )
 }
 

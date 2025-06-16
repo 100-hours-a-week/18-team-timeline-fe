@@ -3,7 +3,7 @@ import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import usePageStore from '../../stores/usePageStore'
 import { Container } from './Container'
 import { Header } from './Header'
-import { Sidebar } from './Sidebar'
+import { SidebarMenu } from './SidebarMenu/SidebarMenu'
 import { ROUTES } from '../../constants/url'
 import { LogoutRoute } from '../../routes/LogoutRoute'
 import { LoginRoute } from '../../routes/LoginRoute'
@@ -21,11 +21,13 @@ import { ResetPasswordRoute } from '../../routes/ResetPasswordRoute'
 import { SearchBar } from './SearchBar/SearchBar'
 import { useSearchBarStore } from '../../stores/useSearchBarStore'
 import { useSearchStore } from '../../stores/useSearchStore'
+import { SidebarAlarm } from './SidebarAlarm/SidebarAlarm'
 
 export const AppContent = () => {
   const location = useLocation()
   const currentPage = usePageStore((state) => state.currentPage)
   const isSearchOpen = useSearchBarStore((state) => state.isOpen)
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn)
 
   useEffect(() => {
     useAuthStore.getState().checkAuth()
@@ -45,7 +47,8 @@ export const AppContent = () => {
 
   return (
     <Container>
-      <Sidebar />
+      <SidebarMenu />
+      {isLoggedIn && <SidebarAlarm />}
       {isSearchOpen ? <SearchBar /> : <Header />}
 
       <Routes>
