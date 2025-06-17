@@ -15,7 +15,7 @@ export const usePollLogic = ({ setToastMessage }: PollLogicProps) => {
   const [minChoices, setMinChoices] = useState<number>()
   const [maxChoices, setMaxChoices] = useState<number>()
   const [endAt, setEndAt] = useState('00월 00일 00:00')
-  const [options, setOptions] = useState<{ title: string; imageUrl?: string }[]>([])
+  const [options, setOptions] = useState<{ id: number; title: string; imageUrl?: string }[]>([])
   const [selectOps, setSelectOps] = useState<number[]>([])
   const [isButtonActive, setIsButtonActive] = useState(false)
   const [isInputModalOpen, setIsInputModalOpen] = useState(false)
@@ -32,12 +32,12 @@ export const usePollLogic = ({ setToastMessage }: PollLogicProps) => {
 
     const fetchPoll = async () => {
       try {
-        const res = await getData(ENDPOINTS.POLL_FETCH(72))
-        setTitle(res.data.title)
-        setMinChoices(res.data.minChoices)
-        setMaxChoices(res.data.maxChoices)
-        setEndAt(getFormatDateTime(res.data.endAt))
-        setOptions(res.data.options)
+        const res = await getData(ENDPOINTS.POLL_FETCH)
+        setTitle(res.data.poll.title)
+        setMinChoices(res.data.poll.minChoices)
+        setMaxChoices(res.data.poll.maxChoices)
+        setEndAt(getFormatDateTime(res.data.poll.endAt))
+        setOptions(res.data.poll.options)
       } catch (e) {
         console.error('투표 정보 조회 실패', e)
       }
@@ -55,14 +55,14 @@ export const usePollLogic = ({ setToastMessage }: PollLogicProps) => {
     e.preventDefault()
     if (!isButtonActive) return
     try {
-      const res = await postData(ENDPOINTS.POLL_SUBMIT(72), { optionIds: selectOps })
+      const res = await postData(ENDPOINTS.POLL_SUBMIT, { optionIds: selectOps })
       if (res?.success) {
         setToastMessage(PollMessage.TOAST_SUCCESS)
         window.location.reload()
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('투표 제출 실패', error)
-      setToastMessage(PollMessage.TOAST_FAIL)
+      setToastMessage(error?.response?.data?.message ?? PollMessage.TOAST_FAIL)
     }
   }
 

@@ -14,7 +14,7 @@ export default function PollPage() {
       <Wrapper title={PollMessage.TITLE(logic.title)} content={PollMessage.CONTENT(logic.endAt)} className="px-8">
         <PollForm
           handleSubmit={logic.handleSubmit}
-          options={logic.options.map((opt, i) => ({ ...opt, id: i }))}
+          options={logic.options}
           selectOps={logic.selectOps}
           setSelectOps={logic.setSelectOps}
           minChoices={logic.minChoices ?? 1}
