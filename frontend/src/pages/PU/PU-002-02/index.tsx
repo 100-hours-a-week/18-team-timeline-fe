@@ -1,5 +1,5 @@
 import { ResetPasswordMessage } from '@/constants/PU/resetPasswordMessage'
-import { Wrapper } from '../components/layout/Wrapper'
+import { Wrapper } from '../../../components/layout/Wrapper'
 import { ResetPasswordForm } from './ResetPasswordForm'
 import { useAuthStore } from '@/stores/useAuthStore'
 

@@ -22,6 +22,7 @@ import { SearchBar } from './SearchBar/SearchBar'
 import { useSearchBarStore } from '../../stores/useSearchBarStore'
 import { useSearchStore } from '../../stores/useSearchStore'
 import { SidebarAlarm } from './SidebarAlarm/SidebarAlarm'
+import PollPage from '@/pages/PV/PV-001'
 
 export const AppContent = () => {
   const location = useLocation()
@@ -60,51 +61,29 @@ export const AppContent = () => {
         <Route path={ROUTES.NEWS_DETAIL} element={<NewsDetail />} />
 
         {/* 로그아웃 상태에서만 접근 가능 */}
-        <Route
-          path={ROUTES.SIGNUP}
-          element={
-            <LogoutRoute>
-              <SignUp />
-            </LogoutRoute>
-          }
-        />
-        <Route
-          path={ROUTES.LOGIN}
-          element={
-            <LogoutRoute>
-              <Login />
-            </LogoutRoute>
-          }
-        />
-        <Route
-          path={ROUTES.KAKAO_CALLBACK}
-          element={
-            <LogoutRoute>
-              <KakaoCallback />
-            </LogoutRoute>
-          }
-        />
-        <Route
-          path={ROUTES.FIND_PASSWORD}
-          element={
-            <LogoutRoute>
-              <FindPassword />
-            </LogoutRoute>
-          }
-        />
+        <Route element={<LogoutRoute />}>
+          <Route path={ROUTES.SIGNUP} element={<SignUp />} />
+        </Route>
+        <Route element={<LogoutRoute />}>
+          <Route path={ROUTES.LOGIN} element={<Login />} />
+        </Route>
+        <Route element={<LogoutRoute />}>
+          <Route path={ROUTES.KAKAO_CALLBACK} element={<KakaoCallback />} />
+        </Route>
+        <Route element={<LogoutRoute />}>
+          <Route path={ROUTES.FIND_PASSWORD} element={<FindPassword />} />
+        </Route>
         <Route element={<ResetPasswordRoute />}>
           <Route path={ROUTES.RESET_PASSWORD} element={<ResetPassword />} />
         </Route>
 
         {/* 로그인 상태에서만 접근 가능 */}
-        <Route
-          path={ROUTES.USER_INFO}
-          element={
-            <LoginRoute>
-              <UserInfo />
-            </LoginRoute>
-          }
-        />
+        <Route element={<LoginRoute />}>
+          <Route path={ROUTES.USER_INFO} element={<UserInfo />} />
+        </Route>
+        <Route element={<LoginRoute />}>
+          <Route path={ROUTES.POLL} element={<PollPage />} />
+        </Route>
       </Routes>
     </Container>
   )

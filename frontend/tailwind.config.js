@@ -103,6 +103,16 @@ export default {
 
         fabBgColor: '#000000',
         fabIconColor: '#FFFFFF',
+
+        // PV
+        pvBg: '#FCFAF7',
+        pollBoxBorder: '#DADADA',
+        pollOptionBg: '#F1EFEC',
+        pollOptionSelectBg: '#E3D8CE',
+        pollOptionText: '#000000',
+        radioBtnBorder: '#DADADA',
+        radioBtnBg: '#FFFFFF',
+        radioBtnCircle: '#F2A359',
       },
     },
   },
