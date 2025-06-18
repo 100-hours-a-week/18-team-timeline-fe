@@ -66,7 +66,7 @@ jobs:
           echo "VITE_API_BASE_URL=${{ secrets.VITE_API_BASE_URL }}" >> frontend/.env
           echo "VITE_FRONTEND_BASE_URL=${{ secrets.VITE_FRONTEND_BASE_URL }}" >> frontend/.env
 
-  # 2. ECR Push (main 브랜치에서만 실행)
+  # 2. ECR Push 
   build-and-push:
     name: Docker Build & ECR Push (main only)
     needs: [frontend-ci, test]  # ✅ 두 job 모두 성공해야 실행됨
@@ -106,12 +106,12 @@ jobs:
           REG=346011888304.dkr.ecr.ap-northeast-2.amazonaws.com/tamnara/fe
           docker build -t $REG:latest -t $REG:${{ steps.meta.outputs.tag }} -f ./frontend/Dockerfile ./frontend
 
+
       - name: Push Docker image
         run: |
           REG=346011888304.dkr.ecr.ap-northeast-2.amazonaws.com/tamnara/fe
           docker push $REG:latest
           docker push $REG:${{ steps.meta.outputs.tag }}
-
 
   remote-deploy:
     name: SSH into Peered Instance and Deploy Frontend
