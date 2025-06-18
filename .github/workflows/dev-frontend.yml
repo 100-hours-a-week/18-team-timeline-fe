@@ -106,8 +106,7 @@ jobs:
      
       - name: Build Docker image
         run: |
-          run: |
-            docker build \
+          docker build \
                 --build-arg OTEL_EXPORTER_OTLP_ENDPOINT=${{ secrets.OTEL_EXPORTER_OTLP_ENDPOINT }} \
                 -t $REG:latest \
                 -t $REG:${{ steps.meta.outputs.tag }} \
