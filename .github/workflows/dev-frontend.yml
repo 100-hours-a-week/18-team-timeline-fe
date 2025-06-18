@@ -198,9 +198,11 @@ jobs:
 
               echo "ECR URI 확인: \$ECR_URI_FE"
               aws ecr get-login-password --region ap-northeast-2 \
-                | sudo docker login --username AWS --password-stdin \$ECR_URI_FE
-
-              # 기존 컨테이너 제거
+                | sudo docker login --username AWS --password-stdin $ECR_URI_FE
+              
+             sudo docker pull $ECR_URI_FE:latest
+              
+             # 기존 컨테이너 제거
               sudo docker ps -a -q --filter "name=dev-frontend" | grep -q . && sudo docker rm -f dev-frontend
 
               # 새 컨테이너 실행
