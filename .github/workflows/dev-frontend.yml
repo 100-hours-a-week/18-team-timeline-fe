@@ -121,7 +121,7 @@ jobs:
     env:
       TAG: ${{ github.sha }}
       ECR_URI_FE: ${{ secrets.DEV_ECR_URI_FE }}
-      FRONTEND_EC2_IP: ${{ secrets.FRONTEND_EC2_IP }}
+      FRONTEND_EC2_IP: ${{ secrets.DEV_FRONTEND_EC2_IP }}
       VITE_API_BASE_URL: ${{ secrets.DEV_VITE_API_BASE_URL }}
       VITE_FRONTEND_BASE_URL: ${{ secrets.DEV_VITE_FRONTEND_BASE_URL }}
 
@@ -162,7 +162,7 @@ jobs:
 
               # 새 컨테이너 실행
               sudo docker run -d --name dev-frontend \
-                -p 80:80 \
+                -p 3000:80 \
                 -e VITE_API_BASE_URL=\$VITE_API_BASE_URL \
                 -e VITE_FRONTEND_BASE_URL=\$VITE_FRONTEND_BASE_URL \
                 \$ECR_URI_FE:latest
