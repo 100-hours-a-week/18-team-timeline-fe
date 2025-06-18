@@ -149,8 +149,8 @@ jobs:
             VITE_FRONTEND_BASE_URL=${{ secrets.DEV_VITE_FRONTEND_BASE_URL }}
           script: |
             echo "🔄 피어링 인스턴스 접속 완료 - 프론트엔드 EC2로 SSH 진입"
-
-            echo "👉 연결 대상 IP: ${{ env.FRONTEND_EC2_IP }}"
+            FE_EC2_IP=$FRONTEND_EC2_IP
+            echo "👉 연결 대상 IP: $FE_EC2_IP"
 
             if [ ! -f ~/.ssh/backend_key.pem ]; then
               echo "❗ 프론트엔드 EC2 접속용 키가 없습니다: ~/.ssh/backend_key.pem"
@@ -158,7 +158,7 @@ jobs:
             fi
             chmod 400 ~/.ssh/backend_key.pem
 
-            ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/backend_key.pemubuntu@${{ env.FRONTEND_EC2_IP }} << EOF
+            ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/backend_key.pem ubuntu@${FRONTEND_EC2_IP} << EOF
               echo "🚀 프론트엔드 EC2에서 Docker Pull 및 컨테이너 실행 시작"
 
               echo "ECR URI 확인: \$ECR_URI_FE"
