@@ -3,7 +3,7 @@ import { useSearchParams, useNavigate } from 'react-router-dom'
 import { ENDPOINTS, ROUTES } from '@/constants/url'
 import { axiosInstance } from '@/lib/axios'
 import { PUMessage } from '@/constants/PU/puMessage'
-import { useAuthStore } from '@/stores/authStore'
+import { useAuthStore } from '@/stores/useAuthStore'
 
 export const KakaoCallback = () => {
   const [searchParams] = useSearchParams()
@@ -22,7 +22,7 @@ export const KakaoCallback = () => {
 
         if (res.status !== 200) {
           throw new Error(`로그인 실패: ${res.status}`)
-        }        
+        }
         console.log(res)
 
         if (!authHeader || !authHeader.startsWith('Bearer ')) {

@@ -19,6 +19,12 @@ export default {
         headerBackground: '#F2A359',
         headerLogo: '#EEEEEE',
         headerIcon: '#EEEEEE',
+        searchBarBg: '#FFFFFF',
+        searchBarIcon: '#EEEEEE',
+        keywordBoxBg: '#FFFFFF',
+        keywordBoxLine: '#EEEEEE',
+        keywordBg: '#F2A359',
+        keywordText: '#FFFFFF',
 
         // CC-002
         menuBackground: '#EEEEEE',
@@ -41,6 +47,20 @@ export default {
         // CC-004
         toastBg: '#2A4759',
         toastText: '#FFFFFF',
+
+        // CC-005
+        alarmBarBg: '#F9F9F9',
+        alarmBarMetaText: '#AAAAAA',
+        alarmBarHeader: '#FFFFFF',
+        alarmTabSelect: '#000000',
+        alarmTabNotSelect: '#AAAAAA',
+        alarmCardBg: '#FFFFFF',
+        alarmCardBorder: '#EEEEEE',
+        alarmCardHoverBg: '#F1EFEC',
+        alarmCardChecked: '#AAAAAA',
+        alarmCardTitle: '#2A4759',
+        alarmCardContent: '#4F4F4F',
+        alarmCardDate: '#4F4F4F',
 
         // PU
         puBg: '#FCFAF7',
@@ -83,6 +103,16 @@ export default {
 
         fabBgColor: '#000000',
         fabIconColor: '#FFFFFF',
+
+        // PV
+        pvBg: '#FCFAF7',
+        pollBoxBorder: '#DADADA',
+        pollOptionBg: '#F1EFEC',
+        pollOptionSelectBg: '#E3D8CE',
+        pollOptionText: '#000000',
+        radioBtnBorder: '#DADADA',
+        radioBtnBg: '#FFFFFF',
+        radioBtnCircle: '#F2A359',
       },
     },
   },

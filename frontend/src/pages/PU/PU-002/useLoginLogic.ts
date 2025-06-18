@@ -1,7 +1,7 @@
 import { useState, useEffect, type DetailedHTMLProps, type HTMLAttributes } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ROUTES, ENDPOINTS } from '@/constants/url'
-import { useRequestStore } from '@/stores/requestStore'
+import { useRequestStore } from '@/stores/useRequestStore'
 import { validateLogin } from '../utils/validateLogin'
 import { LoginMessage } from '@/constants/PU/loginMessage'
 

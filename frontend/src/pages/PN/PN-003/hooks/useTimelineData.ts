@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { API_BASE_URL } from '@/constants/url';
-import { useAuthStore } from '@/stores/authStore';
+import { useAuthStore } from '@/stores/useAuthStore';
 import type { NewsResponse } from '../types';
 
 // API 명세에 맞는 타입 정의
@@ -350,44 +350,86 @@ export const useTimelineData = ({ newsId }: UseTimelineDataProps): UseTimelineDa
   }, [fetchNewsData, checkAuth]);
 
   // 북마크 토글 핸들러
-  const handleToggleBookmark = async () => {
-    if (!newsId || !newsData) return Promise.reject(new Error('뉴스 데이터가 없습니다.'));
-    
-    // 숫자 ID 추출
-    // const numericId = newsId.replace(/\D/g, '');
-    
+  const handleToggleBookmark = async (): Promise<void> => {
+    if (!newsId) return Promise.reject(new Error('뉴스 ID가 없습니다.'));
+
+    // 로그인 여부 확인
+    checkAuth();
+    if (!isLoggedIn) {
+      return Promise.reject(new Error('로그인이 필요합니다.'));
+    }
+
+    // access-token 확보
+    const token = localStorage.getItem('token');
+    if (!token) return Promise.reject(new Error('인증 토큰이 없습니다. 다시 로그인해주세요.'));
+
+    const numericId = newsId.replace(/\D/g, '');
+    const safeApiUrl = API_BASE_URL.replace('localhost', '127.0.0.1');
+    const endpoint = `${safeApiUrl}/news/${numericId}/bookmark`;
+
     try {
       setIsUpdating(true);
-      
-      // 실제 API 호출 (백엔드 구현 후 활성화)
-      try {
-        // const response = await axios.post(`${API_BASE_URL}/news/${numericId}/bookmark`, {
-        //   bookmarked: !bookmarked
-        // });
-        
-        // API 성공 여부 확인 (실제 구현 시 주석 해제)
-        // if (response.data.success) {
-        //   setBookmarked(!bookmarked);
-        // } else {
-        //   return Promise.reject(new Error('북마크 업데이트에 실패했습니다.'));
-        // }
-        
-        // 개발 환경 임시 코드 (API 구현 전)
-        console.log('북마크 상태 토글:', !bookmarked);
-        setBookmarked(!bookmarked);
-        
-        // 성공 시 결과 반환
-        return Promise.resolve();
-      } catch (err) {
-        console.error('북마크 API 호출 오류:', err);
-        
-        // 개발 환경에서는 성공으로 처리 (API 구현 전)
-        setBookmarked(!bookmarked);
-        return Promise.resolve();
+
+      // 1) 북마크 추가 (POST)
+      if (!bookmarked) {
+        const res = await axios.post(
+          endpoint,
+          {},
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+            timeout: 10_000,
+          },
+        );
+
+        if (res.status === 201 && res.data.success) {
+          setBookmarked(true);
+          return;
+        }
       }
+
+      // 2) 북마크 해제 (DELETE)
+      else {
+        const res = await axios.delete(endpoint, {
+          headers: { Authorization: `Bearer ${token}` },
+          timeout: 10_000,
+        });
+
+        // 204 No Content
+        if (res.status === 204) {
+          setBookmarked(false);
+          return;
+        }
+      }
+
+      // 이외 응답은 모두 예외 처리
+      return Promise.reject(new Error('북마크 처리 중 알 수 없는 오류가 발생했습니다.'));
     } catch (err) {
-      console.error('북마크 토글 오류:', err);
-      return Promise.reject(err);
+      if (axios.isAxiosError(err) && err.response) {
+        const { status, data } = err.response;
+
+        switch (status) {
+          case 400:
+            return Promise.reject(new Error('요청 형식이 올바르지 않습니다.'));
+          case 401:
+            useAuthStore.getState().logout();
+            return Promise.reject(new Error('인증되지 않은 사용자입니다. 다시 로그인해주세요.'));
+          case 404:
+            return Promise.reject(new Error('요청하신 뉴스를 찾을 수 없습니다.'));
+          case 405:
+            return Promise.reject(new Error('허용되지 않은 HTTP 메서드입니다.'));
+          case 409:
+            return Promise.reject(new Error('이미 북마크된 뉴스입니다.'));
+          case 429:
+            return Promise.reject(new Error('요청이 너무 많습니다. 잠시 후 다시 시도해주세요.'));
+          default:
+            return Promise.reject(new Error(data?.message || '서버 오류가 발생했습니다.'));
+        }
+      }
+
+      return Promise.reject(new Error('북마크 처리 중 네트워크 오류가 발생했습니다.'));
     } finally {
       setIsUpdating(false);
     }

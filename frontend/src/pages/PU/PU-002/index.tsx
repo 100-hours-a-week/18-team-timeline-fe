@@ -1,5 +1,5 @@
 import { LoginForm } from './LoginForm'
-import { Wrapper } from '../components/layout/Wrapper'
+import { Wrapper } from '../../../components/layout/Wrapper'
 import { KaKaoButton } from '../components/ui/Button'
 import { LoginMessage } from '@/constants/PU/loginMessage'
 

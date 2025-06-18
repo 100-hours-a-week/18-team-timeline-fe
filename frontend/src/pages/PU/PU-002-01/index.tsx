@@ -1,5 +1,5 @@
 import { FindPasswordMessage } from '@/constants/PU/findPasswordMessage'
-import { Wrapper } from '../components/layout/Wrapper'
+import { Wrapper } from '../../../components/layout/Wrapper'
 import { FindPasswordForm } from './FindPasswordForm'
 
 export default function FindPasswordPage() {
