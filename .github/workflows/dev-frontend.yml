@@ -148,6 +148,9 @@ jobs:
             VITE_API_BASE_URL=${{ secrets.DEV_VITE_API_BASE_URL }}
             VITE_FRONTEND_BASE_URL=${{ secrets.DEV_VITE_FRONTEND_BASE_URL }}
           script: |
+            FRONTEND_EC2_IP=${{ secrets.DEV_FRONTEND_EC2_IP }}
+            ECR_URI_FE=${{ secrets.DEV_ECR_URI_FE }}
+            
             echo "🔄 피어링 인스턴스 접속 완료 - 프론트엔드 EC2로 SSH 진입"
             echo "👉 연결 대상 IP: $FRONTEND_EC2_IP"
 
@@ -157,7 +160,7 @@ jobs:
             fi
             chmod 400 ~/.ssh/backend_key.pem
 
-            ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/backend_key.pem ubuntu@${FRONTEND_EC2_IP} << EOF
+            ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/backend_key.pem ubuntu@$FRONTEND_EC2_IP << EOF
               echo "🚀 프론트엔드 EC2에서 Docker Pull 및 컨테이너 실행 시작"
 
               echo "ECR URI 확인: \$ECR_URI_FE"
@@ -170,6 +173,8 @@ jobs:
               # 새 컨테이너 실행
               sudo docker run -d --name dev-frontend \
                 -p 3000:80 \
+                -e ECR_URI_FE=\$ECR_URI_FE \
+                -e FRONTEND_EC2_IP=\$FRONTEND_EC2_IP \
                 -e VITE_API_BASE_URL=\$VITE_API_BASE_URL \
                 -e VITE_FRONTEND_BASE_URL=\$VITE_FRONTEND_BASE_URL \
                 \$ECR_URI_FE:latest
