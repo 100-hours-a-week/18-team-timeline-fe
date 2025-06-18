@@ -144,8 +144,8 @@ jobs:
           script: |
             echo "🔄 피어링 인스턴스 접속 완료 - 프론트엔드 EC2로 SSH 진입"
 
-            if [ ! -f ~/.ssh/frontend_key.pem ]; then
-              echo "❗ 프론트엔드 EC2 접속용 키가 없습니다: ~/.ssh/frontend_key.pem"
+            if [ ! -f ~/.ssh/backend_key.pem ]; then
+              echo "❗ 프론트엔드 EC2 접속용 키가 없습니다: ~/.ssh/backend_key.pem"
               exit 1
             fi
             chmod 400 ~/.ssh/backend_key.pem
