@@ -71,7 +71,7 @@ jobs:
     name: Docker Build & ECR Push (main only)
     needs: [frontend-ci, test]  # ✅ 두 job 모두 성공해야 실행됨
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/develop'
 
     permissions:
       id-token: write
@@ -116,7 +116,7 @@ jobs:
   remote-deploy:
     name: SSH into Peered Instance and Deploy Frontend
     runs-on: ubuntu-latest
-    needs: [frontend-ci, test]
+    needs: [frontend-ci, test,build-and-push]
 
     env:
       TAG: ${{ github.sha }}
