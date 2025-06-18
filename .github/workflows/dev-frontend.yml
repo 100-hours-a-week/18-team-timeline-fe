@@ -106,7 +106,10 @@ jobs:
      
       - name: Build Docker image
         run: |
-          docker build -t $REG:latest -t $REG:${{ steps.meta.outputs.tag }} -f ./frontend/Dockerfile ./frontend
+          docker build \
+          --build-arg OTEL_EXPORTER_OTLP_ENDPOINT=${{ secrets.OTEL_EXPORTER_OTLP_ENDPOINT }} \
+          -t $REG:latest -t $REG:${{ steps.meta.outputs.tag }} -f ./frontend/Dockerfile ./frontend
+          -f ./frontend/Dockerfile.dev ./frontend
 
       - name: Push Docker image
         run: |
@@ -138,7 +141,7 @@ jobs:
           envs: |
             TAG=${{ github.sha }}
             ECR_URI_FE=${{ secrets.DEV_ECR_URI_FE }}
-            FRONTEND_EC2_IP=${{ secrets.FRONTEND_EC2_IP }}
+            FRONTEND_EC2_IP=${{ secrets.DEV_FRONTEND_EC2_IP }}
             VITE_API_BASE_URL=${{ secrets.DEV_VITE_API_BASE_URL }}
             VITE_FRONTEND_BASE_URL=${{ secrets.DEV_VITE_FRONTEND_BASE_URL }}
           script: |
