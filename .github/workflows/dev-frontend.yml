@@ -148,9 +148,9 @@ jobs:
               echo "❗ 프론트엔드 EC2 접속용 키가 없습니다: ~/.ssh/frontend_key.pem"
               exit 1
             fi
-            chmod 400 ~/.ssh/frontend_key.pem
+            chmod 400 ~/.ssh/backend_key.pem
 
-            ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/frontend_key.pem ubuntu@$FRONTEND_EC2_IP << EOF
+            ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/backend_key.pem ubuntu@$FRONTEND_EC2_IP << EOF
               echo "🚀 프론트엔드 EC2에서 Docker Pull 및 컨테이너 실행 시작"
 
               echo "ECR URI 확인: \$ECR_URI_FE"
