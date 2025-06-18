@@ -200,7 +200,7 @@ jobs:
               aws ecr get-login-password --region ap-northeast-2 \
                 | sudo docker login --username AWS --password-stdin $ECR_URI_FE
               
-             sudo docker pull $ECR_URI_FE:latest
+              sudo docker pull $ECR_URI_FE:latest
               
              # 기존 컨테이너 제거
               sudo docker ps -a -q --filter "name=dev-frontend" | grep -q . && sudo docker rm -f dev-frontend
@@ -212,7 +212,7 @@ jobs:
                 -e FRONTEND_EC2_IP=\$FRONTEND_EC2_IP \
                 -e VITE_API_BASE_URL=\$VITE_API_BASE_URL \
                 -e VITE_FRONTEND_BASE_URL=\$VITE_FRONTEND_BASE_URL \
-                \$ECR_URI_FE:latest
+                $ECR_URI_FE:latest
 
               echo "✅ 프론트엔드 컨테이너 실행 완료"
             EOF
