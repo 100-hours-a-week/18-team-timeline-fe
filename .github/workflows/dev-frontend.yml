@@ -136,11 +136,11 @@ jobs:
           username: ${{ secrets.PEER_USER }}
           key: ${{ secrets.PEER_SSH_KEY }}
           envs: |
-            TAG,
-            ECR_URI_FE,
-            FRONTEND_EC2_IP,
-            VITE_API_BASE_URL,
-            VITE_FRONTEND_BASE_URL
+            TAG=${{ github.sha }}
+            ECR_URI_FE=${{ secrets.DEV_ECR_URI_FE }}
+            FRONTEND_EC2_IP=${{ secrets.FRONTEND_EC2_IP }}
+            VITE_API_BASE_URL=${{ secrets.DEV_VITE_API_BASE_URL }}
+            VITE_FRONTEND_BASE_URL=${{ secrets.DEV_VITE_FRONTEND_BASE_URL }}
           script: |
             echo "🔄 피어링 인스턴스 접속 완료 - 프론트엔드 EC2로 SSH 진입"
 
