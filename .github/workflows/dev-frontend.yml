@@ -4,72 +4,156 @@ on:
   push:
     branches:
       - develop
-jobs:
-  # 0. 정밀 CI 테스트 (브랜치 전체)
-  test:
-    name: Frontend Type Check, Lint, Build & Unit Test
-    runs-on: ubuntu-latest
+permissions:
+  id-token: write  # ✅ OIDC 인증에 반드시 필요
+  contents: read
+  checks: write
+  pull-requests: write
 
+jobs:
+  # 1. 의존성 설치
+  install-deps:
+    name: Install Dependencies
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: frontend
-
     steps:
       - name: Checkout source code
         uses: actions/checkout@v3
-
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 22
-
       - name: Install dependencies
         run: npm ci
 
-      - name: Type Check
+  # 2. 타입 검사
+  type-check:
+    name: Type Check
+    runs-on: ubuntu-latest
+    needs: install-deps
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+      - name: Install dependencies
+        run: npm ci
+      - name: Run type check
         run: npx tsc --noEmit
 
-      #- name: Lint
-      #  run: npm run lint
-
-      - name: Build
-        run: npm run build
-
-      - name: Unit Test
-      #  run: npm run test
-        run: echo "No Unit test defined"
-
-  # 1. 간단 CI (기존 유지)
-  frontend-ci:
-    name: Frontend Build & Test
+  # 3. 프론트 빌드
+  build:
+    name: Build Frontend
     runs-on: ubuntu-latest
-
+    needs: type-check
+    defaults:
+      run:
+        working-directory: frontend
     steps:
-      - name: Checkout source code
+      - name: Checkout
         uses: actions/checkout@v3
-
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 22
-
       - name: Install dependencies
         run: npm ci
-        working-directory: frontend
+      - name: Build project
+        run: npm run build
 
-      - name: Run tests (optional)
-        run: npm run test || echo "Test skipped"
+  # 4. 유닛 테스트
+  unit-test:
+    name: Unit Test
+    runs-on: ubuntu-latest
+    needs: build
+    defaults:
+      run:
         working-directory: frontend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+      - name: Install dependencies
+        run: npm ci
+      - name: Run Unit Tests
+        run: npm run test || echo "No Unit Test Defined"
 
-      - name: Create .env file from GitHub Secrets
-        run: |
-          echo "VITE_API_BASE_URL=${{ secrets.VITE_API_BASE_URL }}" >> frontend/.env
-          echo "VITE_FRONTEND_BASE_URL=${{ secrets.VITE_FRONTEND_BASE_URL }}" >> frontend/.env
+# jobs:
+#   # 0. 정밀 CI 테스트 (브랜치 전체)
+#   test:
+#     name: Frontend Type Check, Lint, Build & Unit Test
+#     runs-on: ubuntu-latest
+
+#     defaults:
+#       run:
+#         working-directory: frontend
+
+#     steps:
+#       - name: Checkout source code
+#         uses: actions/checkout@v3
+
+#       - name: Setup Node.js
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: 22
+
+#       - name: Install dependencies
+#         run: npm ci
+
+#       - name: Type Check
+#         run: npx tsc --noEmit
+
+#       #- name: Lint
+#       #  run: npm run lint
+
+#       - name: Build
+#         run: npm run build
+
+#       - name: Unit Test
+#       #  run: npm run test
+#         run: echo "No Unit test defined"
+
+#   # 1. 간단 CI (기존 유지)
+#   frontend-ci:
+#     name: Frontend Build & Test
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Checkout source code
+#         uses: actions/checkout@v3
+
+#       - name: Setup Node.js
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: 22
+
+#       - name: Install dependencies
+#         run: npm ci
+#         working-directory: frontend
+
+#       - name: Run tests (optional)
+#         run: npm run test || echo "Test skipped"
+#         working-directory: frontend
+
+#       - name: Create .env file from GitHub Secrets
+#         run: |
+#           echo "VITE_API_BASE_URL=${{ secrets.VITE_API_BASE_URL }}" >> frontend/.env
+#           echo "VITE_FRONTEND_BASE_URL=${{ secrets.VITE_FRONTEND_BASE_URL }}" >> frontend/.env
 
   # 2. ECR Push 
   build-and-push:
     name: Docker Build & ECR Push (main only)
-    needs: [frontend-ci, test]  # ✅ 두 job 모두 성공해야 실행됨
+    needs: unit-test
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/develop'
 
@@ -80,10 +164,11 @@ jobs:
       pull-requests: write
     
     env:
-      REG: ${{ secrets.DEV_ECR_URI_FE }}
+        REG: ${{ secrets.DEV_ECR_URI_FE }}
+
 
     steps:
-      - name: Checkout source code
+      - name: Checkout
         uses: actions/checkout@v3
 
       - name: Configure AWS credentials (OIDC)
@@ -92,12 +177,13 @@ jobs:
           role-to-assume: arn:aws:iam::346011888304:role/github-action-role
           aws-region: ap-northeast-2
 
-      - name: Create .env file from GitHub Secrets
+      - name: Create .env file from secrets
         run: |
-          echo "VITE_API_BASE_URL=${{ secrets.VITE_API_BASE_URL }}" >> frontend/.env
-          echo "VITE_FRONTEND_BASE_URL=${{ secrets.VITE_FRONTEND_BASE_URL }}" >> frontend/.env
+          echo "VITE_API_BASE_URL=${{ secrets.DEV_VITE_API_BASE_URL }}" >> frontend/.env
+          echo "VITE_FRONTEND_BASE_URL=${{ secrets.DEV_VITE_FRONTEND_BASE_URL }}" >> frontend/.env
+          echo "VITE_OTEL_EXPORTER_OTLP_ENDPOINT=${{ secrets.OTEL_EXPORTER_OTLP_ENDPOINT }}" >> frontend/.env
 
-      - name: Login to Amazon ECR
+      - name: Login to ECR
         uses: aws-actions/amazon-ecr-login@v1
 
       - name: Get short commit SHA
@@ -119,10 +205,55 @@ jobs:
           docker push $REG:latest
           docker push $REG:${{ steps.meta.outputs.tag }}
 
+  
+    # env:
+    #   REG: ${{ secrets.DEV_ECR_URI_FE }}
+
+    # steps:
+    #   - name: Checkout source code
+    #     uses: actions/checkout@v3
+
+    #   - name: Configure AWS credentials (OIDC)
+    #     uses: aws-actions/configure-aws-credentials@v2
+    #     with:
+    #       role-to-assume: arn:aws:iam::346011888304:role/github-action-role
+    #       aws-region: ap-northeast-2
+
+    #   - name: Create .env file from GitHub Secrets
+    #     run: |
+    #       echo "VITE_API_BASE_URL=${{ secrets.VITE_API_BASE_URL }}" >> frontend/.env
+    #       echo "VITE_FRONTEND_BASE_URL=${{ secrets.VITE_FRONTEND_BASE_URL }}" >> frontend/.env
+
+    #   - name: Login to Amazon ECR
+    #     uses: aws-actions/amazon-ecr-login@v1
+
+    #   - name: Get short commit SHA
+    #     id: meta
+    #     run: echo "tag=$(echo $GITHUB_SHA | cut -c1-7)" >> "$GITHUB_OUTPUT"
+     
+    #   - name: Build Docker image
+    #     run: |
+    #       docker build \
+    #             --build-arg OTEL_EXPORTER_OTLP_ENDPOINT=${{ secrets.OTEL_EXPORTER_OTLP_ENDPOINT }} \
+    #             -t $REG:latest \
+    #             -t $REG:${{ steps.meta.outputs.tag }} \
+    #             -f ./frontend/Dockerfile.dev \
+    #             ./frontend
+
+
+    #   - name: Push Docker image
+    #     run: |
+    #       docker push $REG:latest
+    #       docker push $REG:${{ steps.meta.outputs.tag }}
+
+  # ─────────────────────────────────────────────────────
+  # 3. 원격 EC2 인스턴스에 SSH 배포 (dev-deploy.sh는 이미지에 포함됨)
+  # ─────────────────────────────────────────────────────
+
   remote-deploy:
     name: SSH into Peered Instance and Deploy Frontend
     runs-on: ubuntu-latest
-    needs: [frontend-ci, test,build-and-push]
+    needs: build-and-push
 
     env:
       TAG: ${{ github.sha }}
@@ -142,14 +273,19 @@ jobs:
           username: ${{ secrets.PEER_USER }}
           key: ${{ secrets.PEER_SSH_KEY }}
           envs: |
-            TAG=${{ github.sha }}
-            ECR_URI_FE=${{ secrets.DEV_ECR_URI_FE }}
-            FRONTEND_EC2_IP=${{ secrets.DEV_FRONTEND_EC2_IP }}
-            VITE_API_BASE_URL=${{ secrets.DEV_VITE_API_BASE_URL }}
-            VITE_FRONTEND_BASE_URL=${{ secrets.DEV_VITE_FRONTEND_BASE_URL }}
+            TAG,
+            ECR_URI_FE,
+            FRONTEND_EC2_IP,
+            VITE_API_BASE_URL,
+            VITE_FRONTEND_BASE_URL
           script: |
             FRONTEND_EC2_IP=${{ secrets.DEV_FRONTEND_EC2_IP }}
             ECR_URI_FE=${{ secrets.DEV_ECR_URI_FE }}
+
+            ECR_URI_FE = $ECR_URI_FE
+            FRONTEND_EC2_IP = $FRONTEND_EC2_IP
+            VITE_API_BASE_URL = $VITE_API_BASE_URL
+            VITE_FRONTEND_BASE_URL = $VITE_FRONTEND_BASE_URL
             
             echo "🔄 피어링 인스턴스 접속 완료 - 프론트엔드 EC2로 SSH 진입"
             echo "👉 연결 대상 IP: $FRONTEND_EC2_IP"
