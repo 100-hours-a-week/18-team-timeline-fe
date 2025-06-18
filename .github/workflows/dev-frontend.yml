@@ -149,7 +149,7 @@ jobs:
             VITE_FRONTEND_BASE_URL=${{ secrets.DEV_VITE_FRONTEND_BASE_URL }}
           script: |
             echo "🔄 피어링 인스턴스 접속 완료 - 프론트엔드 EC2로 SSH 진입"
-            echo "👉 연결 대상 IP: $FRONTEND_EC2_IP""
+            echo "👉 연결 대상 IP: $FRONTEND_EC2_IP"
 
             if [ ! -f ~/.ssh/backend_key.pem ]; then
               echo "❗ 프론트엔드 EC2 접속용 키가 없습니다: ~/.ssh/backend_key.pem"
