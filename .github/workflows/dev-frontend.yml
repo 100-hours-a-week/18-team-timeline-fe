@@ -106,10 +106,14 @@ jobs:
      
       - name: Build Docker image
         run: |
-          docker build \
-          --build-arg OTEL_EXPORTER_OTLP_ENDPOINT=${{ secrets.OTEL_EXPORTER_OTLP_ENDPOINT }} \
-          -t $REG:latest -t $REG:${{ steps.meta.outputs.tag }} -f ./frontend/Dockerfile ./frontend
-          -f ./frontend/Dockerfile.dev ./frontend
+          run: |
+            docker build \
+                --build-arg OTEL_EXPORTER_OTLP_ENDPOINT=${{ secrets.OTEL_EXPORTER_OTLP_ENDPOINT }} \
+                -t $REG:latest \
+                -t $REG:${{ steps.meta.outputs.tag }} \
+                -f ./frontend/Dockerfile.dev \
+                ./frontend
+
 
       - name: Push Docker image
         run: |
