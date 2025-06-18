@@ -165,17 +165,18 @@ jobs:
 
       - name: SSH into Peered EC2 and deploy to Frontend EC2
         uses: appleboy/ssh-action@v1.0.3
+
         with:
-         host: ${{ secrets.PEER_HOST }}
-         username: ${{ secrets.PEER_USER }}
-         key: ${{ secrets.PEER_SSH_KEY }}
-         envs: |
+          host: ${{ secrets.PEER_HOST }}
+          username: ${{ secrets.PEER_USER }}
+          key: ${{ secrets.PEER_SSH_KEY }}
+          envs: |
             TAG
             ECR_URI_FE
             FRONTEND_EC2_IP
             VITE_API_BASE_URL
             VITE_FRONTEND_BASE_URL
-         script: |
+          script: |
             echo "🔄 피어링 인스턴스 접속 완료 - 프론트엔드 EC2로 SSH 진입"
             echo "👉 연결 대상 IP: $FRONTEND_EC2_IP"
             echo "👉 ECR URI: $ECR_URI_FE"
@@ -199,6 +200,8 @@ jobs:
                 -p 3000:80 \
                 -e VITE_API_BASE_URL=\$VITE_API_BASE_URL \
                 -e VITE_FRONTEND_BASE_URL=\$VITE_FRONTEND_BASE_URL \
+                -e FRONTEND_EC2_IP=\$FRONTEND_EC2_IP \
+                -e ECR_URI_FE=\$ECR_URI_FE \
                 \$ECR_URI_FE:latest
 
                 echo "✅ 프론트엔드 컨테이너 실행 완료"
