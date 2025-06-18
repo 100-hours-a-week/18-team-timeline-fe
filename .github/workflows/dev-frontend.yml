@@ -153,11 +153,11 @@ jobs:
     needs: build-and-push
 
     env:
-        TAG: ${{ github.sha }}
-        ECR_URI_FE: ${{ secrets.DEV_ECR_URI_FE }}
-        FRONTEND_EC2_IP: ${{ secrets.DEV_FRONTEND_EC2_IP }}
-        VITE_API_BASE_URL: ${{ secrets.DEV_VITE_API_BASE_URL }}
-        VITE_FRONTEND_BASE_URL: ${{ secrets.DEV_VITE_FRONTEND_BASE_URL }}
+      TAG: ${{ github.sha }}
+      ECR_URI_FE: ${{ secrets.DEV_ECR_URI_FE }}
+      FRONTEND_EC2_IP: ${{ secrets.DEV_FRONTEND_EC2_IP }}
+      VITE_API_BASE_URL: ${{ secrets.DEV_VITE_API_BASE_URL }}
+      VITE_FRONTEND_BASE_URL: ${{ secrets.DEV_VITE_FRONTEND_BASE_URL }}
 
     steps:
       - name: Checkout source code
@@ -165,7 +165,6 @@ jobs:
 
       - name: SSH into Peered EC2 and deploy to Frontend EC2
         uses: appleboy/ssh-action@v1.0.3
-
         with:
           host: ${{ secrets.PEER_HOST }}
           username: ${{ secrets.PEER_USER }}
@@ -177,101 +176,42 @@ jobs:
             VITE_API_BASE_URL
             VITE_FRONTEND_BASE_URL
           script: |
+            FRONTEND_EC2_IP=${{ secrets.DEV_FRONTEND_EC2_IP }}
+            ECR_URI_FE=${{ secrets.DEV_ECR_URI_FE }}
+
+            ECR_URI_FE = $ECR_URI_FE
+            FRONTEND_EC2_IP = $FRONTEND_EC2_IP
+            VITE_API_BASE_URL = $VITE_API_BASE_URL
+            VITE_FRONTEND_BASE_URL = $VITE_FRONTEND_BASE_URL
+            
             echo "🔄 피어링 인스턴스 접속 완료 - 프론트엔드 EC2로 SSH 진입"
             echo "👉 연결 대상 IP: $FRONTEND_EC2_IP"
-            echo "👉 ECR URI: $ECR_URI_FE"
 
             if [ ! -f ~/.ssh/backend_key.pem ]; then
-                echo "❗ 프론트엔드 EC2 접속용 키가 없습니다: ~/.ssh/backend_key.pem"
-                exit 1
+              echo "❗ 프론트엔드 EC2 접속용 키가 없습니다: ~/.ssh/backend_key.pem"
+              exit 1
             fi
             chmod 400 ~/.ssh/backend_key.pem
 
-            ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/backend_key.pem ubuntu@$FRONTEND_EC2_IP << 'EOF'
-                echo "🚀 프론트엔드 EC2에서 Docker Pull 및 컨테이너 실행 시작"
+            ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/backend_key.pem ubuntu@$FRONTEND_EC2_IP << EOF
+              echo "🚀 프론트엔드 EC2에서 Docker Pull 및 컨테이너 실행 시작"
 
-                echo "ECR URI 확인: \$ECR_URI_FE"
-                aws ecr get-login-password --region ap-northeast-2 \
+              echo "ECR URI 확인: \$ECR_URI_FE"
+              aws ecr get-login-password --region ap-northeast-2 \
                 | sudo docker login --username AWS --password-stdin \$ECR_URI_FE
 
-                sudo docker ps -a -q --filter "name=dev-frontend" | grep -q . && sudo docker rm -f dev-frontend
+              # 기존 컨테이너 제거
+              sudo docker ps -a -q --filter "name=dev-frontend" | grep -q . && sudo docker rm -f dev-frontend
 
-                sudo docker run -d --name dev-frontend \
+              # 새 컨테이너 실행
+              sudo docker run -d --name dev-frontend \
                 -p 3000:80 \
+                -e ECR_URI_FE=\$ECR_URI_FE \
+                -e FRONTEND_EC2_IP=\$FRONTEND_EC2_IP \
                 -e VITE_API_BASE_URL=\$VITE_API_BASE_URL \
                 -e VITE_FRONTEND_BASE_URL=\$VITE_FRONTEND_BASE_URL \
-                -e FRONTEND_EC2_IP=\$FRONTEND_EC2_IP \
-                -e ECR_URI_FE=\$ECR_URI_FE \
                 \$ECR_URI_FE:latest
 
-                echo "✅ 프론트엔드 컨테이너 실행 완료"
+              echo "✅ 프론트엔드 컨테이너 실행 완료"
             EOF
-
-#   remote-deploy:
-#     name: SSH into Peered Instance and Deploy Frontend
-#     runs-on: ubuntu-latest
-#     needs: build-and-push
-
-#     env:
-#       TAG: ${{ github.sha }}
-#       ECR_URI_FE: ${{ secrets.DEV_ECR_URI_FE }}
-#       FRONTEND_EC2_IP: ${{ secrets.DEV_FRONTEND_EC2_IP }}
-#       VITE_API_BASE_URL: ${{ secrets.DEV_VITE_API_BASE_URL }}
-#       VITE_FRONTEND_BASE_URL: ${{ secrets.DEV_VITE_FRONTEND_BASE_URL }}
-
-#     steps:
-#       - name: Checkout source code
-#         uses: actions/checkout@v3
-
-#       - name: SSH into Peered EC2 and deploy to Frontend EC2
-#         uses: appleboy/ssh-action@v1.0.3
-#         with:
-#           host: ${{ secrets.PEER_HOST }}
-#           username: ${{ secrets.PEER_USER }}
-#           key: ${{ secrets.PEER_SSH_KEY }}
-#           envs: |
-#             TAG
-#             ECR_URI_FE
-#             FRONTEND_EC2_IP
-#             VITE_API_BASE_URL
-#             VITE_FRONTEND_BASE_URL
-#           script: |
-#             FRONTEND_EC2_IP=${{ secrets.DEV_FRONTEND_EC2_IP }}
-#             ECR_URI_FE=${{ secrets.DEV_ECR_URI_FE }}
-
-#             ECR_URI_FE = $ECR_URI_FE
-#             FRONTEND_EC2_IP = $FRONTEND_EC2_IP
-#             VITE_API_BASE_URL = $VITE_API_BASE_URL
-#             VITE_FRONTEND_BASE_URL = $VITE_FRONTEND_BASE_URL
-            
-#             echo "🔄 피어링 인스턴스 접속 완료 - 프론트엔드 EC2로 SSH 진입"
-#             echo "👉 연결 대상 IP: $FRONTEND_EC2_IP"
-
-#             if [ ! -f ~/.ssh/backend_key.pem ]; then
-#               echo "❗ 프론트엔드 EC2 접속용 키가 없습니다: ~/.ssh/backend_key.pem"
-#               exit 1
-#             fi
-#             chmod 400 ~/.ssh/backend_key.pem
-
-#             ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/backend_key.pem ubuntu@$FRONTEND_EC2_IP << EOF
-#               echo "🚀 프론트엔드 EC2에서 Docker Pull 및 컨테이너 실행 시작"
-
-#               echo "ECR URI 확인: \$ECR_URI_FE"
-#               aws ecr get-login-password --region ap-northeast-2 \
-#                 | sudo docker login --username AWS --password-stdin \$ECR_URI_FE
-
-#               # 기존 컨테이너 제거
-#               sudo docker ps -a -q --filter "name=dev-frontend" | grep -q . && sudo docker rm -f dev-frontend
-
-#               # 새 컨테이너 실행
-#               sudo docker run -d --name dev-frontend \
-#                 -p 3000:80 \
-#                 -e ECR_URI_FE=\$ECR_URI_FE \
-#                 -e FRONTEND_EC2_IP=\$FRONTEND_EC2_IP \
-#                 -e VITE_API_BASE_URL=\$VITE_API_BASE_URL \
-#                 -e VITE_FRONTEND_BASE_URL=\$VITE_FRONTEND_BASE_URL \
-#                 \$ECR_URI_FE:latest
-
-#               echo "✅ 프론트엔드 컨테이너 실행 완료"
-#             EOF
           
