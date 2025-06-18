@@ -1,6 +1,5 @@
 import type { DetailedHTMLProps, HTMLAttributes } from 'react'
 import { Text } from '@/components/ui/Text'
-import clsx from 'node_modules/clsx/clsx.mjs'
 
 type Option = {
   id: number
