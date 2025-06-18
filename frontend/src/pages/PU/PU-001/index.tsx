@@ -1,4 +1,4 @@
-import { Wrapper } from '../components/layout/Wrapper'
+import { Wrapper } from '../../../components/layout/Wrapper'
 import { KaKaoButton } from '../components/ui/Button'
 import { SignUpForm } from './SignUpForm'
 

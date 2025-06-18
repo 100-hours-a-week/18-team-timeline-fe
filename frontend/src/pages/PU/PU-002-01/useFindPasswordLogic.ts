@@ -1,6 +1,6 @@
 import { useState, useEffect, type DetailedHTMLProps, type HTMLAttributes } from 'react'
 import { ENDPOINTS } from '@/constants/url'
-import { useRequestStore } from '@/stores/requestStore'
+import { useRequestStore } from '@/stores/useRequestStore'
 import { validateFindPassword } from '../utils/validateFindPassword'
 import { FindPasswordMessage } from '@/constants/PU/findPasswordMessage'
 

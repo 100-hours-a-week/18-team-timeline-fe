@@ -4,10 +4,10 @@ import { Toast } from '@/components/ui/Toast';
 import TimelineHeader from './TimelineHeader';
 import TimelineContainer from './TimelineContainer';
 import { useTimelineData } from './hooks/useTimelineData';
-import { useAuthStore } from '@/stores/authStore';
+import { useAuthStore } from '@/stores/useAuthStore';
 import { useToast } from './hooks/useToast';
 import { useComments } from './hooks/useComments'; // useComments 훅 import
-import { useRequestStore } from '@/stores/requestStore';
+import { useRequestStore } from '@/stores/useRequestStore';
 import { ENDPOINTS } from '@/constants/url';
 import SentimentAnalysis from './SentimentAnalysis';
 import CommentSection from './CommentSection';
@@ -69,8 +69,8 @@ export default function NewsDetail() {
     toggleSources,
     isUpdating,
     isUpdateAvailable,
-    // handleToggleBookmark,
-    // handleShare,
+    handleToggleBookmark,
+    handleShare,
     handleTimelineUpdate,
     formattedTimeline
   } = useTimelineData({ newsId });
@@ -102,24 +102,20 @@ export default function NewsDetail() {
   // 북마크 토글 핸들러 (토스트 메시지 추가)
   const onToggleBookmark = async () => {
     try {
-      // await handleToggleBookmark();
-      // showToastMessage(bookmarked ? '북마크가 해제되었습니다.' : '북마크에 추가되었습니다.');
-      showToastMessage('업데이트 예정입니다.');
+      await handleToggleBookmark();
+      showToastMessage(bookmarked ? '북마크가 해제되었습니다.' : '북마크에 추가되었습니다.');
     } catch (err) {
-      // showToastMessage('북마크 업데이트에 실패했습니다.');
-      showToastMessage('업데이트 예정입니다.');
+      showToastMessage((err as Error).message);
     }
   };
 
   // 공유하기 핸들러 (토스트 메시지 추가)
   const onShare = async () => {
     try {
-      // await handleShare();
-      // showToastMessage('URL이 복사되었습니다!');
-      showToastMessage('업데이트 예정입니다.');
+      await handleShare();
+      showToastMessage('URL이 복사되었습니다!');
     } catch (err) {
-      // showToastMessage('URL 복사에 실패했습니다.');
-      showToastMessage('업데이트 예정입니다.');
+      showToastMessage('URL 복사에 실패했습니다.');
     }
   };
 
