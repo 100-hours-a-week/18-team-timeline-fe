@@ -27,8 +27,8 @@ export const AlarmCard = ({
   const navigate = useNavigate()
 
   const handleNavigate = () => {
-    if (targetType && targetId !== undefined) {
-      navigate(`/${targetType}/${targetId}`)
+    if (targetType) {
+      navigate(targetId != null ? `/${targetType.toLowerCase()}/${targetId}` : `/${targetType.toLowerCase()}`)
     }
   }
 
