@@ -20,7 +20,7 @@ export const ROUTES = {
   getResetPasswordPath: (token: string) => `/reset-password?token=${token}`,
   SEARCH_RESULTS: '/search-results',
   NEWS_DETAIL: '/news/:id',
-  getNewsDetailPath: (id: number) => `/news/${id}`,
+  getNewsDetailPath: (id: string) => `/news/${id}`,
   POLL:`/polls`,
 }
 
@@ -42,35 +42,22 @@ export const ENDPOINTS = {
   CHECK_TOKEN_VALID: (token: string) => `/auth/password-reset-tokens/${token}`,
   RESET_PASSWORD_LOGOUT: (token: string) => `/auth/password-reset-tokens/${token}/reset`,
   RESET_PASSWORD_LOGIN: '/users/me/password',
+  
   NEWS: '/news',
   NEWS_HOTISSUE: '/news/hotissue',
-  NEWS_DETAIL: '/news/:id',
+  NEWS_DETAIL: (id: string) => `/news/${id}`,
+  NEWS_SEARCH: (tags: string[], offset?: number) => {
+    const params = new URLSearchParams()
+    tags.forEach(tag => params.append('tags', tag))
+    if (offset !== undefined) {
+      params.append('offset', String(offset))
+    }
+    return `/news/search?${params.toString()}`
+  },
   BOOKMARK: '/news/:id/bookmark',
   COMMENT: '/news/:id/comments',
   POLL_FETCH: `/polls`,
   POLL_SUBMIT: `/polls/vote`,
-
-  // 뉴스
-  getNewsOffsetURL: (category?: string, offset: number = 0) => {
-    const params = new URLSearchParams()
-    if (category) params.append('category', category)
-    params.append('offset', offset.toString())
-    return `/news?${params.toString()}`
-  },
-
-  getNewsDetailPath: (id: number) => `/news/${id}`,
-
-  // 북마크
-  getBookmarkURL: (id: number) => `/news/${id}/bookmark`,
-
-  // 댓글
-  getCommentOffsetURL: (newsId: number, offset: number = 0) => {
-    const params = new URLSearchParams()
-    params.append('offset', offset.toString())
-    return `/news/${newsId}/comments?${params.toString()}`
-  },
-
-  getCommentURL: (id: number) => `/news/${id}/comments`,
 }
 
 export const INQUIRY_URL =

@@ -89,21 +89,6 @@ export default {
         navText: '#2A4759',
         navTextHover: '#F2A359',
 
-        // PN
-        pnBgColor: '#FFFFFF',
-        newsCardColor: '#DADADA',
-        newsCardSelectColor: '#9A9A9A',
-        newsCardTitleColor: '#000000',
-        newsCardSummaryColor: '#000000',
-        newsCardMetaTextColor: '#9A9A9A',
-
-        categoryBgColor: '#000000',
-        categoryTextInactiveColor: '#AAAAAA',
-        categoryTextActiveColor: '#000000',
-
-        fabBgColor: '#000000',
-        fabIconColor: '#FFFFFF',
-
         // PV
         pvBg: '#FCFAF7',
         pollBoxBorder: '#DADADA',
@@ -113,6 +98,18 @@ export default {
         radioBtnBorder: '#DADADA',
         radioBtnBg: '#FFFFFF',
         radioBtnCircle: '#F2A359',
+
+        // PN
+        pnBtnActiveBg: '#2A4759',
+        pnBtnHoverBg: '#577F98',
+        pnBtnInactiveBg: '#A3ACB2',
+        pnBtnInactiveText: '#ECEDED',
+        newsCardBg: '#FFFFFF',
+        newsCardBorder: '#EEEEEE',
+        newsCardTitle: '#2A4759',
+        newsCardSummary: '#717171',
+        newsCardTime: '#F2A359',
+        createNewsBtnBoxBorder: '#EEEEEE',
       },
     },
   },

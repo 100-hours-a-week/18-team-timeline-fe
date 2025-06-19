@@ -1,16 +1,16 @@
-import React, { useRef, useEffect } from 'react';
-import type { Comment } from './types';
-import { formatRelativeTime } from '@/pages/PN/utils/dateUtils';
+import React, { useRef, useEffect } from 'react'
+import type { Comment } from './types'
+import { formatRelativeTime } from '@/pages/PN/utils/formatRelativeTime'
 
 interface CommentSectionProps {
-  comments: Comment[];
-  commentText: string;
-  isLoggedIn: boolean;
-  hasMore: boolean;
-  onCommentChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onSubmitComment: () => void;
-  onDeleteComment: (commentId: string) => void;
-  commentsEndRef: React.RefObject<HTMLDivElement | null>;
+  comments: Comment[]
+  commentText: string
+  isLoggedIn: boolean
+  hasMore: boolean
+  onCommentChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  onSubmitComment: () => void
+  onDeleteComment: (commentId: string) => void
+  commentsEndRef: React.RefObject<HTMLDivElement | null>
 }
 
 const CommentSection: React.FC<CommentSectionProps> = ({
@@ -23,20 +23,18 @@ const CommentSection: React.FC<CommentSectionProps> = ({
   onDeleteComment,
   commentsEndRef,
 }) => {
-  const commentInputRef = useRef<HTMLInputElement>(null);
-  const listRef = useRef<HTMLDivElement>(null); // 댓글 리스트 컨테이너
+  const commentInputRef = useRef<HTMLInputElement>(null)
+  const listRef = useRef<HTMLDivElement>(null) // 댓글 리스트 컨테이너
 
   /* 댓글을 오래된 순(asc)으로 정렬 */
-  const sortedComments = [...comments].sort(
-    (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
-  );
+  const sortedComments = [...comments].sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
 
   /* 최초 렌더링 및 댓글 수 변경 시 스크롤을 최하단으로 맞춤 */
   useEffect(() => {
     if (listRef.current) {
-      listRef.current.scrollTop = listRef.current.scrollHeight;
+      listRef.current.scrollTop = listRef.current.scrollHeight
     }
-  }, [sortedComments.length]);
+  }, [sortedComments.length])
 
   return (
     // 최대 높이를 제한하고, 내부에서 스크롤되는 컨테이너
@@ -45,10 +43,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({
       <h3 className="text-lg font-bold px-4 pt-4 flex-shrink-0">댓글</h3>
 
       {/* 댓글 목록 (flex-1로 남은 영역 차지, 내부 스크롤) */}
-      <div
-        ref={listRef}
-        className="flex-1 overflow-y-auto space-y-4 px-4 pb-4 mt-2"
-      >
+      <div ref={listRef} className="flex-1 overflow-y-auto space-y-4 px-4 pb-4 mt-2">
         {sortedComments.map((comment) => (
           <div key={comment.id} className="bg-gray-300 p-4 rounded-xl shadow-sm">
             <div className="flex justify-between items-center mb-1 text-sm">
@@ -63,9 +58,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({
                   </button>
                 )}
               </div>
-              <span className="text-xs text-gray-700">
-                {formatRelativeTime(comment.createdAt)}
-              </span>
+              <span className="text-xs text-gray-700">{formatRelativeTime(comment.createdAt)}</span>
             </div>
             <p className="text-sm leading-relaxed break-words">{comment.content}</p>
           </div>
@@ -75,11 +68,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({
         <div ref={commentsEndRef} />
 
         {/* 무한 스크롤 로더 */}
-        {hasMore && (
-          <div className="h-10 flex justify-center items-center text-gray-300">
-            댓글 불러오는 중...
-          </div>
-        )}
+        {hasMore && <div className="h-10 flex justify-center items-center text-gray-300">댓글 불러오는 중...</div>}
       </div>
 
       {/* 댓글 입력 영역 (sticky 하단) */}
@@ -121,7 +110,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default CommentSection;
+export default CommentSection
