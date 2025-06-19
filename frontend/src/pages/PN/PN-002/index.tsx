@@ -30,7 +30,7 @@ export default function SearchResultPage() {
   }, [tags])
 
   return (
-    <div className="wrap bg-pvBg">
+    <div className="wrap bg-pvBg overflow-y-auto">
       <CreateNewsBtnBox
         isButtonActive={isButtonActive}
         isLoading={isLoading}
