@@ -20,7 +20,7 @@ export const ROUTES = {
   getResetPasswordPath: (token: string) => `/reset-password?token=${token}`,
   SEARCH_RESULTS: '/search-results',
   NEWS_DETAIL: '/news/:id',
-  getNewsDetailPath: (id: number) => `/news/${id}`,
+  getNewsDetailPath: (id: string) => `/news/${id}`,
   POLL:`/polls`,
 }
 
@@ -45,7 +45,7 @@ export const ENDPOINTS = {
   
   NEWS: '/news',
   NEWS_HOTISSUE: '/news/hotissue',
-  NEWS_DETAIL: (id: number) => `/news/${id}`,
+  NEWS_DETAIL: (id: string) => `/news/${id}`,
   NEWS_SEARCH: (tags: string[], offset?: number) => {
     const params = new URLSearchParams()
     tags.forEach(tag => params.append('tags', tag))

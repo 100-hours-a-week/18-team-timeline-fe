@@ -1,82 +1,83 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { API_BASE_URL, ENDPOINTS } from '@/constants/url';
-import { formatRelativeTime } from '../utils/dateUtils';
+import { useState, useEffect } from 'react'
+import axios from 'axios'
+import { API_BASE_URL, ENDPOINTS } from '@/constants/url'
+import { formatRelativeTime } from '../utils/formatRelativeTime'
 
 interface News {
-  id: string;
-  title: string;
-  summary: string;
-  image: string;
-  category: string;
-  updatedAt: string;
-  bookmarked: boolean;
-  bookmarkedAt: string | null;
+  id: string
+  title: string
+  summary: string
+  image: string
+  category: string
+  updatedAt: string
+  bookmarked: boolean
+  bookmarkedAt: string | null
 }
 
 interface CategoryNewsData {
-  newsList: News[];
+  newsList: News[]
 }
 
 interface ApiResponse {
-  success: boolean;
-  message: string;
-  data: { [key: string]: CategoryNewsData };
+  success: boolean
+  message: string
+  data: { [key: string]: CategoryNewsData }
 }
 
 interface NewsListProps {
-  category: string;
+  category: string
 }
 
 export default function NewsList({ category }: NewsListProps) {
-  const [news, setNews] = useState<News[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [news, setNews] = useState<News[]>([])
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
-  const normalizedCategory = category.toUpperCase();
-  const isCategoryAll = normalizedCategory === 'ALL' || normalizedCategory === '';
+  const normalizedCategory = category.toUpperCase()
+  const isCategoryAll = normalizedCategory === 'ALL' || normalizedCategory === ''
 
   const fetchNews = async () => {
-    setIsLoading(true);
-    setError(null);
+    setIsLoading(true)
+    setError(null)
 
     try {
-      let url = ENDPOINTS.NEWS;
-      const queryParams: string[] = [];
+      let url = ENDPOINTS.NEWS
+      const queryParams: string[] = []
 
       // **항상 ALL 포함이므로 굳이 쿼리 안 넣고, 받아서 JS에서 필터 가능**
       if (queryParams.length > 0) {
-        url += `?${queryParams.join('&')}`;
+        url += `?${queryParams.join('&')}`
       }
 
-      const response = await axios.get<ApiResponse>(API_BASE_URL + url);
+      const response = await axios.get<ApiResponse>(API_BASE_URL + url)
 
       if (response.data.success) {
-        const data = response.data.data;
+        const data = response.data.data
 
         // **존재 유무 확인 후 처리**
-        const targetData = isCategoryAll
-          ? data.ALL
-          : data[normalizedCategory] ?? { newsList: [] };
+        const targetData = isCategoryAll ? data.ALL : (data[normalizedCategory] ?? { newsList: [] })
 
-        setNews(targetData.newsList);
+        setNews(targetData.newsList)
       } else {
-        setError(response.data.message || '데이터를 불러오는데 실패했습니다.');
+        setError(response.data.message || '데이터를 불러오는데 실패했습니다.')
       }
     } catch (err) {
-      console.error('API 요청 오류:', err);
-      setError('네트워크 오류가 발생했습니다.');
+      console.error('API 요청 오류:', err)
+      setError('네트워크 오류가 발생했습니다.')
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   useEffect(() => {
-    fetchNews();
-  }, [category]);
+    fetchNews()
+  }, [category])
 
   const NewsItem = ({ newsItem }: { newsItem: News }) => (
-    <a href={`/news/${newsItem.id}`} className="group flex flex-row items-center w-full overflow-hidden bg-white rounded-lg mb-4">
+    <a
+      href={`/news/${newsItem.id}`}
+      className="group flex flex-row items-center w-full overflow-hidden bg-white rounded-lg mb-4"
+    >
       <div className="flex-shrink-0 w-[120px] h-[100px] flex items-center justify-center pl-3 mt-2 mb-2">
         {newsItem.image ? (
           <img src={newsItem.image} alt={newsItem.title} className="w-[120px] h-[100px] object-cover rounded-lg" />
@@ -88,26 +89,34 @@ export default function NewsList({ category }: NewsListProps) {
       </div>
       <div className="p-4 flex-grow flex flex-col items-end text-right">
         <div className="flex justify-between items-start w-full">
-        <h3 className="w-full text-lg font-semibold text-[20px] leading-tight mb-2 line-clamp-2 text-right text-black">
-          {newsItem.title}
-        </h3>
+          <h3 className="w-full text-lg font-semibold text-[20px] leading-tight mb-2 line-clamp-2 text-right text-black">
+            {newsItem.title}
+          </h3>
           {newsItem.bookmarked && (
             <span className="text-yellow-500 ml-2">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
               </svg>
             </span>
           )}
         </div>
-        <p className="text-gray-600 text-[14px] leading-snug mb-2 w-full text-right line-clamp-2">
-          {newsItem.summary}
-        </p>
+        <p className="text-gray-600 text-[14px] leading-snug mb-2 w-full text-right line-clamp-2">{newsItem.summary}</p>
         <div className="w-full text-[10px] text-[#F2A359] text-right">
-          {formatRelativeTime(newsItem.updatedAt)} 업데이트
+          {formatRelativeTime(newsItem.updatedAt)}
         </div>
       </div>
     </a>
-  );
+  )
 
   return (
     <div className="space-y-2">
@@ -116,7 +125,9 @@ export default function NewsList({ category }: NewsListProps) {
       {news.length === 0 && !isLoading && !error && (
         <div className="text-center py-8 text-gray-500">표시할 뉴스가 없습니다.</div>
       )}
-      {news.map(newsItem => <NewsItem key={newsItem.id} newsItem={newsItem} />)}
+      {news.map((newsItem) => (
+        <NewsItem key={newsItem.id} newsItem={newsItem} />
+      ))}
     </div>
-  );
+  )
 }

@@ -100,6 +100,15 @@ export default {
         radioBtnCircle: '#F2A359',
 
         // PN
+        pnBtnActiveBg: '#2A4759',
+        pnBtnHoverBg: '#577F98',
+        pnBtnInactiveBg: '#A3ACB2',
+        pnBtnInactiveText: '#ECEDED',
+        newsCardBg: '#FFFFFF',
+        newsCardBorder: '#EEEEEE',
+        newsCardTitle: '#2A4759',
+        newsCardSummary: '#717171',
+        newsCardTime: '#F2A359',
         createNewsBtnBoxBorder: '#EEEEEE',
       },
     },
