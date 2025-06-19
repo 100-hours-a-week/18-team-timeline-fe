@@ -16,7 +16,7 @@ export const Header = ({ className: _className }: HeaderProps) => {
   const isLogin = useAuthStore((state) => state.isLoggedIn)
 
   const className = clsx(
-    'relative w-full h-[48px] bg-headerBackground',
+    'top-0 w-full min-h-[48px] bg-headerBackground',
     'flex items-center justify-between px-[20px]',
     _className,
   )

@@ -8,7 +8,7 @@ type SearchResultBoxProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HT
 }
 
 export default function NewsCardListBox({ news, noNewsText }: SearchResultBoxProps) {
-  const wrapperClass = 'min-h-screen overflow-y-auto'
+  const wrapperClass = 'h-full'
   const metaTextBoxClass = 'flex justify-center items-start min-h-screen pt-[30vh]'
   const metaTextClass = 'text-sm text-center text-gray-500 justify-center items-center'
 
