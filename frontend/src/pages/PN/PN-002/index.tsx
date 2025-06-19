@@ -43,7 +43,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({ searchQuery }) => {
       const accessToken = localStorage.getItem('token');
       const res = await axios.post(
         API_BASE_URL + ENDPOINTS.NEWS,          // POST /news
-        { query: tags },
+        { keywords: tags },
         { headers: { Authorization: `Bearer ${accessToken}` } }
       );
 
