@@ -25,9 +25,9 @@ export const LogoutMenu = () => {
         <Link to={ROUTES.LOGIN} className={navItemClass} onClick={close}>
           로그인
         </Link>
-        <Link to={ROUTES.SIGNUP} className={navItemClass} onClick={close}>
+        {/* <Link to={ROUTES.SIGNUP} className={navItemClass} onClick={close}>
           회원가입
-        </Link>
+        </Link> */}
       </nav>
     </div>
   )

@@ -61,21 +61,21 @@ export const AppContent = () => {
         <Route path={ROUTES.NEWS_DETAIL} element={<NewsDetail />} />
 
         {/* 로그아웃 상태에서만 접근 가능 */}
-        <Route element={<LogoutRoute />}>
+        {/* <Route element={<LogoutRoute />}>
           <Route path={ROUTES.SIGNUP} element={<SignUp />} />
-        </Route>
+        </Route> */}
         <Route element={<LogoutRoute />}>
           <Route path={ROUTES.LOGIN} element={<Login />} />
         </Route>
         <Route element={<LogoutRoute />}>
           <Route path={ROUTES.KAKAO_CALLBACK} element={<KakaoCallback />} />
         </Route>
-        <Route element={<LogoutRoute />}>
+        {/* <Route element={<LogoutRoute />}>
           <Route path={ROUTES.FIND_PASSWORD} element={<FindPassword />} />
         </Route>
         <Route element={<ResetPasswordRoute />}>
           <Route path={ROUTES.RESET_PASSWORD} element={<ResetPassword />} />
-        </Route>
+        </Route> */}
 
         {/* 로그인 상태에서만 접근 가능 */}
         <Route element={<LoginRoute />}>
