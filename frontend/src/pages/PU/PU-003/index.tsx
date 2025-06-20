@@ -4,7 +4,7 @@ import { UserInfoForm } from './UserInfoForm'
 
 export default function UserInfoPage() {
   return (
-    <div className="wrap bg-puBg">
+    <div className="wrap">
       <Wrapper title={UserInfoMessage.TITLE} className="px-8">
         <UserInfoForm />
       </Wrapper>
