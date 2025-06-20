@@ -1,4 +1,3 @@
-import { Text } from '@/components/ui/Text'
 import NewsCardListBox from '../components/layout/NewsCardListBox'
 import { useBookmarkLogic } from './useBookmarkLogic'
 import { BookmarkMessage } from '@/constants/PN/BookmarkMessage'
