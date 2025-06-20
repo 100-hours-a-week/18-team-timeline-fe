@@ -44,9 +44,10 @@ export const useSearchResultLogic = ({ setToastMessage }: SearchResultLogicProps
       const res = await postData(ENDPOINTS.NEWS, { keywords: tags })
       if (res.location) {
         navigate(res.location)
+        setToastMessage(res.message || SearchResultMessage.CREATE_NEWS_SUCCESS)
       } else {
         setTimeout(() => {
-          setToastMessage(res.message || SearchResultMessage.CREATE_NEWS_SUCCESS)
+          setToastMessage(res?.message || SearchResultMessage.CREATE_NEWS_TIMEOUT)
         }, 0)
       }
     } catch (e: any) {
