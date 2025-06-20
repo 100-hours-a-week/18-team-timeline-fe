@@ -109,6 +109,7 @@ export default {
         newsCardTitle: '#2A4759',
         newsCardSummary: '#717171',
         newsCardTime: '#F2A359',
+        newsCardIcon: '#577F98',
         createNewsBtnBoxBorder: '#EEEEEE',
       },
     },

@@ -54,7 +54,7 @@ export const ENDPOINTS = {
     }
     return `/news/search?${params.toString()}`
   },
-  BOOKMARK: '/news/:id/bookmark',
+  BOOKMARK: (id: string) => `/news/${id}/bookmark`,
   COMMENT: '/news/:id/comments',
   POLL_FETCH: `/polls`,
   POLL_SUBMIT: `/polls/vote`,
