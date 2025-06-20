@@ -1,26 +1,28 @@
-import React from 'react'
+import { useState } from 'react'
 import { Carousel } from './Carousel'
-import Category from './Category'
-import NewsList from './NewsList'
+import { useFetchNormal } from './useFetchNormal'
+import { MainMessage } from '@/constants/PN/MainMessage'
+import { CategoryListBox } from './CategoryListBox'
 
 interface MainPageProps {
   initialCategory?: string
 }
 
 export default function MainPage({ initialCategory = 'all' }: MainPageProps) {
-  const [selectedCategory, setSelectedCategory] = React.useState(initialCategory)
+  const [selectedCategory, setSelectedCategory] = useState(initialCategory)
+  const { newsByCategory } = useFetchNormal()
 
   return (
     <div className="wrap">
       <div className="container mx-auto px-4 pt-6 pb-4 flex-shrink-0">
         <Carousel />
-        <Category onCategoryChange={setSelectedCategory} />
       </div>
-
-      {/* 스크롤 가능한 컨테이너 - flex-grow로 나머지 공간 차지 */}
-      <div className="container mx-auto px-4 flex-grow overflow-y-auto pb-6 news-container">
-        <NewsList category={selectedCategory} />
-      </div>
+      <CategoryListBox
+        newsByCategory={newsByCategory}
+        selectedCategory={selectedCategory}
+        noNewsText={MainMessage.NO_RESULT}
+        onCategoryChange={(category) => setSelectedCategory(category)}
+      />
     </div>
   )
 }

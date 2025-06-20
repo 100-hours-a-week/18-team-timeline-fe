@@ -14,7 +14,7 @@ export const useFetchHotissue = () => {
         const res = await getData(ENDPOINTS.NEWS_HOTISSUE)
         setNewsCards(res.data.newsList)
       } catch (err) {
-        console.error('배너 뉴스 데이터 가져오기 오류:', err)
+        console.error('핫이슈 뉴스 데이터 가져오기 오류:', err)
       } finally {
         setLoading(false)
       }

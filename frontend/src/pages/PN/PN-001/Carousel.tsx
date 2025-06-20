@@ -62,8 +62,8 @@ export const Carousel = ({}: CarouselProps) => {
       </div>
 
       {newsCards.map((news) => (
-        <SwiperSlide key={news.id}>
-          <div onClick={() => navigate(ROUTES.getNewsDetailPath(news.id))}>
+        <SwiperSlide key={news.id} onClick={() => navigate(ROUTES.getNewsDetailPath(news.id))}>
+          <div>
             <img src={news.image} alt={news.title} className={clsx(imageClass, metaTextClass)} />
             <div className={titleWrapperClass}>
               <h3 className={titleClass}>{news.title}</h3>

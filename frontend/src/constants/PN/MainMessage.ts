@@ -3,5 +3,5 @@ export const CarouselMessage = {
 }
 
 export const MainMessage = {
-
+  NO_RESULT: '해당 카테고리에 뉴스가 없습니다.'
 }

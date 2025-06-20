@@ -60,9 +60,10 @@ export const NewsCard = ({
 
   return (
     <div className={wrapperClass}>
-      <div className={imageBoxClass}>
-        <img src={image} alt={title} className={imageClass} />
+      <div className={imageBoxClass} onClick={() => navigate(ROUTES.getNewsDetailPath(id))}>
+        {image && image.trim() !== '' && <img src={image} alt={title} className={imageClass} />}
       </div>
+
       <div className={contentBoxClass}>
         <h3 className={titleClass} onClick={() => navigate(ROUTES.getNewsDetailPath(id))}>
           {title}

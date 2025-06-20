@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ENDPOINTS } from '@/constants/url'
+import { ENDPOINTS, ROUTES } from '@/constants/url'
 import { useRequestStore } from '@/stores/useRequestStore'
 import { useAuthStore } from '@/stores/useAuthStore'
 import type { News } from '../types/news'
@@ -42,9 +42,9 @@ export const useSearchResultLogic = ({ setToastMessage }: SearchResultLogicProps
 
     try {
       const res = await postData(ENDPOINTS.NEWS, { keywords: tags })
-      if (res.location) {
-        navigate(res.location)
-        setToastMessage(res.message || SearchResultMessage.CREATE_NEWS_SUCCESS)
+      if (res.data?.news?.id) {
+        navigate(ROUTES.getNewsDetailPath(res.data.news.id))
+        // setToastMessage(res.message || SearchResultMessage.CREATE_NEWS_SUCCESS)
       } else {
         setTimeout(() => {
           setToastMessage(res?.message || SearchResultMessage.CREATE_NEWS_TIMEOUT)
