@@ -7,7 +7,7 @@ export default function LoginPage() {
   const lineClass = 'border-t border-ccLine my-5'
 
   return (
-    <div className="wrap bg-puBg">
+    <div className="wrap">
       <Wrapper title={LoginMessage.TITLE} className="px-8">
         <LoginForm />
         <div className={lineClass} />

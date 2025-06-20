@@ -11,6 +11,7 @@ export default {
         myWhite: '#FFFFFF',
         myBlack: '#000000',
         mainBgColor: '#E5E5E5',
+        pageBg: '#FCFAF7',
 
         // CC
         ccLine: '#DDDDDD',
@@ -63,7 +64,6 @@ export default {
         alarmCardDate: '#4F4F4F',
 
         // PU
-        puBg: '#FCFAF7',
         puWrapper: '#FFFFFF',
         puTitle: '#2A4759',
 
@@ -90,7 +90,6 @@ export default {
         navTextHover: '#F2A359',
 
         // PV
-        pvBg: '#FCFAF7',
         pollBoxBorder: '#DADADA',
         pollOptionBg: '#F1EFEC',
         pollOptionSelectBg: '#E3D8CE',
@@ -109,6 +108,7 @@ export default {
         newsCardTitle: '#2A4759',
         newsCardSummary: '#717171',
         newsCardTime: '#F2A359',
+        newsCardIcon: '#577F98',
         createNewsBtnBoxBorder: '#EEEEEE',
       },
     },

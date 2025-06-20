@@ -11,7 +11,7 @@ export default function MainPage({ initialCategory = 'all' }: MainPageProps) {
   const [selectedCategory, setSelectedCategory] = React.useState(initialCategory);
 
   return (
-    <div className="h-screen bg-[#FDFAF7] flex flex-col">
+    <div className="wrap">
       <div className="container mx-auto px-4 pt-6 pb-4 flex-shrink-0">
         <Banner />
         <Category onCategoryChange={setSelectedCategory} />
