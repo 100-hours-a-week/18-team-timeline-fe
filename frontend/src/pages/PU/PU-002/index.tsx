@@ -9,8 +9,8 @@ export default function LoginPage() {
   return (
     <div className="wrap">
       <Wrapper title={LoginMessage.TITLE} className="px-8">
-        {/* <LoginForm />
-        <div className={lineClass} /> */}
+        <LoginForm />
+        <div className={lineClass} />
         <KaKaoButton />
       </Wrapper>
     </div>
