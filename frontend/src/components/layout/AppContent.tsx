@@ -23,6 +23,7 @@ import { useSearchBarStore } from '../../stores/useSearchBarStore'
 import { useSearchStore } from '../../stores/useSearchStore'
 import { SidebarAlarm } from './SidebarAlarm/SidebarAlarm'
 import PollPage from '@/pages/PV/PV-001'
+import BookmarkPage from '@/pages/PN/PN-004'
 
 export const AppContent = () => {
   const location = useLocation()
@@ -83,6 +84,9 @@ export const AppContent = () => {
         </Route>
         <Route element={<LoginRoute />}>
           <Route path={ROUTES.POLL} element={<PollPage />} />
+        </Route>
+        <Route element={<LoginRoute />}>
+          <Route path={ROUTES.BOOKMARK} element={<BookmarkPage />} />
         </Route>
       </Routes>
     </Container>

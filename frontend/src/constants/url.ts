@@ -15,6 +15,7 @@ export const ROUTES = {
   KAKAO_CALLBACK: '/auth/kakao/callback',
   SIGNUP: '/signup',
   USER_INFO: '/user-info',
+  BOOKMARK: '/bookmarks',
   FIND_PASSWORD: '/find-password',
   RESET_PASSWORD: '/reset-password',
   getResetPasswordPath: (token: string) => `/reset-password?token=${token}`,
@@ -55,6 +56,7 @@ export const ENDPOINTS = {
     return `/news/search?${params.toString()}`
   },
   BOOKMARK: (id: string) => `/news/${id}/bookmark`,
+  BOOKMARK_FETCH: `/users/me/bookmarks`,
   COMMENT: '/news/:id/comments',
   POLL_FETCH: `/polls`,
   POLL_SUBMIT: `/polls/vote`,
