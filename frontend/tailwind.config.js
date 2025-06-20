@@ -118,6 +118,8 @@ export default {
         categoryText: '#2A4759',
         categoryBorder: '#EEEEEE',
         createNewsBtnBoxBorder: '#EEEEEE',
+
+        bookmarkTitle: '#2A4759',
       },
     },
   },
