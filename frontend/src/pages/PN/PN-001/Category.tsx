@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import { useState } from 'react'
+import clsx from 'clsx'
 
 interface Category {
-  id: string;
-  name: string;
+  id: string
+  name: string
 }
 
 interface CategoryProps {
-  onCategoryChange: (category: string) => void;
+  onCategoryChange: (category: string) => void
 }
 
 const categories: Category[] = [
@@ -14,34 +15,38 @@ const categories: Category[] = [
   { id: 'economy', name: '경제' },
   { id: 'sports', name: '스포츠' },
   { id: 'entertainment', name: '연예' },
-  { id: 'ktb', name: 'KTB' }
-];
+  { id: 'ktb', name: 'KTB' },
+]
 
 const Category: React.FC<CategoryProps> = ({ onCategoryChange }) => {
-  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedCategory, setSelectedCategory] = useState('all')
 
   const handleCategoryClick = (category: string) => {
-    setSelectedCategory(category);
-    onCategoryChange(category);
-  };
+    setSelectedCategory(category)
+    onCategoryChange(category)
+  }
+
+  const wrapperClass = 'flex justify-between flex-wrap w-full'
+  const categoryItemClass = 'flex-1 text-center py-2 text-sm text-categoryText'
 
   return (
-    <div className="flex justify-center space-x-3 border-b border-none pb-2 pt-2">
+    <div className={wrapperClass}>
       {categories.map((category) => (
         <button
           key={category.id}
           onClick={() => handleCategoryClick(category.id)}
-          className={`px-4 py-2 text-sm text-black ${
+          className={clsx(
+            categoryItemClass,
             selectedCategory === category.id
-              ? 'text-black font-bold border-b-2 border-[#F2A359]'
-              : 'text-black font-medium '
-          }`}
+              ? 'font-bold border-b-2 border-point'
+              : 'font-medium border-b-2 border-categoryBorder',
+          )}
         >
           {category.name}
         </button>
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default Category;
+export default Category

@@ -8,6 +8,7 @@ export default {
     extend: {
       colors: {
         // common
+        point: '#F2A359',
         myWhite: '#FFFFFF',
         myBlack: '#000000',
         mainBgColor: '#E5E5E5',
@@ -103,12 +104,19 @@ export default {
         pnBtnHoverBg: '#577F98',
         pnBtnInactiveBg: '#A3ACB2',
         pnBtnInactiveText: '#ECEDED',
+
         newsCardBg: '#FFFFFF',
         newsCardBorder: '#EEEEEE',
         newsCardTitle: '#2A4759',
         newsCardSummary: '#717171',
         newsCardTime: '#F2A359',
         newsCardIcon: '#577F98',
+
+        carouselBg: '#ECEDED',
+        carouselInactive: '#2A4759',
+        
+        categoryText: '#2A4759',
+        categoryBorder: '#EEEEEE',
         createNewsBtnBoxBorder: '#EEEEEE',
       },
     },
