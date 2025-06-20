@@ -6,7 +6,7 @@ import { useAuthStore } from '@/stores/useAuthStore'
 export default function ResetPasswordPage() {
   const title = ResetPasswordMessage.TITLE(useAuthStore((state) => state.isLoggedIn))
   return (
-    <div className="wrap bg-puBg">
+    <div className="wrap">
       <Wrapper title={title} className="px-8">
         <ResetPasswordForm />
       </Wrapper>

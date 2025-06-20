@@ -8,9 +8,11 @@ export default {
     extend: {
       colors: {
         // common
+        point: '#F2A359',
         myWhite: '#FFFFFF',
         myBlack: '#000000',
         mainBgColor: '#E5E5E5',
+        pageBg: '#FCFAF7',
 
         // CC
         ccLine: '#DDDDDD',
@@ -63,7 +65,6 @@ export default {
         alarmCardDate: '#4F4F4F',
 
         // PU
-        puBg: '#FCFAF7',
         puWrapper: '#FFFFFF',
         puTitle: '#2A4759',
 
@@ -89,23 +90,7 @@ export default {
         navText: '#2A4759',
         navTextHover: '#F2A359',
 
-        // PN
-        pnBgColor: '#FFFFFF',
-        newsCardColor: '#DADADA',
-        newsCardSelectColor: '#9A9A9A',
-        newsCardTitleColor: '#000000',
-        newsCardSummaryColor: '#000000',
-        newsCardMetaTextColor: '#9A9A9A',
-
-        categoryBgColor: '#000000',
-        categoryTextInactiveColor: '#AAAAAA',
-        categoryTextActiveColor: '#000000',
-
-        fabBgColor: '#000000',
-        fabIconColor: '#FFFFFF',
-
         // PV
-        pvBg: '#FCFAF7',
         pollBoxBorder: '#DADADA',
         pollOptionBg: '#F1EFEC',
         pollOptionSelectBg: '#E3D8CE',
@@ -113,6 +98,26 @@ export default {
         radioBtnBorder: '#DADADA',
         radioBtnBg: '#FFFFFF',
         radioBtnCircle: '#F2A359',
+
+        // PN
+        pnBtnActiveBg: '#2A4759',
+        pnBtnHoverBg: '#577F98',
+        pnBtnInactiveBg: '#A3ACB2',
+        pnBtnInactiveText: '#ECEDED',
+
+        newsCardBg: '#FFFFFF',
+        newsCardBorder: '#EEEEEE',
+        newsCardTitle: '#2A4759',
+        newsCardSummary: '#717171',
+        newsCardTime: '#F2A359',
+        newsCardIcon: '#577F98',
+
+        carouselBg: '#ECEDED',
+        carouselInactive: '#2A4759',
+        
+        categoryText: '#2A4759',
+        categoryBorder: '#EEEEEE',
+        createNewsBtnBoxBorder: '#EEEEEE',
       },
     },
   },

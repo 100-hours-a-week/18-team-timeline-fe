@@ -6,7 +6,7 @@ export default function SignUpPage() {
   const lineClass = 'border-t border-ccLine my-5'
 
   return (
-    <div className="wrap bg-puBg">
+    <div className="wrap">
       <Wrapper title="회원가입" className="px-8">
         <SignUpForm />
         <div className={lineClass} />

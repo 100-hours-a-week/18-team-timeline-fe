@@ -10,7 +10,7 @@ export default function PollPage() {
   const logic = usePollLogic({ setToastMessage })
 
   return (
-    <div className="wrap bg-pvBg">
+    <div className="wrap">
       <Wrapper title={PollMessage.TITLE(logic.title)} content={PollMessage.CONTENT(logic.endAt)} className="px-8">
         <PollForm
           handleSubmit={logic.handleSubmit}
