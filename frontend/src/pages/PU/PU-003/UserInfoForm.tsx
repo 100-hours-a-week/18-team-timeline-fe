@@ -78,10 +78,10 @@ export const UserInfoForm = ({}: UserInfoFormProps) => {
         <div className={buttonClass}>
           <Button text={UserInfoMessage.BTN_NAME} isActive={isButtonActive} />
           <div className={navigationClass}>
-            <Link to={ROUTES.RESET_PASSWORD} className={linkClass}>
+            {/* <Link to={ROUTES.RESET_PASSWORD} className={linkClass}>
               <Text>{NavigationLink.RESET_PASSWORD}</Text>
             </Link>
-            <Text>|</Text>
+            <Text>|</Text> */}
             <button type="button" className={linkClass} onClick={handleDeleteAccount}>
               <Text>{NavigationLink.WITHDRAW}</Text>
             </button>
