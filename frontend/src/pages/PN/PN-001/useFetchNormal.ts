@@ -11,7 +11,14 @@ export const useFetchNormal = () => {
     const fetchNews = async () => {
       try {
         const res = await getData(ENDPOINTS.NEWS)
-        setNewsByCategory(res.data)
+        const data = res.data as NewsByCategory
+        setNewsByCategory(data)
+        
+        // 각 카테고리별 뉴스 개수 로깅
+        console.log('카테고리별 뉴스 개수:')
+        Object.entries(data).forEach(([category, categoryData]) => {
+          console.log(`${category}: ${categoryData.newsList.length}개`)
+        })
       } catch (err) {
         console.error('일반 뉴스 데이터 가져오기 오류:', err)
       }

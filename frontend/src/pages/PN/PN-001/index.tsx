@@ -13,8 +13,8 @@ export default function MainPage({ initialCategory = 'all' }: MainPageProps) {
   const { newsByCategory } = useFetchNormal()
 
   return (
-    <div className="wrap">
-      <div className="container mx-auto px-4 pt-6 pb-4 flex-shrink-0">
+    <div className="w-full h-full bg-pageBg">
+      <div className="w-full px-4 pt-6 pb-4 flex-shrink-0">
         <Carousel />
       </div>
       <CategoryListBox

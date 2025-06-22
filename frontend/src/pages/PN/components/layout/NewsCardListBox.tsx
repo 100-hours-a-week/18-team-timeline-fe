@@ -12,7 +12,7 @@ export default function NewsCardListBox({ news, noNewsText }: SearchResultBoxPro
   const metaTextClass = 'text-sm text-center text-gray-500 justify-center items-center'
 
   return (
-    <div>
+    <div className="w-full">
       {news.length === 0 && (
         <div className={metaTextBoxClass}>
           <div className={metaTextClass}>{noNewsText}</div>
