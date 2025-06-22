@@ -1,9 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    './index.html',
-    './src/**/*.{js,ts,jsx,tsx}',
-  ],
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
       colors: {
@@ -81,7 +78,6 @@ export default {
         btnText: '#FFFFFF',
         btnInactiveBg: '#F3D7C2',
         btnActiveBg: '#F2A359',
-        btnKakaoBg: '#FEE500',
 
         checkBoxBg: '#F2A359',
         checkBoxLabel: '#2A4759',
@@ -114,7 +110,7 @@ export default {
 
         carouselBg: '#ECEDED',
         carouselInactive: '#2A4759',
-        
+
         categoryText: '#2A4759',
         categoryBorder: '#EEEEEE',
         createNewsBtnBoxBorder: '#EEEEEE',
