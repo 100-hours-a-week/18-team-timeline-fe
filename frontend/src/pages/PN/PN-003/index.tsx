@@ -187,7 +187,7 @@ export default function NewsDetail() {
     <div className="flex flex-col h-screen bg-[#FDFAF7]">  
       {/* 나머지 영역 - 스크롤 */}
       <div className="flex-grow overflow-y-auto">
-        <div className="container mx-auto px-0 pb-6">
+        <div className="w-full px-0 pb-6">
           {/* 타임라인 헤더 */}
           <div className="shadow-sm bg-white z-10">
             <TimelineHeader 
