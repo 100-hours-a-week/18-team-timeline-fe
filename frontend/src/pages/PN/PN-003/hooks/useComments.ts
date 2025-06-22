@@ -169,7 +169,6 @@ export const useComments = ({
         setComments(prev => [...prev, newComment]);
         setCommentText('');
         onToastShow?.('댓글이 등록되었습니다.', 'bottom');
-        window.location.reload();
       } else {
         onToastShow?.(result.message || '댓글 등록에 실패했습니다.', 'commentInput');
       }
@@ -200,7 +199,6 @@ export const useComments = ({
         /* 성공적으로 삭제됐으면 로컬 상태도 제거 */
         setComments(prev => prev.filter(comment => comment.id !== commentId));
         onToastShow?.('댓글이 삭제되었습니다.', 'bottom');
-        window.location.reload();
       } else {
         const result = await res.json().catch(() => ({ message: '' }));
         onToastShow?.(result.message || '댓글 삭제에 실패했습니다.', 'commentInput');
