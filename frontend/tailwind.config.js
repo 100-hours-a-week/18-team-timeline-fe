@@ -19,7 +19,7 @@ export default {
         headerLogo: '#EEEEEE',
         headerIcon: '#EEEEEE',
         searchBarBg: '#FFFFFF',
-        searchBarIcon: '#EEEEEE',
+        searchBarIcon: '#2A4759',
         keywordBoxBg: '#FFFFFF',
         keywordBoxLine: '#EEEEEE',
         keywordBg: '#F2A359',
