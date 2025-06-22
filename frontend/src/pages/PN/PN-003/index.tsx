@@ -84,7 +84,8 @@ export default function NewsDetail() {
     commentListRef,
     handleCommentChange,
     handleSubmitComment,
-    handleDeleteComment
+    handleDeleteComment,
+    loadMoreComments
   } = useComments({
     newsData,
     userInfo,
@@ -290,6 +291,7 @@ export default function NewsDetail() {
             onSubmitComment={handleSubmitComment}
             onDeleteComment={handleDeleteComment}
             commentsEndRef={commentsEndRef}
+            onLoadMore={loadMoreComments}
           />    
         </div>
       </div>
