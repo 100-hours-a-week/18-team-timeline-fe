@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import type { Comment, NewsResponse, UserInfo } from '../types';
 import { API_BASE_URL } from '@/constants/url';
 
@@ -19,6 +19,7 @@ interface UseCommentsReturn {
   handleCommentChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSubmitComment: () => void;
   handleDeleteComment: (commentId: string) => void;
+  loadMoreComments: () => void;
 }
 
 /**
@@ -34,6 +35,7 @@ export const useComments = ({
   const [commentText, setCommentText] = useState('');
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const commentListRef = useRef<HTMLDivElement>(null);
   const commentsEndRef = useRef<HTMLDivElement>(null);
@@ -49,9 +51,10 @@ export const useComments = ({
   /* -------------------------------------------------- */
   /* 댓글 불러오기                                       */
   /* -------------------------------------------------- */
-  const loadComments = async (pageNum: number) => {
-    if (!newsData) return;
+  const loadComments = useCallback(async (pageNum: number) => {
+    if (!newsData || loading) return;
 
+    setLoading(true);
     const offset = (pageNum - 1) * 20;
     try {
       const res = await fetch(
@@ -89,27 +92,35 @@ export const useComments = ({
     } catch (err) {
       console.error('댓글 로딩 실패:', err);
       onToastShow?.('댓글을 불러오는 중 오류가 발생했습니다.', 'bottom');
+    } finally {
+      setLoading(false);
     }
-  };
+  }, [newsData, loading, userInfo, onToastShow]);
 
   /* -------------------------------------------------- */
   /* 무한 스크롤                                         */
   /* -------------------------------------------------- */
   useEffect(() => {
-    if (!commentListRef.current || !hasMore) return;
+    if (!hasMore || loading) return;
 
     const observer = new IntersectionObserver(
       entries => {
-        if (entries[0].isIntersecting) loadComments(page + 1);
+        if (entries[0].isIntersecting && !loading) {
+          loadComments(page + 1);
+        }
       },
-      { threshold: 0.5 },
+      { 
+        threshold: 0.1, 
+        rootMargin: '50px',
+        root: commentListRef.current // 댓글창 스크롤 컨테이너를 root로 설정
+      },
     );
 
     const target = commentsEndRef.current;
     if (target) observer.observe(target);
 
     return () => observer.disconnect();
-  }, [hasMore, page]);
+  }, [hasMore, loading, page]);
 
   /* -------------------------------------------------- */
   /* 입력 핸들러                                         */
@@ -158,7 +169,6 @@ export const useComments = ({
         setComments(prev => [...prev, newComment]);
         setCommentText('');
         onToastShow?.('댓글이 등록되었습니다.', 'bottom');
-        window.location.reload();
       } else {
         onToastShow?.(result.message || '댓글 등록에 실패했습니다.', 'commentInput');
       }
@@ -189,7 +199,6 @@ export const useComments = ({
         /* 성공적으로 삭제됐으면 로컬 상태도 제거 */
         setComments(prev => prev.filter(comment => comment.id !== commentId));
         onToastShow?.('댓글이 삭제되었습니다.', 'bottom');
-        window.location.reload();
       } else {
         const result = await res.json().catch(() => ({ message: '' }));
         onToastShow?.(result.message || '댓글 삭제에 실패했습니다.', 'commentInput');
@@ -197,6 +206,15 @@ export const useComments = ({
     } catch (err) {
       console.error('댓글 삭제 실패:', err);
       onToastShow?.('댓글 삭제 중 오류가 발생했습니다.', 'commentInput');
+    }
+  };
+
+  /* -------------------------------------------------- */
+  /* 수동으로 더 많은 댓글 불러오기                      */
+  /* -------------------------------------------------- */
+  const loadMoreComments = () => {
+    if (hasMore && !loading) {
+      loadComments(page + 1);
     }
   };
 
@@ -213,5 +231,6 @@ export const useComments = ({
     handleCommentChange,
     handleSubmitComment,
     handleDeleteComment,
+    loadMoreComments,
   };
 };

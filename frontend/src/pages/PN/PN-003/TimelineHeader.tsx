@@ -13,9 +13,9 @@ interface TimelineHeaderProps {
 const TimelineHeader: React.FC<TimelineHeaderProps> = ({ title, updatedAt, bookmarked, onToggleBookmark, onShare }) => {
   return (
     <div className="w-full bg-white p-4">
-      <div className="flex justify-between items-center mb-1">
-        <h2 className="text-lg font-bold flex-grow text-black">{title}</h2>
-        <div className="flex items-center space-x-2">
+      <div className="flex justify-between items-start mb-1 gap-4">
+        <h2 className="text-lg font-bold flex-grow text-black break-words">{title}</h2>
+        <div className="flex items-center space-x-2 flex-shrink-0">
           <button onClick={onShare} aria-label="공유하기" className="text-gray-600">
             <svg
               xmlns="http://www.w3.org/2000/svg"

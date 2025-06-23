@@ -11,6 +11,7 @@ interface CommentSectionProps {
   onSubmitComment: () => void
   onDeleteComment: (commentId: string) => void
   commentsEndRef: React.RefObject<HTMLDivElement | null>
+  onLoadMore?: () => void
 }
 
 const CommentSection: React.FC<CommentSectionProps> = ({
@@ -22,17 +23,18 @@ const CommentSection: React.FC<CommentSectionProps> = ({
   onSubmitComment,
   onDeleteComment,
   commentsEndRef,
+  onLoadMore,
 }) => {
   const commentInputRef = useRef<HTMLInputElement>(null)
   const listRef = useRef<HTMLDivElement>(null) // 댓글 리스트 컨테이너
 
-  /* 댓글을 오래된 순(asc)으로 정렬 */
-  const sortedComments = [...comments].sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
+  /* 댓글을 최신순(desc)으로 정렬 */
+  const sortedComments = [...comments].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
 
-  /* 최초 렌더링 및 댓글 수 변경 시 스크롤을 최하단으로 맞춤 */
+  /* 최초 렌더링 및 댓글 수 변경 시 스크롤을 맨 위로 맞춤 */
   useEffect(() => {
     if (listRef.current) {
-      listRef.current.scrollTop = listRef.current.scrollHeight
+      listRef.current.scrollTop = 0
     }
   }, [sortedComments.length])
 
@@ -40,7 +42,9 @@ const CommentSection: React.FC<CommentSectionProps> = ({
     // 최대 높이를 제한하고, 내부에서 스크롤되는 컨테이너
     <div className="mt-8 bg-gray-100 text-black rounded-t-xl shadow-inner max-h-[50vh] h-[50vh] flex flex-col relative">
       {/* 헤더 */}
-      <h3 className="text-lg font-bold px-4 pt-4 flex-shrink-0">댓글</h3>
+      <h3 className="text-lg font-bold px-4 pt-4 flex-shrink-0">
+        댓글
+      </h3>
 
       {/* 댓글 목록 (flex-1로 남은 영역 차지, 내부 스크롤) */}
       <div ref={listRef} className="flex-1 overflow-y-auto space-y-4 px-4 pb-4 mt-2">
@@ -64,12 +68,16 @@ const CommentSection: React.FC<CommentSectionProps> = ({
           </div>
         ))}
 
-        {/* 스크롤 하단 감지용 엘리먼트 (항상 렌더) */}
-        <div ref={commentsEndRef} />
-
-        {/* 무한 스크롤 로더 */}
-        {hasMore && <div className="h-10 flex justify-center items-center text-gray-300">댓글 불러오는 중...</div>}
+        {/* 로딩 인디케이터 */}
+        {hasMore && (
+          <div className="h-10 flex justify-center items-center text-gray-500 text-sm">
+            댓글을 불러오는 중...
+          </div>
+        )}
       </div>
+
+      {/* 스크롤 하단 감지용 엘리먼트 (댓글 목록 밖에 배치) */}
+      <div ref={commentsEndRef} className="h-1" />
 
       {/* 댓글 입력 영역 (sticky 하단) */}
       <div className="sticky bottom-0 left-0 right-0 bg-gray-100 px-4 py-3 flex-shrink-0">

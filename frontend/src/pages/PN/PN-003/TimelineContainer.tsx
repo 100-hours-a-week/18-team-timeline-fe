@@ -14,7 +14,7 @@ const TimelineContainer: React.FC<TimelineContainerProps> = ({
   toggleSources
 }) => {
   return (
-    <div className="max-h-[calc(100vh-500px)] overflow-y-auto pr-2 py-2">
+    <div className="py-2">
       <div className="relative">
         {/* 타임라인 배경 수직선 (선택 사항) */}
         {timeline.length > 0 && (
