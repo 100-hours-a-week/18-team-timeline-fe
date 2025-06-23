@@ -116,6 +116,16 @@ export default {
         createNewsBtnBoxBorder: '#EEEEEE',
 
         bookmarkTitle: '#2A4759',
+
+        timelineCardWhiteBg: '#FFFFFF',
+        timelineCardBlackBg: '#2A4759',
+        timelineCardWhiteTitle: '#000000',
+        timelineCardBlackTitle: '#FFFFFF',
+        timelineCardWhiteContent: '#717171',
+        timelineCardBlackContent: '#EEEEEE',
+
+        commentBoxBg: '#FFFFFF',
+        commentCardBg: '#FFFFFF',
       },
     },
   },
