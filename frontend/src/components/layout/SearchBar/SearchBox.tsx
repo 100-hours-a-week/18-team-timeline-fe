@@ -1,7 +1,6 @@
 import { useState, type DetailedHTMLProps, type HTMLAttributes, type KeyboardEvent, type ChangeEvent } from 'react'
 import clsx from 'clsx'
 import { Input } from '../../form/Input'
-import { validateSearchKeyword } from '@/utils/validSearchBox'
 import { useSearchStore } from '@/stores/useSearchStore'
 
 type ReactDivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
@@ -37,7 +36,7 @@ export const SearchBox = ({ className: _className }: SearchBoxProps) => {
   const handleCompositionStart = () => setIsComposing(true)
   const handleCompositionEnd = () => setIsComposing(false)
 
-  const SearchBoxClass = clsx('w-full bg-SearchBoxBg')
+  const SearchBoxClass = clsx('w-full')
 
   return (
     <div className={SearchBoxClass}>
