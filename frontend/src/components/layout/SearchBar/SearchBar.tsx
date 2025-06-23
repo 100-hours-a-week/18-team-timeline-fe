@@ -77,7 +77,7 @@ export const SearchBar = ({ className: _className }: SearchBarProps) => {
   )
 
   const wrapperClass = clsx('flex-col')
-  const iconClass = clsx('text-SearchBarIcon cursor-pointer w-[32px] text-base font-medium')
+  const iconClass = clsx('text-searchBarIcon cursor-pointer w-[32px] text-base font-medium')
 
   return (
     <>
@@ -93,7 +93,7 @@ export const SearchBar = ({ className: _className }: SearchBarProps) => {
           <SearchBox />
           <div>
             <Text className={clsx(iconClass, 'ml-3')} onClick={handleConfirm}>
-              확인
+              검색
             </Text>
           </div>
         </div>

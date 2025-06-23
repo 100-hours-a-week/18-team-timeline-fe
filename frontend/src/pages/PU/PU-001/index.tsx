@@ -1,5 +1,5 @@
 import { Wrapper } from '../../../components/layout/Wrapper'
-import { KaKaoButton } from '../components/ui/Button'
+import { KaKaoButton } from '../components/ui/KakaoButton'
 import { SignUpForm } from './SignUpForm'
 
 export default function SignUpPage() {
