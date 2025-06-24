@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { ENDPOINTS } from '@/constants/url'
 import { useRequestStore } from '@/stores/useRequestStore'
-import type { News } from '../types/news'
+import type { News } from '@/pages/PN/types/news'
 
 export const useFetchHotissue = () => {
   const [newsCards, setNewsCards] = useState<News[]>([])

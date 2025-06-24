@@ -25,7 +25,7 @@ export const UpdateButtonBox = ({
     <div className={wrappedClass}>
       <Button
         text={useUpdateNewsBtnName(isUpdating)}
-        isActive={!isUpdating && isUpdateAvailable}
+        isActive={!isUpdating && isUpdateAvailable && isLoggedIn}
         onClick={() => {
           !isLoggedIn ? navigate(ROUTES.LOGIN) : handleTimelineUpdate()
         }}

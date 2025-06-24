@@ -15,7 +15,7 @@ export const LoginMenu = () => {
   
   return (
     <div className={menuClass}>
-      <Text className={titleClass}>마이 페이지</Text>
+      <Text className={titleClass}>마이페이지</Text>
       <div className={lineClass} />
       <nav className={navClass}>
         <Link to={ROUTES.USER_INFO} className={navItemClass} onClick={close}>
