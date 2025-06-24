@@ -1,4 +1,4 @@
-import { useEffect, useRef, type DetailedHTMLProps, type HTMLAttributes } from 'react'
+import { useEffect, useRef, useState, type DetailedHTMLProps, type HTMLAttributes } from 'react'
 import type { Comment } from '../../types/comment'
 import { CommentCard } from './CommentCard'
 import { CommentInput } from './CommentInput'
@@ -15,6 +15,8 @@ type CommentContainerProps = ReactDivProps & {
   onSubmitComment: () => void
   onDeleteComment: (commentId: string) => void
   onLoadMore?: () => void
+  shouldScrollToBottom: boolean
+  setShouldScrollToBottom: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export const CommentContainer = ({
@@ -25,39 +27,61 @@ export const CommentContainer = ({
   onSubmitComment,
   onDeleteComment,
   onLoadMore,
+  shouldScrollToBottom,
+  setShouldScrollToBottom,
 }: CommentContainerProps) => {
+  const typingText = useTypingText(`${!isLoggedIn ? '로그인하고 ' : ''}${TimelineMessage.NO_COMMENT}`)
+
   const commentInputRef = useRef<HTMLInputElement>(null)
   const listRef = useRef<HTMLDivElement>(null)
   const isInitialMount = useRef(true)
-  const typingText = useTypingText(`${!isLoggedIn ? '로그인하고 ' : ''}${TimelineMessage.NO_COMMENT}`)
+  const [shouldPreserveScroll, setShouldPreserveScroll] = useState(false)
+  const prevScrollHeightRef = useRef(0)
+  const prevScrollTopRef = useRef(0)
+  const prevCommentLengthRef = useRef(comments.length)
 
-  const sortedComments = [...comments].sort((a, b) => Number(a.id) - Number(b.id))
+  const sortedComments = [...comments]
 
   useEffect(() => {
-    if (listRef.current) {
-      if (isInitialMount.current) {
-        listRef.current.scrollTop = 0
-        isInitialMount.current = false
-      }
+    if (listRef.current && isInitialMount.current) {
+      listRef.current.scrollTop = listRef.current.scrollHeight
+      isInitialMount.current = false
     }
   }, [sortedComments.length])
 
   useEffect(() => {
+    const el = listRef.current
+    if (!el || !onLoadMore) return
+
     const handleScroll = () => {
-      if (!listRef.current || !onLoadMore) return
-
-      const el = listRef.current
-      const reachedBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 5
-
-      if (reachedBottom) {
+      const reachedTop = el.scrollTop <= 5
+      if (reachedTop) {
+        prevScrollHeightRef.current = el.scrollHeight
+        prevScrollTopRef.current = el.scrollTop
+        setShouldPreserveScroll(true)
         onLoadMore()
       }
     }
 
-    const listElement = listRef.current
-    listElement?.addEventListener('scroll', handleScroll)
-    return () => listElement?.removeEventListener('scroll', handleScroll)
+    el.addEventListener('scroll', handleScroll)
+    return () => el.removeEventListener('scroll', handleScroll)
   }, [onLoadMore])
+
+  useEffect(() => {
+    if (shouldScrollToBottom && listRef.current) {
+      listRef.current.scrollTop = listRef.current.scrollHeight
+      setShouldScrollToBottom(false)
+    }
+  }, [comments.length, shouldScrollToBottom])
+
+  useEffect(() => {
+    if (shouldPreserveScroll && listRef.current) {
+      const el = listRef.current
+      const newScrollHeight = el.scrollHeight
+      el.scrollTop = newScrollHeight - prevScrollHeightRef.current + prevScrollTopRef.current
+      setShouldPreserveScroll(false)
+    }
+  }, [sortedComments.length])
 
   const wrapperClass = 'flex flex-col w-full min-h-[25vh] max-h-[50vh] bg-inputBg text-black rounded-t-xl shadow-inner'
   const cardContainerClass = 'flex-1 flex flex-col gap-4 overflow-y-auto overflow-x-hidden px-4 pb-4 mt-2'

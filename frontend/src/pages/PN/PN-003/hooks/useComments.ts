@@ -20,6 +20,8 @@ interface UseCommentsReturn {
   handleSubmitComment: () => void
   handleDeleteComment: (commentId: string) => void
   loadMoreComments: () => void
+  shouldScrollToBottom: boolean
+  setShouldScrollToBottom: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 /**
@@ -31,6 +33,7 @@ export const useComments = ({ newsId, isLoggedIn, setToastMessage }: UseComments
   const [page, setPage] = useState(1)
   const [hasMore, setHasMore] = useState(true)
   const [loading, setLoading] = useState(false)
+  const [shouldScrollToBottom, setShouldScrollToBottom] = useState(false)
 
   const commentListRef = useRef<HTMLDivElement>(null)
   const commentsEndRef = useRef<HTMLDivElement>(null)
@@ -77,7 +80,7 @@ export const useComments = ({ newsId, isLoggedIn, setToastMessage }: UseComments
         })
 
         /* 첫 페이지인지 추가 페이지인지에 따라 댓글 병합 */
-        setComments((prev) => (pageNum === 1 ? newComments : [...prev, ...newComments]))
+        setComments((prev) => (pageNum === 1 ? newComments : [...newComments, ...prev]))
 
         setHasMore(res.data.hasNext)
         setPage(pageNum)
@@ -154,6 +157,7 @@ export const useComments = ({ newsId, isLoggedIn, setToastMessage }: UseComments
         setComments((prev) => [...prev, newComment])
         setCommentText('')
         setToastMessage(TimelineMessage.COMMENT_POST_SUCCESS)
+        setShouldScrollToBottom(true)
       } else {
         setToastMessage(TimelineMessage.COMMENT_POST_FAIL)
       }
@@ -201,5 +205,7 @@ export const useComments = ({ newsId, isLoggedIn, setToastMessage }: UseComments
     handleSubmitComment,
     handleDeleteComment,
     loadMoreComments,
+    shouldScrollToBottom,
+    setShouldScrollToBottom,
   }
 }

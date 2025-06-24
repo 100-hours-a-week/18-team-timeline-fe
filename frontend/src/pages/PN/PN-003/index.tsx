@@ -38,6 +38,8 @@ export default function NewsDetail() {
     handleSubmitComment,
     handleDeleteComment,
     loadMoreComments,
+    shouldScrollToBottom,
+    setShouldScrollToBottom,
   } = useComments({
     newsId,
     isLoggedIn,
@@ -77,6 +79,8 @@ export default function NewsDetail() {
           onSubmitComment={handleSubmitComment}
           onDeleteComment={handleDeleteComment}
           onLoadMore={loadMoreComments}
+          shouldScrollToBottom={shouldScrollToBottom}
+          setShouldScrollToBottom={setShouldScrollToBottom}
         />
       </div>
 
