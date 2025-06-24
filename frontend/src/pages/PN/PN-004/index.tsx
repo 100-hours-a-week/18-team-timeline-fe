@@ -8,12 +8,6 @@ export default function BookmarkPage() {
   const { newsCards, hasNext, offset, fetchBookmark, loading } = useBookmarkLogic()
   const observerRef = useRef<HTMLDivElement | null>(null)
 
-  console.log("시작")
-  newsCards.forEach((card) => {
-    console.log(card.id)
-  })
-  console.log("끝")
-
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
