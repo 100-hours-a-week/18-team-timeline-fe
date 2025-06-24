@@ -11,7 +11,7 @@ export const useFetchNormal = () => {
     async (category: string = '', offset: string = '0', append = false) => {
       try {
         category = category.toUpperCase() as keyof NewsByCategory
-        const res = await getData(ENDPOINTS.NEWS(category, offset))
+        const res = await getData(ENDPOINTS.NEWS_FETCH(category, offset))
 
         if (!append) {
           setNewsByCategory(res.data)
