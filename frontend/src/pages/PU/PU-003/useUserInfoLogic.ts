@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '@/constants/url'
 import { trace } from '@opentelemetry/api'
 import { UserInfoMessage } from '@/constants/PU/userInfoMessage'
+import { useAuthStore } from '@/stores/useAuthStore'
 
 type UserInfoLogicProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> & {
   setToastMessage: (msg: string) => void
@@ -20,21 +21,22 @@ export const useUserInfoLogic = ({ setToastMessage }: UserInfoLogicProps) => {
   const [isInputModalOpen, setIsInputModalOpen] = useState(false)
   const [isNameChecked, setIsNameChecked] = useState(false)
 
+  const { isLoggedIn } = useAuthStore()
   const { getData, patchData } = useRequestStore()
   const navigate = useNavigate()
   const userName = localStorage.getItem('userName')
 
   useEffect(() => {
-    if (!userName) {
+    if (!isLoggedIn) {
       navigate(ROUTES.LOGIN)
       return
     }
 
-    setName(userName)
+    setName(localStorage.getItem('username') || '')
 
     const span = trace.getActiveSpan()
     if (span) {
-      span.setAttribute('user_id', userName)
+      span.setAttribute('user_id', name)
     }
 
     const fetchUserInfo = async () => {

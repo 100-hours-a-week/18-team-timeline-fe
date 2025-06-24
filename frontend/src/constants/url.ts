@@ -44,10 +44,12 @@ export const ENDPOINTS = {
   RESET_PASSWORD_LOGOUT: (token: string) => `/auth/password-reset-tokens/${token}/reset`,
   RESET_PASSWORD_LOGIN: '/users/me/password',
 
-  NEWS: '/news',
+  NEWS: `/news`,
+  NEWS_FETCH: (category?: string, offset?: string) =>
+    `/news?offset=${offset ?? '0'}${category ? `&category=${category}` : ''}`,
   NEWS_HOTISSUE: '/news/hotissue',
   NEWS_DETAIL: (id: string) => `/news/${id}`,
-  NEWS_SEARCH: (tags: string[], offset?: number) => {
+  NEWS_SEARCH: (tags: string[], offset?: string) => {
     const params = new URLSearchParams()
     tags.forEach((tag) => params.append('tags', tag))
     if (offset !== undefined) {
@@ -56,7 +58,7 @@ export const ENDPOINTS = {
     return `/news/search?${params.toString()}`
   },
   BOOKMARK: (id: string) => `/news/${id}/bookmark`,
-  BOOKMARK_FETCH: `/users/me/bookmarks`,
+  BOOKMARK_FETCH: (offset?: string) => `/users/me/bookmarks?offset=${offset ?? '0'}`,
   COMMENT_FETCH: (newsId: string, offset: number) => `/news/${newsId}/comments?offset=${offset}`,
   COMMENT_CREATE: (newsId: string) => `/news/${newsId}/comments`,
   COMMENT_DELETE: (newsId: string, commentId: string) => `/news/${newsId}/comments/${commentId}`,

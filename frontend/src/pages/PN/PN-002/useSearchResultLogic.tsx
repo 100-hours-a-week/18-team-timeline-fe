@@ -13,6 +13,7 @@ interface SearchResultLogicProps {
 export const useSearchResultLogic = ({ setToastMessage }: SearchResultLogicProps) => {
   const [news, setNews] = useState<News[]>([])
   const [hasNext, setHasNext] = useState(false)
+  const [offset, setOffset] = useState('0')
   const [isButtonActive, setIsButtonActive] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -20,13 +21,22 @@ export const useSearchResultLogic = ({ setToastMessage }: SearchResultLogicProps
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn)
   const navigate = useNavigate()
 
-  const fetchNews = async (tags: string[], offset: number = 0) => {
+  const fetchNews = async (tags: string[], offset: string = '0', append: boolean = false) => {
     if (tags.length === 0) return
 
     try {
       const res = await getData(ENDPOINTS.NEWS_SEARCH(tags, offset))
-      setNews(res.data.newsList)
+      if (append) {
+        setNews((prev) => {
+          const prevIds = new Set(prev.map((n) => n.id))
+          const filtered = res.data.newsList.filter((n: News) => !prevIds.has(n.id))
+          return [...prev, ...filtered]
+        })
+      } else {
+        setNews(res.data.newsList)
+      }
       setHasNext(res.data.hasNext)
+      setOffset(res.data.offset)
       setIsButtonActive(isLoggedIn && !isLoading && tags.length > 0)
     } catch (e) {
       console.error('뉴스 검색 실패', e)
@@ -44,7 +54,6 @@ export const useSearchResultLogic = ({ setToastMessage }: SearchResultLogicProps
       const res = await postData(ENDPOINTS.NEWS, { keywords: tags })
       if (res.data?.news?.id) {
         navigate(ROUTES.getNewsDetailPath(res.data.news.id))
-        // setToastMessage(res.message || SearchResultMessage.CREATE_NEWS_SUCCESS)
       } else {
         setTimeout(() => {
           setToastMessage(res?.message || SearchResultMessage.CREATE_NEWS_TIMEOUT)
@@ -63,6 +72,7 @@ export const useSearchResultLogic = ({ setToastMessage }: SearchResultLogicProps
   return {
     news,
     hasNext,
+    offset,
     isButtonActive,
     isLoading,
     fetchNews,

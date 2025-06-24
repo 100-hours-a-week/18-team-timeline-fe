@@ -4,7 +4,6 @@ import { Text } from '@/components/ui/Text'
 import { useNavigate } from 'react-router-dom'
 
 export type AlarmCardProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> & {
-  key: number
   title: string
   content: string
   isChecked: boolean
@@ -15,7 +14,6 @@ export type AlarmCardProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, H
 }
 
 export const AlarmCard = ({
-  key,
   title,
   content,
   isChecked,
@@ -50,7 +48,7 @@ export const AlarmCard = ({
   const dateClass = clsx('text-xs flex-shrink-0', !isChecked ? 'text-alarmCardDate' : 'text-alarmCardChecked')
 
   return (
-    <div key={key} className={clsx(wrapperClass, navigationClass)} onClick={handleClick}>
+    <div className={clsx(wrapperClass, navigationClass)} onClick={handleClick}>
       <div className={titleBoxClass}>
         <Text className={titleClass}>{title}</Text>
         <Text className={dateClass}>{createdAt}</Text>
