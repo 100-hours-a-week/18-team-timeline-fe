@@ -57,7 +57,7 @@ export const ENDPOINTS = {
     return `/news/search?${params.toString()}`
   },
   BOOKMARK: (id: string) => `/news/${id}/bookmark`,
-  BOOKMARK_FETCH: `/users/me/bookmarks`,
+  BOOKMARK_FETCH: (offset?: string) => `/users/me/bookmarks?offset=${offset ?? '0'}`,
   COMMENT_FETCH: (newsId: string, offset: number) => `/news/${newsId}/comments?offset=${offset}`,
   COMMENT_CREATE: (newsId: string) => `/news/${newsId}/comments`,
   COMMENT_DELETE: (newsId: string, commentId: string) => `/news/${newsId}/comments/${commentId}`,
