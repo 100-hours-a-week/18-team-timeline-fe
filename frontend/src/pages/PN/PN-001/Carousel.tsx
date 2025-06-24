@@ -10,7 +10,7 @@ import clsx from 'clsx'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/effect-fade'
-import { useFetchHotissue } from './useFetchHotissue'
+import { useFetchHotissue } from './hooks/useFetchHotissue'
 
 type CarouselProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
 

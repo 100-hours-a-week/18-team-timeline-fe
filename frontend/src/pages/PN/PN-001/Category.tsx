@@ -30,23 +30,21 @@ const Category: React.FC<CategoryProps> = ({ onCategoryChange }) => {
   const categoryItemClass = 'flex-1 text-center py-2 text-sm text-categoryText'
 
   return (
-    <div className="w-full px-4">
-      <div className={wrapperClass}>
-        {categories.map((category) => (
-          <button
-            key={category.id}
-            onClick={() => handleCategoryClick(category.id)}
-            className={clsx(
-              categoryItemClass,
-              selectedCategory === category.id
-                ? 'font-bold border-b-2 border-point'
-                : 'font-medium border-b-2 border-categoryBorder',
-            )}
-          >
-            {category.name}
-          </button>
-        ))}
-      </div>
+    <div className={wrapperClass}>
+      {categories.map((category) => (
+        <button
+          key={category.id}
+          onClick={() => handleCategoryClick(category.id)}
+          className={clsx(
+            categoryItemClass,
+            selectedCategory === category.id
+              ? 'font-bold border-b-2 border-point'
+              : 'font-medium border-b-2 border-categoryBorder',
+          )}
+        >
+          {category.name}
+        </button>
+      ))}
     </div>
   )
 }
