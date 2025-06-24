@@ -18,15 +18,14 @@ export const useFetchNormal = () => {
           return
         }
 
-        const upper = category.toUpperCase() as keyof NewsByCategory
-        const newList = res.data[upper]?.newsList ?? []
+        const newList = res.data[category]?.newsList ?? []
 
         setNewsByCategory((prev) => {
-          const prevList = prev[upper]?.newsList ?? []
+          const prevList = prev[category]?.newsList ?? []
           return {
             ...prev,
-            [upper]: {
-              ...res.data[upper],
+            [category]: {
+              ...res.data[category],
               newsList: [...prevList, ...newList],
             },
           }
