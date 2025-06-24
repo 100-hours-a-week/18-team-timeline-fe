@@ -116,6 +116,24 @@ export default {
         createNewsBtnBoxBorder: '#EEEEEE',
 
         bookmarkTitle: '#2A4759',
+
+        timelineCardWhiteBg: '#FFFFFF',
+        timelineCardBlackBg: '#2A4759',
+        timelineCardWhiteTitle: '#000000',
+        timelineCardBlackTitle: '#FFFFFF',
+        timelineCardWhiteContent: '#717171',
+        timelineCardBlackContent: '#EEEEEE',
+        timelineMetaText: '#2A4759',
+
+        commentBoxBg: '#FFFFFF',
+        commentCardBg: '#FFFFFF',
+        commentMetaText: '#AAAAAA',
+
+        statsTitle: '#2A4759',
+        statsNotice: '#AAAAAA',
+        positive: '#FA7000',
+        neutral: '#FF9800',
+        negative: '#FFE0B2',
       },
     },
   },

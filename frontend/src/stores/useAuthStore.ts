@@ -27,7 +27,7 @@ function isTokenValid(token: string | null): boolean {
 function clearAuthStorage() {
   localStorage.removeItem('token')
   localStorage.removeItem('userId')
-  localStorage.removeItem('userName')
+  localStorage.removeItem('username')
   localStorage.removeItem('role')
 }
 
