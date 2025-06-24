@@ -36,6 +36,7 @@ export const CommentContainer = ({
   const listRef = useRef<HTMLDivElement>(null)
   const isInitialMount = useRef(true)
   const [shouldPreserveScroll, setShouldPreserveScroll] = useState(false)
+  const [shouldPreserveOnDelete, setShouldPreserveOnDelete] = useState(false)
   const prevScrollHeightRef = useRef(0)
   const prevScrollTopRef = useRef(0)
 
@@ -81,6 +82,14 @@ export const CommentContainer = ({
       setShouldPreserveScroll(false)
     }
   }, [sortedComments.length])
+
+  useEffect(() => {
+    if (!listRef.current) return
+
+    prevScrollHeightRef.current = listRef.current.scrollHeight
+    prevScrollTopRef.current = listRef.current.scrollTop
+    setShouldPreserveOnDelete(true)
+  })
 
   const wrapperClass = 'flex flex-col w-full min-h-[25vh] max-h-[50vh] bg-inputBg text-black rounded-t-xl shadow-inner'
   const cardContainerClass = 'flex-1 flex flex-col gap-4 overflow-y-auto overflow-x-hidden px-4 pb-4 mt-2'
