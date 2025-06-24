@@ -61,6 +61,7 @@ export const CommentContainer = ({
 
   const wrapperClass = 'flex flex-col w-full min-h-[25vh] max-h-[50vh] bg-inputBg text-black rounded-t-xl shadow-inner'
   const cardContainerClass = 'flex-1 flex flex-col gap-4 overflow-y-auto overflow-x-hidden px-4 pb-4 mt-2'
+  const inputContainerClass = 'sticky bottom-0 z-10'
 
   return (
     <div className={wrapperClass}>
@@ -73,13 +74,15 @@ export const CommentContainer = ({
         ))}
       </div>
 
-      <CommentInput
-        isLoggedIn={isLoggedIn}
-        commentText={commentText}
-        onCommentChange={onCommentChange}
-        onSubmitComment={onSubmitComment}
-        commentInputRef={commentInputRef}
-      />
+      <div className={inputContainerClass}>
+        <CommentInput
+          isLoggedIn={isLoggedIn}
+          commentText={commentText}
+          onCommentChange={onCommentChange}
+          onSubmitComment={onSubmitComment}
+          commentInputRef={commentInputRef}
+        />
+      </div>
     </div>
   )
 }
