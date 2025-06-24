@@ -38,9 +38,8 @@ export const CommentContainer = ({
   const [shouldPreserveScroll, setShouldPreserveScroll] = useState(false)
   const prevScrollHeightRef = useRef(0)
   const prevScrollTopRef = useRef(0)
-  const prevCommentLengthRef = useRef(comments.length)
 
-  const sortedComments = [...comments]
+  const sortedComments = [...comments].sort((a, b) => Number(a.id) - Number(b.id))
 
   useEffect(() => {
     if (listRef.current && isInitialMount.current) {
