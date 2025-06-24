@@ -1,5 +1,4 @@
 import type { DetailedHTMLProps, HTMLAttributes } from 'react'
-import clsx from 'clsx'
 import TamnaraIcon from '@/assets/tamnara_icon.png'
 import { Text } from '@/components/ui/Text'
 

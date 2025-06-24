@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '@/constants/url'
 import { PollMessage } from '@/constants/PV/pollMessage'
 import { getFormatDateTime } from '../utils/getFormatDateTime'
+import { useAuthStore } from '@/stores/useAuthStore'
 
 type PollLogicProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> & {
   setToastMessage: (msg: string) => void
@@ -20,12 +21,13 @@ export const usePollLogic = ({ setToastMessage }: PollLogicProps) => {
   const [isButtonActive, setIsButtonActive] = useState(false)
   const [isInputModalOpen, setIsInputModalOpen] = useState(false)
 
+  const { isLoggedIn } = useAuthStore()
   const { getData, postData } = useRequestStore()
   const navigate = useNavigate()
   const userName = localStorage.getItem('userName')
 
   useEffect(() => {
-    if (!userName) {
+    if (!isLoggedIn) {
       navigate(ROUTES.LOGIN)
       return
     }
@@ -40,6 +42,7 @@ export const usePollLogic = ({ setToastMessage }: PollLogicProps) => {
         setOptions(res.data.poll.options)
       } catch (e) {
         console.error('투표 정보 조회 실패', e)
+        navigate(ROUTES.MAIN)
       }
     }
     fetchPoll()
@@ -49,7 +52,7 @@ export const usePollLogic = ({ setToastMessage }: PollLogicProps) => {
     if (minChoices !== undefined) {
       setIsButtonActive(selectOps.length >= minChoices)
     }
-  }, [selectOps, minChoices])  
+  }, [selectOps, minChoices])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

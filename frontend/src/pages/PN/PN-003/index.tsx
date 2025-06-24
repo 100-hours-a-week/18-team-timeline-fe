@@ -69,7 +69,7 @@ export default function NewsDetail() {
       />
       <TimelineContainer timeline={news.timeline} />
 
-      <div className="bg-commentBoxBg rounded-xl pt-4 px-4 shadow-2xl" ref={commentListRef}>
+      <div className="bg-commentBoxBg rounded-t-xl pt-4 px-4 shadow-2xl" ref={commentListRef}>
         <SentimentAnalysis statistics={news.statistics} />
         <CommentContainer
           comments={comments}
