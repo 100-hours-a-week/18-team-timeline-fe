@@ -22,7 +22,6 @@ export const handleToken = (token: string): void => {
       localStorage.removeItem('userId')
       localStorage.removeItem('username')
       localStorage.removeItem('role')
-      window.location.reload()
       return
     }
 
