@@ -1,7 +1,8 @@
 export interface Comment {
-  id: string;
-  author: string;
-  content: string;
-  createdAt: string;
-  isMyComment: boolean;
+  id: string
+  userId: string
+  username: string
+  content: string
+  createdAt: string
+  isMine: boolean
 }

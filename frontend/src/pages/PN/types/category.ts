@@ -1,4 +1,4 @@
-import type { News } from "./news"
+import type { News } from './news'
 
 export type Category = 'ALL' | 'ECONOMY' | 'ENTERTAINMENT' | 'SPORTS' | 'KTB'
 export type NewsByCategory = {
