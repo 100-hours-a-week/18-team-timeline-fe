@@ -34,8 +34,6 @@ export default function NewsDetail() {
   const {
     comments,
     commentText,
-    hasMore,
-    commentsEndRef,
     commentListRef,
     handleCommentChange,
     handleSubmitComment,
@@ -71,18 +69,16 @@ export default function NewsDetail() {
       <TimelineContainer timeline={news.timeline} />
 
       {/* 감정 분석 및 댓글 */}
-      <div className="bg-[#FFFFFF] rounded-xl mb-28 mx-4 p-4" ref={commentListRef}>
+      <div className="bg-[#FFFFFF] rounded-xl px-4" ref={commentListRef}>
         <SentimentAnalysis title={news.title} statistics={news.statistics} />
 
         <CommentContainer
           comments={comments}
           commentText={commentText}
           isLoggedIn={isLoggedIn}
-          hasMore={hasMore}
           onCommentChange={handleCommentChange}
           onSubmitComment={handleSubmitComment}
           onDeleteComment={handleDeleteComment}
-          commentsEndRef={commentsEndRef}
           onLoadMore={loadMoreComments}
         />
       </div>

@@ -126,6 +126,7 @@ export default {
 
         commentBoxBg: '#FFFFFF',
         commentCardBg: '#FFFFFF',
+        commentMetaText: '#AAAAAA',
       },
     },
   },
