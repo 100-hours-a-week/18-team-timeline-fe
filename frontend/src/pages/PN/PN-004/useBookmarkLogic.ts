@@ -21,8 +21,11 @@ export const useBookmarkLogic = () => {
       const res = await getData(ENDPOINTS.BOOKMARK_FETCH(offset))
       if (append) {
         setNewsCards((prev) => {
-          const merged = [...prev, ...res.data.bookmarks]
-          return merged
+          const map = new Map(prev.map((news) => [news.id, news]))
+          for (const newItem of res.data.bookmarks) {
+            map.set(newItem.id, newItem)
+          }
+          return Array.from(map.values())
         })
       } else {
         setNewsCards(res.data.bookmarks)
@@ -44,17 +47,11 @@ export const useBookmarkLogic = () => {
     fetchBookmark()
   }, [])
 
-  const loadMoreBookmarks = () => {
-    if (!loading && hasNext) {
-      fetchBookmark(offset, true)
-    }
-  }
-
   return {
     newsCards,
     hasNext,
     offset,
-    loadMoreBookmarks,
+    fetchBookmark,
     loading,
   }
 }
