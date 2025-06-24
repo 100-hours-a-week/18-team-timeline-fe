@@ -22,5 +22,8 @@ export const TimelineMessage = {
   COMMENT_POST_FAIL: '댓글 등록에 실패했습니다.',
   COMMENT_DELETE_SUCCESS: '댓글이 삭제되었습니다.',
   COMMENT_DELETE_FAIL: '댓글 삭제 중 오류가 발생했습니다.',
-  NO_COMMENT: '가장 먼저 댓글을 남겨보세요!'
+  NO_COMMENT: '가장 먼저 댓글을 남겨보세요!',
+
+  STATISTICS_TITLE: '사람들의 반응은?',
+  STATISTICS_NOTICE: 'BGE-M3 기반 모델을 활용하여 온라인 반응을 자동으로 분류하였습니다.',
 }

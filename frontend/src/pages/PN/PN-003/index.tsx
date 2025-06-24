@@ -67,10 +67,8 @@ export default function NewsDetail() {
       />
       <TimelineContainer timeline={news.timeline} />
 
-      {/* 감정 분석 및 댓글 */}
-      <div className="bg-commentBoxBg rounded-xl pt-4 px-4" ref={commentListRef}>
-        <SentimentAnalysis title={news.title} statistics={news.statistics} />
-
+      <div className="bg-commentBoxBg rounded-xl pt-4 px-4 shadow-2xl" ref={commentListRef}>
+        <SentimentAnalysis statistics={news.statistics} />
         <CommentContainer
           comments={comments}
           commentText={commentText}

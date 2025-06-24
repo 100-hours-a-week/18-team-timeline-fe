@@ -128,6 +128,12 @@ export default {
         commentBoxBg: '#FFFFFF',
         commentCardBg: '#FFFFFF',
         commentMetaText: '#AAAAAA',
+
+        statsTitle: '#2A4759',
+        statsNotice: '#AAAAAA',
+        positive: '#FA7000',
+        neutral: '#FF9800',
+        negative: '#FFE0B2',
       },
     },
   },
