@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { Toast } from '@/components/ui/Toast'
-import { TimelineHeader } from './Timeline/TimelineHeader'
+import { TimelineHeader } from './TimelineHeader'
 import { TimelineContainer } from './Timeline/TimelineContainer'
 import { useTimelineData } from './hooks/useTimelineData'
 import { useAuthStore } from '@/stores/useAuthStore'
@@ -30,7 +30,6 @@ export default function NewsDetail() {
       setToastMessage,
     })
 
-  // 댓글 관련 훅 사용
   const {
     comments,
     commentText,
@@ -69,7 +68,7 @@ export default function NewsDetail() {
       <TimelineContainer timeline={news.timeline} />
 
       {/* 감정 분석 및 댓글 */}
-      <div className="bg-[#FFFFFF] rounded-xl px-4" ref={commentListRef}>
+      <div className="bg-commentBoxBg rounded-xl pt-4 px-4" ref={commentListRef}>
         <SentimentAnalysis title={news.title} statistics={news.statistics} />
 
         <CommentContainer

@@ -123,6 +123,7 @@ export default {
         timelineCardBlackTitle: '#FFFFFF',
         timelineCardWhiteContent: '#717171',
         timelineCardBlackContent: '#EEEEEE',
+        timelineMetaText: '#2A4759',
 
         commentBoxBg: '#FFFFFF',
         commentCardBg: '#FFFFFF',

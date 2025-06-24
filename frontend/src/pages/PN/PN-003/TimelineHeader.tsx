@@ -22,10 +22,10 @@ export const TimelineHeader = ({
 }: TimelineHeaderProps) => {
   const wrapperClass = 'w-full bg-white p-4'
   const titleBoxClass = 'flex justify-between items-start mb-1 gap-4'
-  const titleClass = 'text-lg font-bold text-timelineTitle leading-tight'
+  const titleClass = 'text-lg font-bold text-timelineCardWhiteTitle leading-tight'
   const iconBoxClass = 'flex items-center flex-shrink-0 gap-4'
   const iconClass = 'text-timelineMetaText mt-0.5 cursor-pointer'
-  const dateClass = 'text-xs text-timelineMetaText'
+  const dateClass = 'text-xs text-point'
 
   return (
     <div className={wrapperClass}>
@@ -33,7 +33,7 @@ export const TimelineHeader = ({
         <h2 className={titleClass}>{title}</h2>
         <div className={iconBoxClass}>
           <Icon name="ShareIcon" size={18} variant="solid" className={iconClass} onClick={onShare} />
-          {isLoggedIn ?? (
+          {isLoggedIn && (
             <Icon
               name="BookmarkIcon"
               size={18}
