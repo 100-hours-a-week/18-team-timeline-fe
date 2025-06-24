@@ -44,11 +44,12 @@ export const ENDPOINTS = {
   RESET_PASSWORD_LOGOUT: (token: string) => `/auth/password-reset-tokens/${token}/reset`,
   RESET_PASSWORD_LOGIN: '/users/me/password',
 
-  NEWS: (category?: string, offset?: string) =>
+  NEWS: `/news`,
+  NEWS_FETCH: (category?: string, offset?: string) =>
     `/news?offset=${offset ?? '0'}${category ? `&category=${category}` : ''}`,
   NEWS_HOTISSUE: '/news/hotissue',
   NEWS_DETAIL: (id: string) => `/news/${id}`,
-  NEWS_SEARCH: (tags: string[], offset?: number) => {
+  NEWS_SEARCH: (tags: string[], offset?: string) => {
     const params = new URLSearchParams()
     tags.forEach((tag) => params.append('tags', tag))
     if (offset !== undefined) {
