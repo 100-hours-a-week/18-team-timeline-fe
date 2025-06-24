@@ -3,6 +3,7 @@ import { useRequestStore } from '@/stores/useRequestStore'
 import clsx from 'clsx'
 import type { DetailedHTMLProps, HTMLAttributes } from 'node_modules/@types/react'
 import { ENDPOINTS, ROUTES } from '@/constants/url'
+import { useAuthStore } from '@/stores/useAuthStore'
 
 type SideBarButtonProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> & {
   url: string
@@ -63,15 +64,13 @@ export const LogoutButton = ({ onClick, className: _className }: LogoutButtonPro
 
   const navigate = useNavigate()
   const { postData } = useRequestStore()
+  const logout = useAuthStore((state) => state.logout)
 
   const handleClick = async () => {
     try {
       const res = await postData(ENDPOINTS.LOGOUT)
       if (res?.success) {
-        localStorage.removeItem('token')
-        localStorage.removeItem('userId')
-        localStorage.removeItem('userName')
-        localStorage.removeItem('role')
+        logout()
         navigate(ROUTES.MAIN)
         window.location.reload()
       }

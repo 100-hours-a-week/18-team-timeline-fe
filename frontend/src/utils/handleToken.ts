@@ -20,15 +20,16 @@ export const handleToken = (token: string): void => {
       console.log('액세스 토큰이 만료되었습니다.')
       localStorage.removeItem('token')
       localStorage.removeItem('userId')
-      localStorage.removeItem('userName')
+      localStorage.removeItem('username')
       localStorage.removeItem('role')
+      window.location.reload()
       return
     }
 
     if (decoded.sub && decoded.username && decoded.role) {
       localStorage.setItem('token', token)
       localStorage.setItem('userId', decoded.sub)
-      localStorage.setItem('userName', decoded.username)
+      localStorage.setItem('username', decoded.username)
       localStorage.setItem('role', decoded.role)
     } else {
       console.warn('JWT에서 필수 정보 누락: sub, username, role', {
