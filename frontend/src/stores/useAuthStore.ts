@@ -6,6 +6,7 @@ interface AuthState {
   isLoggedIn: boolean
   userId: number | null
   username: string | null
+  setUsername: (newUsername: string) => void
   isAuthChecked: boolean
   login: () => void
   logout: () => void
@@ -80,5 +81,9 @@ export const useAuthStore = create<AuthState>((set) => ({
         })
       }
     }
+  },
+
+  setUsername: (newUsername) => {
+    set({ username: newUsername })
   },
 }))

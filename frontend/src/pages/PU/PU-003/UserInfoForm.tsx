@@ -25,7 +25,6 @@ export const UserInfoForm = ({}: UserInfoFormProps) => {
     setText,
     name,
     setName,
-    checkNameDuplicate,
     isInputModalOpen,
     setIsInputModalOpen,
     errors,
@@ -71,7 +70,6 @@ export const UserInfoForm = ({}: UserInfoFormProps) => {
           isLabel={true}
           value={name}
           onChange={(e) => setName(e.target.value)}
-          onBlur={checkNameDuplicate}
           helperText={errors.name}
         />
         <div className={buttonClass}>
