@@ -47,7 +47,6 @@ export const UserInfoForm = ({}: UserInfoFormProps) => {
     try {
       const res = await deleteData(ENDPOINTS.USER_WITHDRAW)
       if (res?.success) {
-        localStorage.clear()
         setToastMessage(UserInfoMessage.WITHDRAW_SUCCESS)
       }
     } catch (err) {

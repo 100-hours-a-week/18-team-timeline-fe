@@ -3,10 +3,13 @@ import type { Comment } from '../../types/comment'
 import { ENDPOINTS } from '@/constants/url'
 import { useRequestStore } from '@/stores/useRequestStore'
 import { TimelineMessage } from '@/constants/PN/TimelineMessage'
+import { useAuthStore } from '@/stores/useAuthStore'
 
 interface UseCommentsProps {
   newsId: string
   isLoggedIn: boolean
+  userId?: number | null,
+  username?: string | null,
   setToastMessage: (message: string, position?: any) => void
 }
 
@@ -27,7 +30,7 @@ interface UseCommentsReturn {
 /**
  * 댓글 기능을 관리하는 커스텀 훅
  */
-export const useComments = ({ newsId, isLoggedIn, setToastMessage }: UseCommentsProps): UseCommentsReturn => {
+export const useComments = ({ newsId, isLoggedIn, userId, username, setToastMessage }: UseCommentsProps): UseCommentsReturn => {
   const [comments, setComments] = useState<Comment[]>([])
   const [commentText, setCommentText] = useState('')
   const [page, setPage] = useState(1)
@@ -63,16 +66,13 @@ export const useComments = ({ newsId, isLoggedIn, setToastMessage }: UseComments
           return
         }
 
-        const currentUserId = localStorage.getItem('userId')
-        const currentUserNickname = localStorage.getItem('username')
-
         const newComments: Comment[] = res.data.comments.map((comment: any) => {
-          const isMine = comment.userId == currentUserId
+          const isMine = comment.userId == userId
 
           return {
             id: comment.id.toString(),
             userId: comment.userId,
-            username: isMine ? `${currentUserNickname}(나)` : `${comment.username}`,
+            username: isMine ? `${username}(나)` : `${comment.username}`,
             content: comment.content,
             createdAt: comment.createdAt,
             isMine: isMine,
@@ -143,12 +143,12 @@ export const useComments = ({ newsId, isLoggedIn, setToastMessage }: UseComments
 
     try {
       const res = await postData(ENDPOINTS.COMMENT_CREATE(newsId), payload)
-      if (!localStorage.getItem('userId') || !localStorage.getItem('username')) return
+      if (userId == null || username == null) return
       if (res.success) {
         const newComment: Comment = {
           id: res.data.commentId,
-          userId: localStorage.getItem('userId') ?? '',
-          username: `${localStorage.getItem('username') || '나'}(나)`,
+          userId: userId,
+          username: `${username ?? ''}(나)`,
           content: commentText.trim(),
           createdAt: new Date().toISOString(),
           isMine: true,

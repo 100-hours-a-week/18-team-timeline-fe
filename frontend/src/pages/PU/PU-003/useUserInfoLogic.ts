@@ -21,10 +21,9 @@ export const useUserInfoLogic = ({ setToastMessage }: UserInfoLogicProps) => {
   const [isInputModalOpen, setIsInputModalOpen] = useState(false)
   const [isNameChecked, setIsNameChecked] = useState(false)
 
-  const { isLoggedIn } = useAuthStore()
+  const { isLoggedIn, username } = useAuthStore()
   const { getData, patchData } = useRequestStore()
   const navigate = useNavigate()
-  const userName = localStorage.getItem('userName')
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -32,17 +31,16 @@ export const useUserInfoLogic = ({ setToastMessage }: UserInfoLogicProps) => {
       return
     }
 
-    setName(localStorage.getItem('username') || '')
-
     const span = trace.getActiveSpan()
-    if (span) {
-      span.setAttribute('user_id', name)
+    if (span && username) {
+      span.setAttribute('user_id', username)
     }
 
     const fetchUserInfo = async () => {
       try {
         const res = await getData(ENDPOINTS.USER_INFO)
         setEmail(res.data.user.email)
+        setName(username ?? res.data.user.username)
       } catch (e) {
         console.error('유저 정보 조회 실패', e)
       }
@@ -57,13 +55,13 @@ export const useUserInfoLogic = ({ setToastMessage }: UserInfoLogicProps) => {
   }, [name, isNameChecked])
 
   useEffect(() => {
-    if (name !== userName) {
+    if (name !== sessionStorage.getItem('username')) {
       setIsNameChecked(false)
     }
   }, [name])
 
   const checkNameDuplicate = async () => {
-    if (!name || errors.name || name === userName) return
+    if (!name || errors.name || name === sessionStorage.getItem('username')) return
 
     const res = await getData(ENDPOINTS.CHECK_NAME(name))
 
@@ -79,12 +77,12 @@ export const useUserInfoLogic = ({ setToastMessage }: UserInfoLogicProps) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!isButtonActive) return
+
+    setToastMessage('')
     try {
       const res = await patchData(ENDPOINTS.USER_INFO, { nickname: name })
       if (res?.success) {
-        localStorage.setItem('userName', name)
         setToastMessage(UserInfoMessage.TOAST_SUCCESS)
-        window.location.reload()
       }
     } catch (error) {
       console.error('닉네임 수정 실패', error)
