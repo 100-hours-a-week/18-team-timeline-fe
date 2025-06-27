@@ -72,7 +72,6 @@ export const LogoutButton = ({ onClick, className: _className }: LogoutButtonPro
       if (res?.success) {
         logout()
         navigate(ROUTES.MAIN)
-        window.location.reload()
       }
 
       if (onClick) {
