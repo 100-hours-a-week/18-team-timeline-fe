@@ -14,7 +14,7 @@ import { ROUTES } from '@/constants/url'
 
 export default function NewsDetail() {
   const [toastMessage, setToastMessage] = useState<string | null>(null)
-  const { isLoggedIn } = useAuthStore()
+  const { isLoggedIn, userId, username } = useAuthStore()
   const navigate = useNavigate()
 
   const params = useParams<{ id: string }>()
@@ -43,6 +43,8 @@ export default function NewsDetail() {
   } = useComments({
     newsId,
     isLoggedIn,
+    userId,
+    username,
     setToastMessage,
   })
 
