@@ -20,7 +20,7 @@ export const useUserInfoLogic = ({ setToastMessage }: UserInfoLogicProps) => {
   const [isButtonActive, setIsButtonActive] = useState(false)
   const [isInputModalOpen, setIsInputModalOpen] = useState(false)
 
-  const { isLoggedIn, username } = useAuthStore()
+  const { isLoggedIn, username, setUsername } = useAuthStore()
   const { getData, patchData } = useRequestStore()
   const navigate = useNavigate()
 
@@ -66,6 +66,7 @@ export const useUserInfoLogic = ({ setToastMessage }: UserInfoLogicProps) => {
     try {
       const res = await patchData(ENDPOINTS.USER_INFO, { nickname: name })
       if (res?.success) {
+        setUsername(name)
         setIsButtonActive(false)
         setToastMessage(UserInfoMessage.TOAST_SUCCESS)
       }
