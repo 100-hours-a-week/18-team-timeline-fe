@@ -7,7 +7,7 @@ export default {
         // common
         point: '#F2A359',
         myWhite: '#FFFFFF',
-        myBlack: '#000000',
+        myBlack: '#1',
         mainBgColor: '#E5E5E5',
         pageBg: '#FCFAF7',
 
@@ -51,7 +51,7 @@ export default {
         alarmBarBg: '#F9F9F9',
         alarmBarMetaText: '#AAAAAA',
         alarmBarHeader: '#FFFFFF',
-        alarmTabSelect: '#000000',
+        alarmTabSelect: '#1',
         alarmTabNotSelect: '#AAAAAA',
         alarmCardBg: '#FFFFFF',
         alarmCardBorder: '#EEEEEE',
@@ -67,7 +67,7 @@ export default {
 
         inputBg: '#F1EFEC',
         inputBorder: '#D4C9BE',
-        inputBorderFocus: '#000000',
+        inputBorderFocus: '#1',
         inputPlaceholder: '#D4C9BE',
         labelText: '#2A4759',
         labelRequired: '#F79B72',
@@ -90,7 +90,7 @@ export default {
         pollBoxBorder: '#DADADA',
         pollOptionBg: '#F1EFEC',
         pollOptionSelectBg: '#E3D8CE',
-        pollOptionText: '#000000',
+        pollOptionText: '#1',
         radioBtnBorder: '#DADADA',
         radioBtnBg: '#FFFFFF',
         radioBtnCircle: '#F2A359',
@@ -119,7 +119,7 @@ export default {
 
         timelineCardWhiteBg: '#FFFFFF',
         timelineCardBlackBg: '#2A4759',
-        timelineCardWhiteTitle: '#000000',
+        timelineCardWhiteTitle: '#1',
         timelineCardBlackTitle: '#FFFFFF',
         timelineCardWhiteContent: '#717171',
         timelineCardBlackContent: '#EEEEEE',
