@@ -19,7 +19,6 @@ export const useUserInfoLogic = ({ setToastMessage }: UserInfoLogicProps) => {
   const [errors, setErrors] = useState<{ name?: string }>({})
   const [isButtonActive, setIsButtonActive] = useState(false)
   const [isInputModalOpen, setIsInputModalOpen] = useState(false)
-  const [isNameChecked, setIsNameChecked] = useState(false)
 
   const { isLoggedIn, username } = useAuthStore()
   const { getData, patchData } = useRequestStore()
@@ -50,29 +49,14 @@ export const useUserInfoLogic = ({ setToastMessage }: UserInfoLogicProps) => {
 
   useEffect(() => {
     const result = validateUserInfo(name)
+
     setErrors(result.errors)
-    setIsButtonActive(result.isValid && isNameChecked)
-  }, [name, isNameChecked])
 
-  useEffect(() => {
-    if (name !== sessionStorage.getItem('username')) {
-      setIsNameChecked(false)
-    }
-  }, [name])
+    const isDifferentFromCurrent = name !== username
+    const isValid = result.isValid
 
-  const checkNameDuplicate = async () => {
-    if (!name || errors.name || name === sessionStorage.getItem('username')) return
-
-    const res = await getData(ENDPOINTS.CHECK_NAME(name))
-
-    if (!res.data.available) {
-      setErrors((prev) => ({ ...prev, name: UserInfoMessage.EMAIL_ALREADY_EXISTS }))
-      setIsNameChecked(false)
-    } else {
-      setErrors((prev) => ({ ...prev, name: undefined }))
-      setIsNameChecked(true)
-    }
-  }
+    setIsButtonActive(isDifferentFromCurrent && isValid)
+  }, [name, username])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -82,6 +66,7 @@ export const useUserInfoLogic = ({ setToastMessage }: UserInfoLogicProps) => {
     try {
       const res = await patchData(ENDPOINTS.USER_INFO, { nickname: name })
       if (res?.success) {
+        setIsButtonActive(false)
         setToastMessage(UserInfoMessage.TOAST_SUCCESS)
       }
     } catch (error) {
@@ -96,7 +81,6 @@ export const useUserInfoLogic = ({ setToastMessage }: UserInfoLogicProps) => {
     setText,
     name,
     setName,
-    checkNameDuplicate,
     errors,
     isButtonActive,
     handleSubmit,

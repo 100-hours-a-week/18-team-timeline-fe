@@ -36,7 +36,6 @@ export const ENDPOINTS = {
   USER_INFO: '/users/me',
   USER_WITHDRAW: '/users/me/state',
   CHECK_EMAIL: (email: string) => `/users/check-email?email=${encodeURIComponent(email)}`,
-  CHECK_NAME: (name: string) => `/users/check-nickname?nickname=${name}`,
 
   SIGNUP: '/users',
   SEND_CODE: '/auth/email-verification-codes',
