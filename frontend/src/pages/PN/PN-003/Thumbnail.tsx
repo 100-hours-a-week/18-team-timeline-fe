@@ -1,4 +1,5 @@
 import { type DetailedHTMLProps, type HTMLAttributes } from 'react'
+import TamnaraDefaultImage from '@/assets/tamanara_default_image.png'
 
 type ReactDivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
 type ThumbnailProps = ReactDivProps & {
@@ -13,7 +14,7 @@ export const Thumbnail = ({ image, title }: ThumbnailProps) => {
 
   return (
     <div className={wrapperClass}>
-      {image ? <img src={image} alt={title} className={imageClass} /> : <div className={fallbackClass}>{title}</div>}
+      <img src={image || TamnaraDefaultImage} alt={title} className={imageClass} />
     </div>
   )
 }
