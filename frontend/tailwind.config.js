@@ -128,6 +128,7 @@ export default {
         commentBoxBg: '#FFFFFF',
         commentCardBg: '#FFFFFF',
         commentMetaText: '#AAAAAA',
+        commentWithdrawAuthor: '#92A3AE',
 
         statsTitle: '#2A4759',
         statsNotice: '#AAAAAA',
