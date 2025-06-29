@@ -67,12 +67,12 @@ export const useComments = ({ newsId, isLoggedIn, userId, username, setToastMess
         }
 
         const newComments: Comment[] = res.data.comments.map((comment: any) => {
-          const isMine = comment.userId == userId
+          const isMine = comment.userId && comment.userId === userId
 
           return {
             id: comment.id.toString(),
             userId: comment.userId,
-            username: isMine ? `${username}(나)` : `${comment.username}`,
+            username: isMine ? `${username}(나)` : `${comment.username ?? '탈퇴한 회원'}`,
             content: comment.content,
             createdAt: comment.createdAt,
             isMine: isMine,
