@@ -20,7 +20,7 @@ export const useUserInfoLogic = ({ setToastMessage }: UserInfoLogicProps) => {
   const [isButtonActive, setIsButtonActive] = useState(false)
   const [isInputModalOpen, setIsInputModalOpen] = useState(false)
 
-  const { isLoggedIn, username, setUsername } = useAuthStore()
+  const { logout, isLoggedIn, username, setUsername } = useAuthStore()
   const { getData, patchData } = useRequestStore()
   const navigate = useNavigate()
 
@@ -76,6 +76,28 @@ export const useUserInfoLogic = ({ setToastMessage }: UserInfoLogicProps) => {
     }
   }
 
+  const handleDeleteAccount = () => {
+    setText('')
+    setIsInputModalOpen(true)
+  }
+
+  const handleConfirmDelete = async () => {
+    setIsInputModalOpen(false)
+    try {
+      const res = await patchData(ENDPOINTS.USER_WITHDRAW)
+      if (res?.success) {
+        logout()
+        setToastMessage(UserInfoMessage.WITHDRAW_SUCCESS)
+      }
+    } catch (err) {
+      console.error('유저 탈퇴 실패', err)
+    }
+  }
+
+  const handleCancelDelete = () => {
+    setIsInputModalOpen(false)
+  }
+
   return {
     email,
     text,
@@ -85,7 +107,9 @@ export const useUserInfoLogic = ({ setToastMessage }: UserInfoLogicProps) => {
     errors,
     isButtonActive,
     handleSubmit,
+    handleDeleteAccount,
+    handleConfirmDelete,
+    handleCancelDelete,
     isInputModalOpen,
-    setIsInputModalOpen,
   }
 }
