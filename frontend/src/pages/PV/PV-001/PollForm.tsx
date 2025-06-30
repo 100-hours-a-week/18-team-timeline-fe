@@ -17,6 +17,7 @@ type PollFormProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivEl
   setSelectOps: (ids: number[]) => void
   minChoices: number
   maxChoices: number
+  hasVoted: boolean
   isButtonActive: boolean
 }
 
@@ -26,8 +27,10 @@ export const PollForm = ({
   selectOps,
   setSelectOps,
   maxChoices,
-  isButtonActive
+  hasVoted,
+  isButtonActive,
 }: PollFormProps) => {
+
   const formClass = 'flex flex-col gap-2'
   const metaTextClass = 'text-[10px] text-center mt-2'
 
@@ -38,8 +41,9 @@ export const PollForm = ({
         selectOps={selectOps}
         setSelectOps={setSelectOps}
         maxChoices={maxChoices}
+        hasVoted={hasVoted}
       />
-      <Button text={PollMessage.BTN_NAME} isActive={isButtonActive} />
+      <Button text={hasVoted ? PollMessage.BTN_VOTED_NAME : PollMessage.BTN_NAME} isActive={isButtonActive} />
       <Text className={metaTextClass}>{PollMessage.METATEXT}</Text>
     </form>
   )

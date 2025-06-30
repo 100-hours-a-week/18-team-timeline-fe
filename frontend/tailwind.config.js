@@ -91,6 +91,7 @@ export default {
         pollOptionBg: '#F1EFEC',
         pollOptionSelectBg: '#E3D8CE',
         pollOptionText: '#1A1A1A',
+        pollOptionVotedText: '#808080',
         radioBtnBorder: '#DADADA',
         radioBtnBg: '#FFFFFF',
         radioBtnCircle: '#F2A359',
