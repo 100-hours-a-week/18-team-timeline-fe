@@ -1,58 +1,89 @@
-import { handleToken } from '@/utils/handleToken'
 import { create } from 'zustand'
+import { axiosInstance } from '@/lib/axios'
+import { ENDPOINTS } from '@/constants/url'
 
 interface AuthState {
   isLoggedIn: boolean
-  login: (token: string) => void
+  userId: number | null
+  username: string | null
+  setUsername: (newUsername: string) => void
+  isAuthChecked: boolean
+  login: () => void
   logout: () => void
   checkAuth: () => void
 }
 
-function isTokenValid(token: string | null): boolean {
-  if (!token) return false
+export const useAuthStore = create<AuthState>((set) => ({
+  isLoggedIn: false,
+  userId: null,
+  username: null,
+  isAuthChecked: false,
 
-  try {
-    const payload = JSON.parse(atob(token.split('.')[1]))
-    const exp = payload.exp
-    if (!exp) return false
+  login: () => {
+    set({ isLoggedIn: true })
+  },
 
-    const now = Math.floor(Date.now() / 1000)
-    return exp > now
-  } catch (err) {
-    console.error('토큰 파싱 오류', err)
-    return false
-  }
-}
+  logout: () => {
+    set({ isLoggedIn: false, userId: null, username: null })
+  },
 
-function clearAuthStorage() {
-  localStorage.removeItem('token')
-  localStorage.removeItem('userId')
-  localStorage.removeItem('username')
-  localStorage.removeItem('role')
-}
+  checkAuth: async () => {
+    try {
+      const res = await axiosInstance.get(ENDPOINTS.CHECK_AUTH)
 
-export const useAuthStore = create<AuthState>((set) => {
-  const token = localStorage.getItem('token')
-  const initialLoginState = isTokenValid(token)
+      if (res.data.success) {
+        const { userId, username } = res.data.data
+        set({
+          isLoggedIn: true,
+          userId,
+          username,
+          isAuthChecked: true,
+        })
+      } else {
+        throw new Error('인증 실패')
+      }
+    } catch (error: any) {
+      if (error.response?.status === 401) {
+        try {
+          await axiosInstance.post(ENDPOINTS.REFRESH_TOKEN)
 
-  return {
-    isLoggedIn: initialLoginState,
+          const retryRes = await axiosInstance.get(ENDPOINTS.CHECK_AUTH)
+          if (retryRes.data.success) {
+            const { userId, username } = retryRes.data.data
+            set({
+              isLoggedIn: true,
+              userId,
+              username,
+              isAuthChecked: true,
+            })
+          } else {
+            set({
+              isLoggedIn: false,
+              userId: null,
+              username: null,
+              isAuthChecked: true,
+            })
+          }
+        } catch {
+          set({
+            isLoggedIn: false,
+            userId: null,
+            username: null,
+            isAuthChecked: true,
+          })
+        }
+      } else {
+        set({
+          isLoggedIn: false,
+          userId: null,
+          username: null,
+          isAuthChecked: true,
+        })
+      }
+    }
+  },
 
-    login: (token: string) => {
-      handleToken(token)
-      set({ isLoggedIn: true })
-    },
-
-    logout: () => {
-      clearAuthStorage()
-      set({ isLoggedIn: false })
-    },
-
-    checkAuth: () => {
-      const token = localStorage.getItem('token')
-      const isValid = isTokenValid(token)
-      set({ isLoggedIn: isValid })
-      if (!isValid) clearAuthStorage()
-    },
-  }
-})
+  setUsername: (newUsername) => {
+    set({ username: newUsername })
+  },
+}))

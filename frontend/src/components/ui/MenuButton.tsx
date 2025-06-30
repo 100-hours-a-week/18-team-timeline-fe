@@ -71,8 +71,8 @@ export const LogoutButton = ({ onClick, className: _className }: LogoutButtonPro
       const res = await postData(ENDPOINTS.LOGOUT)
       if (res?.success) {
         logout()
+        localStorage.clear()
         navigate(ROUTES.MAIN)
-        window.location.reload()
       }
 
       if (onClick) {

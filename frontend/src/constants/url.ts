@@ -26,19 +26,20 @@ export const ROUTES = {
 }
 
 export const ENDPOINTS = {
-  ALARM: '/users/me/alarms',
-  ALARM_CHECK: (alarmId: number) => `/users/me/alarms/${alarmId}`,
+  CHECK_AUTH: '/auth/check',
+  REFRESH_TOKEN: '/auth/token/refresh',
+
   LOGIN: '/auth/login',
+  LOGOUT: '/users/logout',
   KAKAO_LOGIN: '/auth/kakao/login-url',
   KAKAO_LOGIN_CALLBACK: (code: string) => `/auth/kakao/callback?code=${code}`,
-  LOGOUT: '/users/logout',
-  SIGNUP: '/users',
-  CHECK_EMAIL: (email: string) => `/users/check-email?email=${encodeURIComponent(email)}`,
-  CHECK_NAME: (name: string) => `/users/check-nickname?nickname=${name}`,
-  SEND_CODE: '/auth/email-verification-codes',
-  CHECK_CODE: '/auth/email-verification-codes/verify',
   USER_INFO: '/users/me',
   USER_WITHDRAW: '/users/me/state',
+  CHECK_EMAIL: (email: string) => `/users/check-email?email=${encodeURIComponent(email)}`,
+
+  SIGNUP: '/users',
+  SEND_CODE: '/auth/email-verification-codes',
+  CHECK_CODE: '/auth/email-verification-codes/verify',
   FIND_PASSWORD: '/auth/password-reset-tokens',
   CHECK_TOKEN_VALID: (token: string) => `/auth/password-reset-tokens/${token}`,
   RESET_PASSWORD_LOGOUT: (token: string) => `/auth/password-reset-tokens/${token}/reset`,
@@ -64,6 +65,9 @@ export const ENDPOINTS = {
   COMMENT_DELETE: (newsId: string, commentId: string) => `/news/${newsId}/comments/${commentId}`,
   POLL_FETCH: `/polls`,
   POLL_SUBMIT: `/polls/vote`,
+
+  ALARM: '/users/me/alarms',
+  ALARM_CHECK: (alarmId: number) => `/users/me/alarms/${alarmId}`,
 }
 
 export const INQUIRY_URL =

@@ -1,4 +1,3 @@
-import { LogoutButton } from '@/components/ui/Button'
 import { Text } from '@/components/ui/Text'
 import { ROUTES } from '@/constants/url'
 import { useSidebarMenuStore } from '@/stores/useSidebarMenuStore'

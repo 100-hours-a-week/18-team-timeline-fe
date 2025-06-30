@@ -24,7 +24,6 @@ export const usePollLogic = ({ setToastMessage }: PollLogicProps) => {
   const { isLoggedIn } = useAuthStore()
   const { getData, postData } = useRequestStore()
   const navigate = useNavigate()
-  const userName = localStorage.getItem('userName')
 
   useEffect(() => {
     if (!isLoggedIn) {
