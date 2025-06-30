@@ -102,6 +102,7 @@ frontend/
 
 ## 페이지
 
+<h3>메인 페이지</h3>
 <table>
   <thead>
     <tr>
@@ -199,7 +200,7 @@ frontend/
       <td>검색 결과를 조회할 수 있다.<br/>뉴스 목록은 업데이트일의 역순으로 정렬되며, 뉴스 카드 20개 단위로 무한 스크롤링 기능이 적용된다.</td>
     </tr>
     <tr>
-      <td><img src="image-13.png" alt="검색 결과 페이지/타임라인 생성"/></td>
+      <td><img src="https://github.com/user-attachments/assets/05a134ec-bf0b-4aa1-8e07-afc82c6c4a3e" alt="검색 결과 페이지/타임라인 생성"/></td>
       <td>검색 키워드 기반으로 뉴스를 생성할 수 있다.<br/>뉴스 생성에 성공하면 해당 뉴스의 상세 페이지로 이동한다.</td>
     </tr>
   </tbody>
@@ -258,11 +259,13 @@ frontend/
   <thead>
     <tr>
       <th>페이지</th>
+      <th>설명</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td><img src="https://github.com/user-attachments/assets/e2bc058b-ba2e-45bd-a7c5-7398841f998b" alt="로딩 페이지" width="1385"/></td>
+      <td>카카오 소셜 로그인이 오래 걸릴 경우 로딩 페이지가 나타난다.</td>
     </tr>
   </tbody>
 </table>
