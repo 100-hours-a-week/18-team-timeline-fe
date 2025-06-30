@@ -1,4 +1,4 @@
-export const getRelativeTime = (dateString: string | null): string => {
+export const getRelativeDate = (dateString: string | null): string => {
   if (!dateString) return '방금 전'
 
   const now = new Date()
