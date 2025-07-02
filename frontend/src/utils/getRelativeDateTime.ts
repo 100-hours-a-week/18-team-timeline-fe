@@ -1,4 +1,4 @@
-export function formatRelativeTime(dateTimeString: string): string {
+export function getRelativeDateTime(dateTimeString: string): string {
   const date = new Date(dateTimeString)
   const now = new Date()
 
@@ -9,12 +9,12 @@ export function formatRelativeTime(dateTimeString: string): string {
   const diffWeeks = Math.floor(diffDays / 7)
   const diffMonths = Math.floor(diffDays / 30)
 
-  if (diffMinutes < 1) return '방금 전 업데이트'
-  if (diffMinutes < 60) return `${diffMinutes}분 전 업데이트`
-  if (diffHours < 24) return `${diffHours}시간 전 업데이트`
-  if (diffDays < 7) return `${diffDays}일 전 업데이트`
-  if (diffDays < 30) return `${diffWeeks}주 전 업데이트`
-  if (diffMonths < 12) return `${diffMonths}개월 전 업데이트`
+  if (diffMinutes < 1) return '방금 전'
+  if (diffMinutes < 60) return `${diffMinutes}분 전`
+  if (diffHours < 24) return `${diffHours}시간 전`
+  if (diffDays < 7) return `${diffDays}일 전`
+  if (diffDays < 30) return `${diffWeeks}주 전`
+  if (diffMonths < 12) return `${diffMonths}개월 전`
 
   const year = date.getFullYear()
   const month = String(date.getMonth() + 1).padStart(2, '0')
@@ -22,5 +22,5 @@ export function formatRelativeTime(dateTimeString: string): string {
   const hours = String(date.getHours()).padStart(2, '0')
   const minutes = String(date.getMinutes()).padStart(2, '0')
 
-  return `${year}년 ${month}월 ${day}일 ${hours}:${minutes} 업데이트`
+  return `${year}년 ${month}월 ${day}일 ${hours}:${minutes}`
 }

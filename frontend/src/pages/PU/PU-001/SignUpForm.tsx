@@ -32,7 +32,6 @@ export const SignUpForm = ({}: SignUpFormProps) => {
     checkedPrivacy,
     setCheckedPrivacy,
     checkEmailDuplicate,
-    checkNameDuplicate,
     codeValid,
     errors,
     isButtonActive,
@@ -122,7 +121,6 @@ export const SignUpForm = ({}: SignUpFormProps) => {
         value={name}
         maxLength={10}
         onChange={(e) => setName(e.target.value)}
-        onBlur={checkNameDuplicate}
         helperText={errors.name}
       />
       <CheckSection

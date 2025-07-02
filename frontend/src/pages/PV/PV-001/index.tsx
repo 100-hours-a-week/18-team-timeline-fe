@@ -20,6 +20,7 @@ export default function PollPage() {
           minChoices={logic.minChoices ?? 1}
           maxChoices={logic.maxChoices ?? 3}
           isButtonActive={logic.isButtonActive}
+          hasVoted={logic.hasVoted}
         />
         {toastMessage && <Toast message={toastMessage} />}
       </Wrapper>

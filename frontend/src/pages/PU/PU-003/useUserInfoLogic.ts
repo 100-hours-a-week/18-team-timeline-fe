@@ -19,12 +19,10 @@ export const useUserInfoLogic = ({ setToastMessage }: UserInfoLogicProps) => {
   const [errors, setErrors] = useState<{ name?: string }>({})
   const [isButtonActive, setIsButtonActive] = useState(false)
   const [isInputModalOpen, setIsInputModalOpen] = useState(false)
-  const [isNameChecked, setIsNameChecked] = useState(false)
 
-  const { isLoggedIn } = useAuthStore()
+  const { logout, isLoggedIn, username, setUsername } = useAuthStore()
   const { getData, patchData } = useRequestStore()
   const navigate = useNavigate()
-  const userName = localStorage.getItem('userName')
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -32,17 +30,16 @@ export const useUserInfoLogic = ({ setToastMessage }: UserInfoLogicProps) => {
       return
     }
 
-    setName(localStorage.getItem('username') || '')
-
     const span = trace.getActiveSpan()
-    if (span) {
-      span.setAttribute('user_id', name)
+    if (span && username) {
+      span.setAttribute('user_id', username)
     }
 
     const fetchUserInfo = async () => {
       try {
         const res = await getData(ENDPOINTS.USER_INFO)
         setEmail(res.data.user.email)
+        setName(username ?? res.data.user.username)
       } catch (e) {
         console.error('유저 정보 조회 실패', e)
       }
@@ -52,44 +49,53 @@ export const useUserInfoLogic = ({ setToastMessage }: UserInfoLogicProps) => {
 
   useEffect(() => {
     const result = validateUserInfo(name)
+
     setErrors(result.errors)
-    setIsButtonActive(result.isValid && isNameChecked)
-  }, [name, isNameChecked])
 
-  useEffect(() => {
-    if (name !== userName) {
-      setIsNameChecked(false)
-    }
-  }, [name])
+    const isDifferentFromCurrent = name !== username
+    const isValid = result.isValid
 
-  const checkNameDuplicate = async () => {
-    if (!name || errors.name || name === userName) return
-
-    const res = await getData(ENDPOINTS.CHECK_NAME(name))
-
-    if (!res.data.available) {
-      setErrors((prev) => ({ ...prev, name: UserInfoMessage.EMAIL_ALREADY_EXISTS }))
-      setIsNameChecked(false)
-    } else {
-      setErrors((prev) => ({ ...prev, name: undefined }))
-      setIsNameChecked(true)
-    }
-  }
+    setIsButtonActive(isDifferentFromCurrent && isValid)
+  }, [name, username])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!isButtonActive) return
+
+    setToastMessage('')
     try {
       const res = await patchData(ENDPOINTS.USER_INFO, { nickname: name })
       if (res?.success) {
-        localStorage.setItem('userName', name)
+        setUsername(name)
+        setIsButtonActive(false)
         setToastMessage(UserInfoMessage.TOAST_SUCCESS)
-        window.location.reload()
       }
     } catch (error) {
       console.error('닉네임 수정 실패', error)
       setToastMessage(UserInfoMessage.TOAST_FAIL)
     }
+  }
+
+  const handleDeleteAccount = () => {
+    setText('')
+    setIsInputModalOpen(true)
+  }
+
+  const handleConfirmDelete = async () => {
+    setIsInputModalOpen(false)
+    try {
+      const res = await patchData(ENDPOINTS.USER_WITHDRAW)
+      if (res?.success) {
+        logout()
+        setToastMessage(UserInfoMessage.WITHDRAW_SUCCESS)
+      }
+    } catch (err) {
+      console.error('유저 탈퇴 실패', err)
+    }
+  }
+
+  const handleCancelDelete = () => {
+    setIsInputModalOpen(false)
   }
 
   return {
@@ -98,11 +104,12 @@ export const useUserInfoLogic = ({ setToastMessage }: UserInfoLogicProps) => {
     setText,
     name,
     setName,
-    checkNameDuplicate,
     errors,
     isButtonActive,
     handleSubmit,
+    handleDeleteAccount,
+    handleConfirmDelete,
+    handleCancelDelete,
     isInputModalOpen,
-    setIsInputModalOpen,
   }
 }

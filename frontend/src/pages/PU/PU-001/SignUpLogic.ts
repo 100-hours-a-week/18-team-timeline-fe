@@ -83,15 +83,6 @@ export const useSignUpLogic = () => {
       setEmailAvailable,
     )
 
-  const checkNameDuplicate = () =>
-    checkDuplicate(
-      name,
-      (val) => getData(ENDPOINTS.CHECK_NAME(val)),
-      'name',
-      '이미 사용 중인 닉네임입니다.',
-      setNameAvailable,
-    )
-
   const sendVerificationCode = async () => {
     try {
       const res = await postData(ENDPOINTS.SEND_CODE, { email })
@@ -171,7 +162,6 @@ export const useSignUpLogic = () => {
     checkedPrivacy,
     setCheckedPrivacy,
     checkEmailDuplicate,
-    checkNameDuplicate,
     codeValid,
     errors,
     isButtonActive,

@@ -70,6 +70,7 @@ export const TimelineCard = ({ data, isLast = false }: TimelineCardProps) => {
           {!showSources ? (
             <p>{data.content}</p>
           ) : (
+            data.source &&
             data.source.length > 0 && (
               <ul className="space-y-2">
                 {data.source.map((source, index) => (

@@ -1,5 +1,6 @@
 import type { DetailedHTMLProps, HTMLAttributes } from 'react'
 import { Text } from '@/components/ui/Text'
+import clsx from 'clsx'
 
 type Option = {
   id: number
@@ -12,17 +13,22 @@ type PollOptionsFormProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HT
   selectOps: number[]
   setSelectOps: (ids: number[]) => void
   maxChoices: number
+  hasVoted: boolean
 }
 
-export const PollOptionsForm = ({ options, selectOps, setSelectOps, maxChoices }: PollOptionsFormProps) => {
+export const PollOptionsForm = ({ options, selectOps, setSelectOps, maxChoices, hasVoted }: PollOptionsFormProps) => {
   const wrapperClass = 'border border-pollBoxBorder rounded-md px-2 py-4 grid gap-2'
   const optionBoxClass = 'flex w-full gap-2 pr-1'
-  const optionClass = 'text-sm text-pollOptionText flex flex-1 w-full flex-col rounded px-4 py-2 cursor-pointer'
+  const optionClass = clsx(
+    'text-sm flex flex-1 w-full flex-col rounded px-4 py-2',
+    !hasVoted ? 'cursor-pointer text-pollOptionText' : 'text-pollOptionVotedText',
+  )
   const imageClass = 'w-full h-28 object-cover my-1 rounded'
   const radioBtnClass = 'flex w-4 h-4 rounded-full border border-radioBtnBorder items-center justify-center mt-2'
   const radioBtnSelectClass = 'w-2.5 h-2.5 rounded-full bg-radioBtnCircle'
 
   const toggleOption = (id: number) => {
+    if (hasVoted) return
     const isSelected = selectOps.includes(id)
     if (isSelected) {
       setSelectOps(selectOps.filter((item) => item !== id))

@@ -1,37 +1,33 @@
 import { useEffect } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import { ENDPOINTS, ROUTES } from '@/constants/url'
-import { axiosInstance } from '@/lib/axios'
 import { PUMessage } from '@/constants/PU/puMessage'
+import { useRequestStore } from '@/stores/useRequestStore'
+import LoadingPage from '@/pages/PL'
 import { useAuthStore } from '@/stores/useAuthStore'
 
 export const KakaoCallback = () => {
   const [searchParams] = useSearchParams()
   const code = searchParams.get('code')
   const navigate = useNavigate()
+  const { getData } = useRequestStore()
+  const { login } = useAuthStore()
 
   useEffect(() => {
     const fetchToken = async () => {
-      if (!code) return
+      if (!code) {
+        console.warn('카카오 인증 코드 없음')
+        return
+      }
+
       try {
-        const res = await axiosInstance.get(ENDPOINTS.KAKAO_LOGIN_CALLBACK(code), {
-          validateStatus: () => true,
-        })
+        const res = await getData(ENDPOINTS.KAKAO_LOGIN_CALLBACK(code))
 
-        const authHeader = res.headers['authorization']
-
-        if (res.status !== 200) {
-          throw new Error(`로그인 실패: ${res.status}`)
-        }
-        console.log(res)
-
-        if (!authHeader || !authHeader.startsWith('Bearer ')) {
-          throw new Error('Authorization 헤더가 없습니다.')
+        if (!res?.success) {
+          throw new Error('로그인 실패')
         }
 
-        const token = authHeader.replace('Bearer ', '')
-
-        useAuthStore.getState().login(token)
+        login()
         navigate(ROUTES.MAIN, { replace: true })
       } catch (err) {
         console.error('카카오 콜백 처리 실패', err)
@@ -43,5 +39,5 @@ export const KakaoCallback = () => {
     fetchToken()
   }, [code])
 
-  return <div>카카오 로그인 처리 중입니다...</div>
+  return <LoadingPage />
 }

@@ -4,7 +4,7 @@ import { Icon } from '../../ui/Icon'
 import { AlarmCard } from './AlarmCard'
 import { useSidebarAlarmStore } from '@/stores/useSidebarAlarmStore'
 import { useRequestStore } from '@/stores/useRequestStore'
-import { getRelativeTime } from '@/utils/getRelativeTime'
+import { getRelativeDate } from '@/utils/getRelativeDate'
 import { ENDPOINTS } from '@/constants/url'
 
 type Alarm = {
@@ -131,7 +131,7 @@ export const SidebarAlarm = () => {
               title={alarm.title}
               content={alarm.content}
               isChecked={alarm.isChecked}
-              createdAt={getRelativeTime(alarm.createdAt)}
+              createdAt={getRelativeDate(alarm.createdAt)}
               targetType={alarm.targetType}
               targetId={alarm.targetId}
               onClick={() => handleAlarmClick(alarm)}

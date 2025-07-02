@@ -10,7 +10,7 @@ type StaticFieldProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDi
 export const StaticField = ({ label, content, className: _className }: StaticFieldProps) => {
   const containerClass = clsx('w-full flex flex-col justify-center', _className)
   const labelClass = clsx('text-base font-semibold text-labelText')
-  const contentClass = clsx('text-base font-light text-myBlack')
+  const contentClass = clsx('text-sm font-light text-myBlack')
 
   return (
     <Text className={containerClass}>
