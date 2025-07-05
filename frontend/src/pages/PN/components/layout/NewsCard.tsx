@@ -1,6 +1,6 @@
 import { useState, type DetailedHTMLProps, type HTMLAttributes } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { formatRelativeTime } from '../../utils/formatRelativeTime'
+import { getRelativeDateTime } from '../../../../utils/getRelativeDateTime'
 import { ROUTES, ENDPOINTS } from '@/constants/url'
 import { Icon } from '@/components/ui/Icon'
 import { axiosInstance } from '@/lib/axios'
@@ -70,7 +70,7 @@ export const NewsCard = ({
         </h3>
         <div className={summaryClass}>{summary}</div>
         <div className={metaTextClass}>
-          <div className={timeClass}>{formatRelativeTime(updatedAt)}</div>
+          <div className={timeClass}>{getRelativeDateTime(updatedAt) + ' 업데이트'}</div>
           <Icon
             name="BookmarkIcon"
             size={18}
