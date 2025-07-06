@@ -54,7 +54,7 @@ export const usePollLogic = ({ setToastMessage }: PollLogicProps) => {
     if (minChoices !== undefined) {
       setIsButtonActive(selectOps.length >= minChoices && !hasVoted)
     }
-  }, [selectOps, minChoices])
+  }, [selectOps, minChoices, hasVoted])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

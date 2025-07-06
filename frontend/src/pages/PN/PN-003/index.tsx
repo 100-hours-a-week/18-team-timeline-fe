@@ -11,7 +11,6 @@ import { useComments } from './hooks/useComments'
 import SentimentAnalysis from './SentimentAnalysis'
 import { CommentContainer } from './Comment/CommentContainer'
 import { ROUTES } from '@/constants/url'
-import Category from '../PN-001/Category'
 
 export default function NewsDetail() {
   const [toastMessage, setToastMessage] = useState<string | null>(null)
@@ -75,7 +74,7 @@ export default function NewsDetail() {
 
       <TimelineContainer timeline={news.timeline} />
 
-      <div className="bg-commentBoxBg rounded-t-xl pt-4 px-4 shadow-2xl" ref={commentListRef}>
+      <div className="px-4 pt-4 shadow-2xl bg-commentBoxBg rounded-t-xl" ref={commentListRef}>
         <SentimentAnalysis statistics={news.statistics} />
         <CommentContainer
           comments={comments}

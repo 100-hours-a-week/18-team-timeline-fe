@@ -16,7 +16,7 @@ export const useCreateNewsBtnName = (isLoading: boolean): string => {
     }, 500)
 
     return () => clearInterval(interval)
-  }, [isLoading])
+  }, [dotSequence.length, isLoading])
 
   return isLoading
     ? `${SearchResultMessage.CREATE_NEWS_BTN_LOADING}${dotSequence[step]}`

@@ -1,4 +1,3 @@
-import type { DetailedHTMLProps, HTMLAttributes } from 'react'
 import { Icon } from '../ui/Icon'
 import { Text } from '../ui/Text'
 import clsx from 'clsx'
@@ -9,16 +8,12 @@ import { useSearchBarStore } from '@/stores/useSearchBarStore'
 import { useSidebarAlarmStore } from '@/stores/useSidebarAlarmStore'
 import { useAuthStore } from '@/stores/useAuthStore'
 
-type ReactDivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
-type HeaderProps = ReactDivProps & {}
-
-export const Header = ({ className: _className }: HeaderProps) => {
+export const Header = () => {
   const isLogin = useAuthStore((state) => state.isLoggedIn)
 
   const className = clsx(
     'top-0 w-full min-h-[48px] bg-headerBackground',
     'flex items-center justify-between px-[20px]',
-    _className,
   )
 
   const iconClass = 'text-headerIcon cursor-pointer'

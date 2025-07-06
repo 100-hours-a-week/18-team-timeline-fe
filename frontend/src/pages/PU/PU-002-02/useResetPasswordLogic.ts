@@ -59,7 +59,7 @@ export const useResetPasswordLogic = ({ setToastMessage }: ResetPasswordLogicPro
     } else {
       checkTokenValid()
     }
-  }, [token, isLogin])
+  }, [token, isLogin, getData, navigate])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

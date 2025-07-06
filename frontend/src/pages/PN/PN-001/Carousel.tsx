@@ -1,6 +1,5 @@
-import type { DetailedHTMLProps, HTMLAttributes } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ENDPOINTS, ROUTES } from '@/constants/url'
+import { ROUTES } from '@/constants/url'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Autoplay, Navigation, EffectFade } from 'swiper/modules'
 import { CarouselMessage } from '@/constants/PN/MainMessage'
@@ -12,9 +11,7 @@ import 'swiper/css/navigation'
 import 'swiper/css/effect-fade'
 import { useFetchHotissue } from './hooks/useFetchHotissue'
 
-type CarouselProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
-
-export const Carousel = ({}: CarouselProps) => {
+export const Carousel = () => {
   const { newsCards, loading } = useFetchHotissue()
   const navigate = useNavigate()
 

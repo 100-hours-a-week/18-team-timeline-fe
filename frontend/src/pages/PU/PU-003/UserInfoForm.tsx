@@ -1,4 +1,4 @@
-import { useState, type DetailedHTMLProps, type HTMLAttributes } from 'react'
+import { useState } from 'react'
 import { Button } from '../components/ui/Button'
 import { Text } from '@/components/ui/Text'
 import { StaticField } from '../components/ui/StaticField'
@@ -9,9 +9,7 @@ import { UserInfoMessage } from '@/constants/PU/userInfoMessage'
 import { NavigationLink } from '@/constants/navigationLink'
 import { NicknameInput } from '../components/form/NicknameInput'
 
-type UserInfoFormProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> & {}
-
-export const UserInfoForm = ({}: UserInfoFormProps) => {
+export const UserInfoForm = () => {
   const [toastMessage, setToastMessage] = useState('')
 
   const {
@@ -26,7 +24,7 @@ export const UserInfoForm = ({}: UserInfoFormProps) => {
     handleSubmit,
     handleDeleteAccount,
     handleConfirmDelete,
-    handleCancelDelete
+    handleCancelDelete,
   } = useUserInfoLogic({ setToastMessage })
 
   const disabled = !(text.trim() === UserInfoMessage.WITHDRAW_VALID_INPUT)
@@ -40,19 +38,10 @@ export const UserInfoForm = ({}: UserInfoFormProps) => {
     <>
       <form className={formClass} onSubmit={handleSubmit}>
         <StaticField label="이메일" content={email} />
-        <NicknameInput
-          isLabel={true}
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          helperText={errors.name}
-        />
+        <NicknameInput isLabel={true} value={name} onChange={(e) => setName(e.target.value)} helperText={errors.name} />
         <div className={buttonClass}>
           <Button text={UserInfoMessage.BTN_NAME} isActive={isButtonActive} />
           <div className={navigationClass}>
-            {/* <Link to={ROUTES.RESET_PASSWORD} className={linkClass}>
-              <Text>{NavigationLink.RESET_PASSWORD}</Text>
-            </Link>
-            <Text>|</Text> */}
             <button type="button" className={linkClass} onClick={handleDeleteAccount}>
               <Text>{NavigationLink.WITHDRAW}</Text>
             </button>
