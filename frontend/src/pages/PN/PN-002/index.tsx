@@ -4,7 +4,7 @@ import NewsCardListBox from '../components/layout/NewsCardListBox'
 import { CreateNewsBtnBox } from './CreateNewsBtnBox'
 import { useSearchResultLogic } from './useSearchResultLogic'
 import { Toast } from '@/components/ui/Toast'
-import { validateSearchKeyword } from '@/utils/validSearchBox'
+import { validateSearchKeyword } from '@/utils/validateSearchKeyword'
 import { SearchResultMessage } from '@/constants/PN/SearchResultMessage'
 
 const getTagsFromQuery = (search: string): string[] => {
