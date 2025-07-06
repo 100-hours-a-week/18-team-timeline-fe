@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { ENDPOINTS, ROUTES } from '@/constants/url'
 import { useAuthStore } from '@/stores/useAuthStore'
 import { useRequestStore } from '@/stores/useRequestStore'

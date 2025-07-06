@@ -1,4 +1,4 @@
-import { useState, type DetailedHTMLProps, type HTMLAttributes } from 'react'
+import { useState } from 'react'
 import clsx from 'clsx'
 import { Button } from '../components/ui/Button'
 import { Text } from '@/components/ui/Text'
@@ -11,10 +11,7 @@ import { LoginMessage } from '@/constants/PU/loginMessage'
 import { PasswordInput } from '../components/form/PasswordInput'
 import { useLoginLogic } from './useLoginLogic'
 
-type ReactDivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
-type LoginFormProps = ReactDivProps & {}
-
-export const LoginForm = ({}: LoginFormProps) => {
+export const LoginForm = () => {
   const [toastMessage, setToastMessage] = useState('')
 
   const { email, setEmail, password, setPassword, errors, isButtonActive, handleSubmit } = useLoginLogic({

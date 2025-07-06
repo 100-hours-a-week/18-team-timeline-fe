@@ -65,7 +65,6 @@ export const TimelineCard = ({ data, isLast = false }: TimelineCardProps) => {
           </div>
         </div>
 
-        {/* 본문 또는 출처 */}
         <div className={contentClass}>
           {!showSources ? (
             <p>{data.content}</p>

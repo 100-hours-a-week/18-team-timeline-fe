@@ -21,7 +21,7 @@ export const useFetchHotissue = () => {
     }
 
     fetchCarouselNews()
-  }, [])
+  }, [getData])
 
   return { newsCards, loading }
 }

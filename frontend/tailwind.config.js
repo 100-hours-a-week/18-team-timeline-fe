@@ -8,7 +8,8 @@ export default {
         point: '#F2A359',
         myWhite: '#FFFFFF',
         myBlack: '#1A1A1A',
-        mainBgColor: '#E5E5E5',
+        mainBg: '#EEEAE6',
+        mainPoint: '#D4C9BE',
         pageBg: '#FCFAF7',
 
         // CC
@@ -136,6 +137,25 @@ export default {
         positive: '#FA7000',
         neutral: '#FF9800',
         negative: '#FFE0B2',
+      },
+      keyframes: {
+        'slide-in-left': {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(0)' },
+        },
+        'slide-in-right': {
+          '0%': { transform: 'translateX(100%)' },
+          '100%': { transform: 'translateX(0)' },
+        },
+        'rise-up': {
+          '0%': { transform: 'translateY(100%)' },
+          '100%': { transform: 'translateY(0)' },
+        },
+      },
+      animation: {
+        'slide-in-left': 'slide-in-left 1.2s ease-out forwards',
+        'slide-in-right': 'slide-in-right 1.2s ease-out forwards',
+        'rise-up': 'rise-up 1.5s ease-out forwards',
       },
     },
   },
