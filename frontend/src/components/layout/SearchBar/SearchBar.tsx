@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 import { Icon } from '../../ui/Icon'
 import { Text } from '../../ui/Text'
-import clsx from 'clsx'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { ROUTES } from '@/constants/url'
 import { useSearchBarStore } from '@/stores/useSearchBarStore'
@@ -28,7 +27,7 @@ export const SearchBar = () => {
   const tagsFromQuery = tagsParam
     ? tagsParam
         .split(',')
-        .map((tag) => decodeURIComponent(tag.trim()))
+        .map((tag): string => decodeURIComponent(tag.trim()))
         .filter(Boolean)
     : []
 
@@ -47,7 +46,7 @@ export const SearchBar = () => {
     }
 
     store.setInputValue('')
-  }, [location.key])
+  }, [isSearchResultsPage, location.key, tagsFromQuery])
 
   const handleBack = () => {
     clearKeywords()
@@ -67,25 +66,19 @@ export const SearchBar = () => {
     navigate(`${ROUTES.SEARCH_RESULTS}?tags=${tagsParam}`)
   }
 
-  const containerClass = clsx('top-0 w-full h-[48px] bg-searchBarBg', 'flex items-center justify-between px-[20px]')
-
-  const wrapperClass = clsx('flex-col')
-  const iconClass = clsx('text-searchBarIcon cursor-pointer w-[32px] text-base font-medium')
+  const wrapperClass = 'flex-col'
+  const containerClass =
+    'top-0 w-full h-[48px] bg-searchBarBg flex items-center justify-between px-4 gap-3 border-b border-b-keywordBoxLine'
+  const iconClass = 'text-searchBarIcon cursor-pointer w-[32px] text-base font-medium'
 
   return (
     <>
       <div className={wrapperClass}>
         <div className={containerClass}>
-          <Icon
-            name="ArrowLeftIcon"
-            size={20}
-            variant="solid"
-            className={clsx(iconClass, 'mr-3')}
-            onClick={handleBack}
-          />
+          <Icon name="ArrowLeftIcon" size={20} variant="solid" className={iconClass} onClick={handleBack} />
           <SearchBox />
           <div>
-            <Text className={clsx(iconClass, 'ml-3')} onClick={handleConfirm}>
+            <Text className={iconClass} onClick={handleConfirm}>
               검색
             </Text>
           </div>

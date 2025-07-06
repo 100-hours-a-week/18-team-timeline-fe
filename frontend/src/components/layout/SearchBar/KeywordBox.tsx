@@ -8,7 +8,7 @@ export const KeywordBox = () => {
   const className = clsx(
     'top-0 w-full bg-keywordBoxBg',
     'flex items-center gap-2 px-[8px] py-[4px]',
-    'border-t border-t-keywordBoxLine',
+    'border-b border-b-keywordBoxLine',
     'overflow-x-auto whitespace-nowrap',
   )
 

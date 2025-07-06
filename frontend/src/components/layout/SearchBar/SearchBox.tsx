@@ -1,5 +1,4 @@
 import { useState, type KeyboardEvent, type ChangeEvent } from 'react'
-import clsx from 'clsx'
 import { Input } from '../../form/Input'
 import { useSearchStore } from '@/stores/useSearchStore'
 
@@ -33,7 +32,7 @@ export const SearchBox = () => {
   const handleCompositionStart = () => setIsComposing(true)
   const handleCompositionEnd = () => setIsComposing(false)
 
-  const SearchBoxClass = clsx('w-full')
+  const SearchBoxClass = 'w-full flex-1 min-w-0'
 
   return (
     <div className={SearchBoxClass}>
