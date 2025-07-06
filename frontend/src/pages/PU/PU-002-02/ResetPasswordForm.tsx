@@ -1,4 +1,4 @@
-import { useEffect, useState, type DetailedHTMLProps, type HTMLAttributes } from 'react'
+import { useEffect, useState } from 'react'
 import clsx from 'clsx'
 import { Button } from '../components/ui/Button'
 import { StaticField } from '../components/ui/StaticField'
@@ -10,10 +10,7 @@ import { PasswordCheckInput } from '../components/form/PasswordCheckInput'
 import { ResetPasswordMessage } from '@/constants/PU/resetPasswordMessage'
 import { useAuthStore } from '@/stores/useAuthStore'
 
-type ReactDivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
-type ResetPasswordFormProps = ReactDivProps & {}
-
-export const ResetPasswordForm = ({}: ResetPasswordFormProps) => {
+export const ResetPasswordForm = () => {
   const [toastMessage, setToastMessage] = useState('')
   const {
     email,
@@ -32,7 +29,7 @@ export const ResetPasswordForm = ({}: ResetPasswordFormProps) => {
     const result = validateResetPassword(password, passwordCheck)
     setErrors(result.errors)
     setIsButtonActive(result.isValid)
-  }, [password, passwordCheck])
+  }, [password, passwordCheck, setErrors, setIsButtonActive])
 
   const formClass = clsx('w-full flex flex-col justify-center', 'space-y-3')
   const buttonClass = clsx('flex flex-col pt-8 space-y-1')
@@ -54,7 +51,10 @@ export const ResetPasswordForm = ({}: ResetPasswordFormProps) => {
           helperText={errors.passwordCheck}
         />
         <div className={buttonClass}>
-          <Button text={ResetPasswordMessage.BTN_NAME(useAuthStore((state) => state.isLoggedIn))} isActive={isButtonActive} />
+          <Button
+            text={ResetPasswordMessage.BTN_NAME(useAuthStore((state) => state.isLoggedIn))}
+            isActive={isButtonActive}
+          />
         </div>
       </form>
 

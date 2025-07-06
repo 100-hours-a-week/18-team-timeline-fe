@@ -1,12 +1,9 @@
-import { useState, type DetailedHTMLProps, type HTMLAttributes, type KeyboardEvent, type ChangeEvent } from 'react'
+import { useState, type KeyboardEvent, type ChangeEvent } from 'react'
 import clsx from 'clsx'
 import { Input } from '../../form/Input'
 import { useSearchStore } from '@/stores/useSearchStore'
 
-type ReactDivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
-type SearchBoxProps = ReactDivProps & {}
-
-export const SearchBox = ({ className: _className }: SearchBoxProps) => {
+export const SearchBox = () => {
   const inputValue = useSearchStore((state) => state.inputValue)
   const setInputValue = useSearchStore((state) => state.setInputValue)
   const addKeyword = useSearchStore((state) => state.addKeyword)

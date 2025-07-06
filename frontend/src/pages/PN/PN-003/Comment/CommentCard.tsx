@@ -1,6 +1,6 @@
 import { type DetailedHTMLProps, type HTMLAttributes } from 'react'
 import type { Comment } from '../../types/comment'
-import { getRelativeDateTime } from '../../../../utils/getRelativeDateTime'
+import { getRelativeDateTime } from '@/utils/getRelativeDateTime'
 import clsx from 'clsx'
 
 type ReactDivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
@@ -32,7 +32,7 @@ export const CommentCard = ({ comment, onDeleteComment }: CommentCardProps) => {
             </button>
           )}
         </div>
-        <span className={metaTextClass}>{getRelativeDateTime(comment.createdAt) }</span>
+        <span className={metaTextClass}>{getRelativeDateTime(comment.createdAt)}</span>
       </div>
       <p className={contentClass}>{comment.content}</p>
     </div>

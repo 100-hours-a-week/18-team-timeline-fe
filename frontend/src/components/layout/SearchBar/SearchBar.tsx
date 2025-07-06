@@ -1,4 +1,4 @@
-import { useEffect, type DetailedHTMLProps, type HTMLAttributes } from 'react'
+import { useEffect } from 'react'
 import { Icon } from '../../ui/Icon'
 import { Text } from '../../ui/Text'
 import clsx from 'clsx'
@@ -11,10 +11,7 @@ import { Toast } from '@/components/ui/Toast'
 import { useSearchStore } from '@/stores/useSearchStore'
 import { SearchBarMessage } from '@/constants/SearchBarMessage'
 
-type ReactDivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
-type SearchBarProps = ReactDivProps & {}
-
-export const SearchBar = ({ className: _className }: SearchBarProps) => {
+export const SearchBar = () => {
   const location = useLocation()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
@@ -70,11 +67,7 @@ export const SearchBar = ({ className: _className }: SearchBarProps) => {
     navigate(`${ROUTES.SEARCH_RESULTS}?tags=${tagsParam}`)
   }
 
-  const containerClass = clsx(
-    'top-0 w-full h-[48px] bg-searchBarBg',
-    'flex items-center justify-between px-[20px]',
-    _className,
-  )
+  const containerClass = clsx('top-0 w-full h-[48px] bg-searchBarBg', 'flex items-center justify-between px-[20px]')
 
   const wrapperClass = clsx('flex-col')
   const iconClass = clsx('text-searchBarIcon cursor-pointer w-[32px] text-base font-medium')

@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { SearchResultMessage } from '@/constants/PN/SearchResultMessage'
 import { TimelineMessage } from '@/constants/PN/TimelineMessage'
 
 export const useUpdateNewsBtnName = (isLoading: boolean): string => {
