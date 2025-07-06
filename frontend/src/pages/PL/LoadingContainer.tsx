@@ -7,11 +7,9 @@ export const LoadingContainer = () => {
   const textClass = 'text-lg font-semibold text-point'
 
   return (
-    <div className="wrap">
-      <div className={iconContainerClass}>
-        <img src={TamnaraIcon} className={iconClass} />
-        <p className={textClass}>{useTypingLoadingText()}</p>
-      </div>
+    <div className={iconContainerClass}>
+      <img src={TamnaraIcon} className={iconClass} />
+      <p className={textClass}>{useTypingLoadingText()}</p>
     </div>
   )
 }

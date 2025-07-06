@@ -22,12 +22,14 @@ import PollPage from '@/pages/PV/PV-001'
 import BookmarkPage from '@/pages/PN/PN-004'
 import { useSidebarMenuStore } from '@/stores/useSidebarMenuStore'
 import { useSidebarAlarmStore } from '@/stores/useSidebarAlarmStore'
+import LoadingPage from '@/pages/PL'
 
 export const AppContent = () => {
   const location = useLocation()
   const currentPage = usePageStore((state) => state.currentPage)
   const isSearchOpen = useSearchBarStore((state) => state.isOpen)
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn)
+  const isAuthChecked = useAuthStore((state) => state.isAuthChecked)
 
   const isMenuOpen = useSidebarMenuStore((state) => state.isOpen)
   const closeMenu = useSidebarMenuStore((state) => state.close)
@@ -61,28 +63,31 @@ export const AppContent = () => {
   return (
     <Container>
       {(isMenuOpen || isAlarmOpen) && <div className={overlayClass} onClick={handleOverlayClick} />}
-
       <SidebarMenu />
       {isLoggedIn && <SidebarAlarm />}
       {isSearchOpen ? <SearchBar /> : <Header />}
 
-      <Routes>
-        <Route path="/" element={<Navigate to={currentPage} />} />
-        <Route path={ROUTES.MAIN} element={<MainPage />} />
-        <Route path={ROUTES.SEARCH_RESULTS} element={<SearchResults />} />
-        <Route path={ROUTES.NEWS_DETAIL} element={<NewsDetail />} />
+      {!isAuthChecked ? (
+        <LoadingPage />
+      ) : (
+        <Routes>
+          <Route path="/" element={<Navigate to={currentPage} />} />
+          <Route path={ROUTES.MAIN} element={<MainPage />} />
+          <Route path={ROUTES.SEARCH_RESULTS} element={<SearchResults />} />
+          <Route path={ROUTES.NEWS_DETAIL} element={<NewsDetail />} />
 
-        <Route element={<LogoutRoute />}>
-          <Route path={ROUTES.LOGIN} element={<Login />} />
-          <Route path={ROUTES.KAKAO_CALLBACK} element={<KakaoCallback />} />
-        </Route>
+          <Route element={<LogoutRoute />}>
+            <Route path={ROUTES.LOGIN} element={<Login />} />
+            <Route path={ROUTES.KAKAO_CALLBACK} element={<KakaoCallback />} />
+          </Route>
 
-        <Route element={<LoginRoute />}>
-          <Route path={ROUTES.USER_INFO} element={<UserInfo />} />
-          <Route path={ROUTES.POLL} element={<PollPage />} />
-          <Route path={ROUTES.BOOKMARK} element={<BookmarkPage />} />
-        </Route>
-      </Routes>
+          <Route element={<LoginRoute />}>
+            <Route path={ROUTES.USER_INFO} element={<UserInfo />} />
+            <Route path={ROUTES.POLL} element={<PollPage />} />
+            <Route path={ROUTES.BOOKMARK} element={<BookmarkPage />} />
+          </Route>
+        </Routes>
+      )}
     </Container>
   )
 }

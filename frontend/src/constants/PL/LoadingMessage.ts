@@ -1,3 +1,3 @@
 export const LoadingMessage = {
-  LOADING: '로딩 중'
+  LOADING: '입국 심사 중',
 }
