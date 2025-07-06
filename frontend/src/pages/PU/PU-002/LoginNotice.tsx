@@ -1,11 +1,7 @@
-import type { DetailedHTMLProps, HTMLAttributes } from 'react'
-import TamnaraIcon from '@/assets/tamnara_icon.png'
+import { TamnaraIcon } from '@/assets'
 import { Text } from '@/components/ui/Text'
 
-type ReactDivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
-type LoginNoticeProps = ReactDivProps & {}
-
-export const LoginNotice = ({}: LoginNoticeProps) => {
+export const LoginNotice = () => {
   const wrapperClass = 'w-full flex flex-col justify-center items-center space-y-3 pb-8'
   const iconClass = 'w-20 y-20'
   const textClass = 'text-center text-myBlack text-lg leading-tight'
