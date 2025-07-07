@@ -24,7 +24,7 @@ export const CommentInput = ({
   const iconClass = clsx('text-newsCardIcon flex-shrink-0', isLoggedIn && 'cursor-pointer')
 
   return (
-    <div className={textInputBoxClass}>
+    <form onSubmit={(e) => { e.preventDefault(); onSubmitComment(); }} className={textInputBoxClass}>
       <input
         type="text"
         value={commentText}
@@ -34,7 +34,13 @@ export const CommentInput = ({
         className={textInputClass}
         maxLength={150}
       />
-      <Icon name="PaperAirplaneIcon" size={28} variant={'solid'} className={iconClass} onClick={onSubmitComment} />
-    </div>
+      <button
+        type="submit"
+        className={iconClass}
+        disabled={!isLoggedIn || !commentText.trim() || commentText.length > 150}
+      >
+        <Icon name="PaperAirplaneIcon" size={28} variant={'solid'} />
+      </button>
+    </form>
   )
 }

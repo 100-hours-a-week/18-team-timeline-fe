@@ -120,6 +120,19 @@ export const useComments = ({ newsId, isLoggedIn, userId, username, setToastMess
   }, [hasMore, loading, page])
 
   /* -------------------------------------------------- */
+  /* 폴링: 5초마다 댓글 자동 새로고침                    */
+  /* -------------------------------------------------- */
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (newsId) {
+        console.log('폴링: 댓글 새로고침');
+        loadComments(1);
+      }
+    }, 5000); // 5초마다 새로고침
+    return () => clearInterval(interval);
+  }, [newsId, loadComments]);
+
+  /* -------------------------------------------------- */
   /* 입력 핸들러                                         */
   /* -------------------------------------------------- */
   const handleCommentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
