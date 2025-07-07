@@ -38,7 +38,10 @@ export const useFetchNormal = () => {
   )
 
   useEffect(() => {
-    fetchNews()
+    const interval = setInterval(() => {
+      fetchNews()
+    }, 5000)
+    return () => clearInterval(interval)
   }, [fetchNews])
 
   return {
