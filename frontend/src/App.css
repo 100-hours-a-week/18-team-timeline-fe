@@ -1,3 +1,25 @@
 .wrap {
   @apply w-full h-full bg-pageBg overflow-y-auto;
 }
+
+@keyframes tamnara-pop {
+  0% {
+    opacity: 0;
+    transform: translateY(40px) scale(0.8);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-8px) scale(1.05);
+  }
+  80% {
+    transform: translateY(0) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-tamnara-pop {
+  animation: tamnara-pop 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
+}
