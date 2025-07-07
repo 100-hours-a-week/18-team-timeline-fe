@@ -59,11 +59,11 @@ export const useTimelineData = ({ newsId, setToastMessage }: UseTimelineDataProp
       if (bookmarked) {
         await deleteData(ENDPOINTS.BOOKMARK(newsId))
         setBookmarked(false)
-        setToastMessage(TimelineMessage.BOOKMARK_POST_SUCCESS)
+        setToastMessage(TimelineMessage.BOOKMARK_DELETE_SUCCESS)
       } else {
         await postData(ENDPOINTS.BOOKMARK(newsId))
         setBookmarked(true)
-        setToastMessage(TimelineMessage.BOOKMARK_DELETE_SUCCESS)
+        setToastMessage(TimelineMessage.BOOKMARK_POST_SUCCESS)
       }
     } catch (e) {
       console.error('북마크 처리 실패:', e)
