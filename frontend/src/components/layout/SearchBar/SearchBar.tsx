@@ -1,7 +1,6 @@
-import { useEffect, type DetailedHTMLProps, type HTMLAttributes } from 'react'
+import { useEffect } from 'react'
 import { Icon } from '../../ui/Icon'
 import { Text } from '../../ui/Text'
-import clsx from 'clsx'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { ROUTES } from '@/constants/url'
 import { useSearchBarStore } from '@/stores/useSearchBarStore'
@@ -11,10 +10,7 @@ import { Toast } from '@/components/ui/Toast'
 import { useSearchStore } from '@/stores/useSearchStore'
 import { SearchBarMessage } from '@/constants/SearchBarMessage'
 
-type ReactDivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
-type SearchBarProps = ReactDivProps & {}
-
-export const SearchBar = ({ className: _className }: SearchBarProps) => {
+export const SearchBar = () => {
   const location = useLocation()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
@@ -31,7 +27,7 @@ export const SearchBar = ({ className: _className }: SearchBarProps) => {
   const tagsFromQuery = tagsParam
     ? tagsParam
         .split(',')
-        .map((tag) => decodeURIComponent(tag.trim()))
+        .map((tag): string => decodeURIComponent(tag.trim()))
         .filter(Boolean)
     : []
 
@@ -50,7 +46,7 @@ export const SearchBar = ({ className: _className }: SearchBarProps) => {
     }
 
     store.setInputValue('')
-  }, [location.key])
+  }, [isSearchResultsPage, location.key, tagsFromQuery])
 
   const handleBack = () => {
     clearKeywords()
@@ -70,29 +66,19 @@ export const SearchBar = ({ className: _className }: SearchBarProps) => {
     navigate(`${ROUTES.SEARCH_RESULTS}?tags=${tagsParam}`)
   }
 
-  const containerClass = clsx(
-    'top-0 w-full h-[48px] bg-searchBarBg',
-    'flex items-center justify-between px-[20px]',
-    _className,
-  )
-
-  const wrapperClass = clsx('flex-col')
-  const iconClass = clsx('text-searchBarIcon cursor-pointer w-[32px] text-base font-medium')
+  const wrapperClass = 'flex-col'
+  const containerClass =
+    'top-0 w-full h-[48px] bg-searchBarBg flex items-center justify-between px-4 gap-3 border-b border-b-keywordBoxLine'
+  const iconClass = 'text-searchBarIcon cursor-pointer w-[32px] text-base font-medium'
 
   return (
     <>
       <div className={wrapperClass}>
         <div className={containerClass}>
-          <Icon
-            name="ArrowLeftIcon"
-            size={20}
-            variant="solid"
-            className={clsx(iconClass, 'mr-3')}
-            onClick={handleBack}
-          />
+          <Icon name="ArrowLeftIcon" size={20} variant="solid" className={iconClass} onClick={handleBack} />
           <SearchBox />
           <div>
-            <Text className={clsx(iconClass, 'ml-3')} onClick={handleConfirm}>
+            <Text className={iconClass} onClick={handleConfirm}>
               검색
             </Text>
           </div>

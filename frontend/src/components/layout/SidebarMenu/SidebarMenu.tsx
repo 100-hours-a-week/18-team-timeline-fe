@@ -39,7 +39,7 @@ export const SidebarMenu = () => {
   return (
     <div ref={sidebarRef} className={className}>
       <div className={iconClass}>
-        <Icon name="Bars3Icon" size={24} variant="solid" className="text-menuItem cursor-pointer" onClick={close} />
+        <Icon name="Bars3Icon" size={24} variant="solid" className="cursor-pointer text-menuItem" onClick={close} />
       </div>
 
       {isLoggedIn ? <LoginMenu /> : <LogoutMenu />}
@@ -50,7 +50,7 @@ export const SidebarMenu = () => {
           <Link to={INQUIRY_URL} className="text-menuItem" onClick={close} target="_blank" rel="noopener noreferrer">
             문의하기
           </Link>
-          <Text className="text-menuMetaText">v2.4.0 25.06.20</Text>
+          <Text className="text-menuMetaText">v3.0.0 25.07.07</Text>
         </div>
       </div>
     </div>

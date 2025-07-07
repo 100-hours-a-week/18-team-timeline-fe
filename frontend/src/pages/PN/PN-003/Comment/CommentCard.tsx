@@ -1,6 +1,6 @@
 import { type DetailedHTMLProps, type HTMLAttributes } from 'react'
 import type { Comment } from '../../types/comment'
-import { formatRelativeTime } from '../../utils/formatRelativeTime'
+import { getRelativeDateTime } from '@/utils/getRelativeDateTime'
 import clsx from 'clsx'
 
 type ReactDivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
@@ -16,7 +16,7 @@ export const CommentCard = ({ comment, onDeleteComment }: CommentCardProps) => {
   )
   const titleDeleteClass = 'flex justify-center items-center gap-2'
   const titleClass = 'flex justify-between items-center mb-1 text-sm'
-  const authorClass = 'text-newsCardTitle font-bold'
+  const authorClass = clsx('font-bold', comment.userId ? 'text-newsCardTitle' : 'text-commentWithdrawAuthor')
   const contentClass = 'text-sm text-newsCardSummary leading-relaxed break-words'
   const btnClass = 'text-xs text-newsCardTime'
   const metaTextClass = 'text-xs text-newsCardSummary'
@@ -32,7 +32,7 @@ export const CommentCard = ({ comment, onDeleteComment }: CommentCardProps) => {
             </button>
           )}
         </div>
-        <span className={metaTextClass}>{formatRelativeTime(comment.createdAt)}</span>
+        <span className={metaTextClass}>{getRelativeDateTime(comment.createdAt)}</span>
       </div>
       <p className={contentClass}>{comment.content}</p>
     </div>

@@ -1,12 +1,8 @@
-import { useState, type DetailedHTMLProps, type HTMLAttributes, type KeyboardEvent, type ChangeEvent } from 'react'
-import clsx from 'clsx'
+import { useState, type KeyboardEvent, type ChangeEvent } from 'react'
 import { Input } from '../../form/Input'
 import { useSearchStore } from '@/stores/useSearchStore'
 
-type ReactDivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
-type SearchBoxProps = ReactDivProps & {}
-
-export const SearchBox = ({ className: _className }: SearchBoxProps) => {
+export const SearchBox = () => {
   const inputValue = useSearchStore((state) => state.inputValue)
   const setInputValue = useSearchStore((state) => state.setInputValue)
   const addKeyword = useSearchStore((state) => state.addKeyword)
@@ -36,7 +32,7 @@ export const SearchBox = ({ className: _className }: SearchBoxProps) => {
   const handleCompositionStart = () => setIsComposing(true)
   const handleCompositionEnd = () => setIsComposing(false)
 
-  const SearchBoxClass = clsx('w-full')
+  const SearchBoxClass = 'w-full flex-1 min-w-0'
 
   return (
     <div className={SearchBoxClass}>

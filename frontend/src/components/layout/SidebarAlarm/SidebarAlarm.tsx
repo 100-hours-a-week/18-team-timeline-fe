@@ -4,7 +4,7 @@ import { Icon } from '../../ui/Icon'
 import { AlarmCard } from './AlarmCard'
 import { useSidebarAlarmStore } from '@/stores/useSidebarAlarmStore'
 import { useRequestStore } from '@/stores/useRequestStore'
-import { getRelativeTime } from '@/utils/getRelativeTime'
+import { getRelativeDate } from '@/utils/getRelativeDate'
 import { ENDPOINTS } from '@/constants/url'
 
 type Alarm = {
@@ -88,7 +88,7 @@ export const SidebarAlarm = () => {
   const filteredAlarms = alarmsData.find((group) => group.type === tabType)?.alarms ?? []
 
   const wrapperClass = clsx(
-    'absolute top-0 right-0 h-full w-[320px] bg-alarmBarBg z-50 transition-transform duration-300',
+    'absolute top-0 right-0 h-full w-full bg-alarmBarBg z-50',
     isOpen ? 'translate-x-0' : 'translate-x-full',
   )
 
@@ -106,7 +106,7 @@ export const SidebarAlarm = () => {
   return (
     <div ref={SidebarAlarmRef} className={wrapperClass}>
       <div className={iconClass}>
-        <Icon name="XMarkIcon" size={24} variant="solid" className="text-menuItem cursor-pointer" onClick={close} />
+        <Icon name="XMarkIcon" size={24} variant="solid" className="cursor-pointer text-menuItem" onClick={close} />
       </div>
 
       {/* 탭 */}
@@ -131,7 +131,7 @@ export const SidebarAlarm = () => {
               title={alarm.title}
               content={alarm.content}
               isChecked={alarm.isChecked}
-              createdAt={getRelativeTime(alarm.createdAt)}
+              createdAt={getRelativeDate(alarm.createdAt)}
               targetType={alarm.targetType}
               targetId={alarm.targetId}
               onClick={() => handleAlarmClick(alarm)}

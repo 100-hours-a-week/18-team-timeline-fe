@@ -14,7 +14,7 @@ import { ROUTES } from '@/constants/url'
 
 export default function NewsDetail() {
   const [toastMessage, setToastMessage] = useState<string | null>(null)
-  const { isLoggedIn } = useAuthStore()
+  const { isLoggedIn, userId, username } = useAuthStore()
   const navigate = useNavigate()
 
   const params = useParams<{ id: string }>()
@@ -43,6 +43,8 @@ export default function NewsDetail() {
   } = useComments({
     newsId,
     isLoggedIn,
+    userId,
+    username,
     setToastMessage,
   })
 
@@ -61,15 +63,18 @@ export default function NewsDetail() {
         onShare={handleShare}
       />
       <Thumbnail title={news.title} image={news.image} />
-      <UpdateButtonBox
-        isUpdating={isUpdating}
-        isUpdateAvailable={isUpdateAvailable}
-        isLoggedIn={isLoggedIn}
-        handleTimelineUpdate={handleTimelineUpdate}
-      />
+      {news.category !== 'KTB' && (
+        <UpdateButtonBox
+          isUpdating={isUpdating}
+          isUpdateAvailable={isUpdateAvailable}
+          isLoggedIn={isLoggedIn}
+          handleTimelineUpdate={handleTimelineUpdate}
+        />
+      )}
+
       <TimelineContainer timeline={news.timeline} />
 
-      <div className="bg-commentBoxBg rounded-t-xl pt-4 px-4 shadow-2xl" ref={commentListRef}>
+      <div className="px-4 pt-4 shadow-2xl bg-commentBoxBg rounded-t-xl" ref={commentListRef}>
         <SentimentAnalysis statistics={news.statistics} />
         <CommentContainer
           comments={comments}

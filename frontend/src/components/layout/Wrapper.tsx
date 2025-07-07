@@ -11,7 +11,7 @@ type WrapperProps = ReactDivProps & {
 }
 
 export const Wrapper = ({ title, content, className: _className, children }: WrapperProps) => {
-  const className = clsx('h-fit rounded-xl mx-7 my-16 py-14 flex flex-col bg-puWrapper', _className)
+  const className = clsx('h-fit rounded-xl mx-7 my-16 py-14 flex flex-col bg-puWrapper drop-shadow-md', _className)
   const titleClass = clsx(
     'text-3xl font-extrabold text-puTitle text-center',
     content ? 'pb-1' : 'pb-9'

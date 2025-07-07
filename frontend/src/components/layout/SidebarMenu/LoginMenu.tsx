@@ -1,9 +1,9 @@
-import { LogoutButton } from "@/components/ui/Button"
-import { Text } from "@/components/ui/Text"
-import { ROUTES } from "@/constants/url"
-import { useSidebarMenuStore } from "@/stores/useSidebarMenuStore"
-import clsx from "clsx"
-import { Link } from "react-router-dom"
+import { LogoutButton } from '@/components/ui/MenuButton'
+import { Text } from '@/components/ui/Text'
+import { ROUTES } from '@/constants/url'
+import { useSidebarMenuStore } from '@/stores/useSidebarMenuStore'
+import clsx from 'clsx'
+import { Link } from 'react-router-dom'
 
 export const LoginMenu = () => {
   const close = useSidebarMenuStore((state) => state.close)
@@ -12,7 +12,7 @@ export const LoginMenu = () => {
   const titleClass = 'text-menuTitle text-2xl font-bold flex flex-col pl-1 pt-10 pb-4'
   const navClass = 'flex flex-col pl-1 pt-6 space-y-4'
   const navItemClass = 'text-menuItem hover:text-menuItemHover text-lg font-medium'
-  
+
   return (
     <div className={menuClass}>
       <Text className={titleClass}>마이페이지</Text>

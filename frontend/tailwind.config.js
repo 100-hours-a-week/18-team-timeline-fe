@@ -7,8 +7,9 @@ export default {
         // common
         point: '#F2A359',
         myWhite: '#FFFFFF',
-        myBlack: '#000000',
-        mainBgColor: '#E5E5E5',
+        myBlack: '#1A1A1A',
+        mainBg: '#EEEAE6',
+        mainPoint: '#D4C9BE',
         pageBg: '#FCFAF7',
 
         // CC
@@ -51,7 +52,7 @@ export default {
         alarmBarBg: '#F9F9F9',
         alarmBarMetaText: '#AAAAAA',
         alarmBarHeader: '#FFFFFF',
-        alarmTabSelect: '#000000',
+        alarmTabSelect: '#1A1A1A',
         alarmTabNotSelect: '#AAAAAA',
         alarmCardBg: '#FFFFFF',
         alarmCardBorder: '#EEEEEE',
@@ -67,7 +68,7 @@ export default {
 
         inputBg: '#F1EFEC',
         inputBorder: '#D4C9BE',
-        inputBorderFocus: '#000000',
+        inputBorderFocus: '#1A1A1A',
         inputPlaceholder: '#D4C9BE',
         labelText: '#2A4759',
         labelRequired: '#F79B72',
@@ -90,7 +91,8 @@ export default {
         pollBoxBorder: '#DADADA',
         pollOptionBg: '#F1EFEC',
         pollOptionSelectBg: '#E3D8CE',
-        pollOptionText: '#000000',
+        pollOptionText: '#1A1A1A',
+        pollOptionVotedText: '#808080',
         radioBtnBorder: '#DADADA',
         radioBtnBg: '#FFFFFF',
         radioBtnCircle: '#F2A359',
@@ -119,7 +121,7 @@ export default {
 
         timelineCardWhiteBg: '#FFFFFF',
         timelineCardBlackBg: '#2A4759',
-        timelineCardWhiteTitle: '#000000',
+        timelineCardWhiteTitle: '#1A1A1A',
         timelineCardBlackTitle: '#FFFFFF',
         timelineCardWhiteContent: '#717171',
         timelineCardBlackContent: '#EEEEEE',
@@ -128,12 +130,32 @@ export default {
         commentBoxBg: '#FFFFFF',
         commentCardBg: '#FFFFFF',
         commentMetaText: '#AAAAAA',
+        commentWithdrawAuthor: '#92A3AE',
 
         statsTitle: '#2A4759',
         statsNotice: '#AAAAAA',
         positive: '#FA7000',
         neutral: '#FF9800',
         negative: '#FFE0B2',
+      },
+      keyframes: {
+        'slide-in-left': {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(0)' },
+        },
+        'slide-in-right': {
+          '0%': { transform: 'translateX(100%)' },
+          '100%': { transform: 'translateX(0)' },
+        },
+        'rise-up': {
+          '0%': { transform: 'translateY(100%)' },
+          '100%': { transform: 'translateY(0)' },
+        },
+      },
+      animation: {
+        'slide-in-left': 'slide-in-left 1.2s ease-out forwards',
+        'slide-in-right': 'slide-in-right 1.2s ease-out forwards',
+        'rise-up': 'rise-up 1.5s ease-out forwards',
       },
     },
   },

@@ -65,11 +65,11 @@ export const TimelineCard = ({ data, isLast = false }: TimelineCardProps) => {
           </div>
         </div>
 
-        {/* 본문 또는 출처 */}
         <div className={contentClass}>
           {!showSources ? (
             <p>{data.content}</p>
           ) : (
+            data.source &&
             data.source.length > 0 && (
               <ul className="space-y-2">
                 {data.source.map((source, index) => (

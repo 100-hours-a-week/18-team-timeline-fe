@@ -1,5 +1,5 @@
 import { SearchBarMessage } from '@/constants/SearchBarMessage'
-import { validateSearchKeyword } from '@/utils/validSearchBox'
+import { validateSearchKeyword } from '@/utils/validateSearchKeyword'
 import { create } from 'zustand'
 
 interface SearchStoreState {
@@ -48,9 +48,7 @@ export const useSearchStore = create<SearchStoreState>((set, get) => ({
           ? SearchBarMessage.INVALID_KEYWORD_JAMO
           : result.reason === 'special'
             ? SearchBarMessage.INVALID_KEYWORD_SPECIAL
-            : result.reason === 'number'
-              ? SearchBarMessage.INVALID_KEYWORD_NUMBER
-              : SearchBarMessage.INVALID_KEYWORD
+            : SearchBarMessage.INVALID_KEYWORD
 
       set({ inputValue: '', toastMessage: '' })
       setTimeout(() => set({ toastMessage: message }), 0)

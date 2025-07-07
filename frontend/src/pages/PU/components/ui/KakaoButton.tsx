@@ -2,7 +2,7 @@ import clsx from 'clsx'
 import { useRequestStore } from '@/stores/useRequestStore'
 import { ENDPOINTS } from '@/constants/url'
 import { PUMessage } from '@/constants/PU/puMessage'
-import kakaoLoginImg from '@/assets/kakao_login_large_wide.png'
+import { KakaoLoginBtn } from '@/assets'
 
 export const KaKaoButton = () => {
   const { getData } = useRequestStore()
@@ -25,7 +25,7 @@ export const KaKaoButton = () => {
 
   return (
     <button className={buttonClass} onClick={handleClick}>
-      <img src={kakaoLoginImg} alt={PUMessage.KAKAO_BTN_NAME} />
+      <img src={KakaoLoginBtn} alt={PUMessage.KAKAO_BTN_NAME} />
     </button>
   )
 }

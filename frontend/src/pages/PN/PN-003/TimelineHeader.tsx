@@ -1,5 +1,5 @@
 import { type DetailedHTMLProps, type HTMLAttributes } from 'react'
-import { formatRelativeTime } from '@/pages/PN/utils/formatRelativeTime'
+import { getRelativeDateTime } from '@/utils/getRelativeDateTime'
 import { Icon } from '@/components/ui/Icon'
 
 type ReactDivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
@@ -44,7 +44,7 @@ export const TimelineHeader = ({
           )}
         </div>
       </div>
-      <p className={dateClass}>{formatRelativeTime(updatedAt)}</p>
+      <p className={dateClass}>{getRelativeDateTime(updatedAt) + ' 업데이트'}</p>
     </div>
   )
 }
