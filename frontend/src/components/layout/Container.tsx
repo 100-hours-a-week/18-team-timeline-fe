@@ -14,6 +14,26 @@ type ContainerProps = ReactDivProps & {
 export const Container = ({ children }: ContainerProps) => {
   const [isSmall, setIsSmall] = useState(false)
   const [isAnimating, setIsAnimating] = useState(false)
+  const [letterPositions, setLetterPositions] = useState([
+    { x: -30, y: 0, isMoving: false },
+    { x: 20, y: 0, isMoving: false },
+    { x: 80, y: 0, isMoving: false },
+    { x: 150, y: 0, isMoving: false },
+    { x: 210, y: 0, isMoving: false },
+    { x: 270, y: 0, isMoving: false },
+    { x: 330, y: 0, isMoving: false }
+  ])
+  const [animationComplete, setAnimationComplete] = useState(false)
+
+  const basePositions = [
+    { x: -30, y: 0 },
+    { x: 20, y: 0 },
+    { x: 80, y: 0 },
+    { x: 150, y: 0 },
+    { x: 210, y: 0 },
+    { x: 270, y: 0 },
+    { x: 330, y: 0 }
+  ];
 
   useEffect(() => {
     const handleResize = () => {
@@ -42,6 +62,29 @@ export const Container = ({ children }: ContainerProps) => {
   const bgItemClass = 'absolute top-0 object-contain h-3/4 z-10'
   const bgItemBottomContainerClass = 'absolute bottom-[-20%] right-[-18%] w-2/3 overflow-visible z-10'
   const bgItemBottomClass = 'object-contain h-full animate-rise-up'
+
+  // 애니메이션 완료 후 클릭 시 무작위 이동
+  const handleLetterClick = (index: number) => {
+    if (!animationComplete) return;
+
+    const randomX = basePositions[index].x + Math.random() * 50 - 25;
+    const randomY = basePositions[index].y + Math.random() * 30 - 15;
+
+    setLetterPositions(prev =>
+      prev.map((pos, i) =>
+        i === index ? { ...pos, x: randomX, y: randomY, isMoving: true } : pos
+      )
+    );
+  }
+
+  // 애니메이션 완료 감지
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setAnimationComplete(true)
+    }, 2000) // letterSpread 애니메이션 시간과 동일
+    
+    return () => clearTimeout(timer)
+  }, [])
 
   // 애니메이션 keyframes 동적 생성
   const leftPositions = [0, 160, 320, 480];
@@ -92,13 +135,26 @@ export const Container = ({ children }: ContainerProps) => {
         <div className="flex-1 flex items-center justify-start h-full relative pl-20">
           {/* TAMNARA 글자들을 개별적으로 배치 */}
           <div className="relative">
-            <span className="absolute text-6xl font-extrabold text-point letter-spread" style={{ '--spread-x': '-180px', '--spread-y': '-60px', left: '-30px' } as React.CSSProperties}>T</span>
-            <span className="absolute text-6xl font-extrabold text-point letter-spread" style={{ '--spread-x': '-120px', '--spread-y': '80px', left: '20px' } as React.CSSProperties}>A</span>
-            <span className="absolute text-6xl font-extrabold text-point letter-spread" style={{ '--spread-x': '-60px', '--spread-y': '-40px', left: '80px' } as React.CSSProperties}>M</span>
-            <span className="absolute text-6xl font-extrabold text-point letter-spread" style={{ '--spread-x': '0px', '--spread-y': '60px', left: '150px' } as React.CSSProperties}>N</span>
-            <span className="absolute text-6xl font-extrabold text-point letter-spread" style={{ '--spread-x': '60px', '--spread-y': '-30px', left: '210px' } as React.CSSProperties}>A</span>
-            <span className="absolute text-6xl font-extrabold text-point letter-spread" style={{ '--spread-x': '120px', '--spread-y': '50px', left: '270px' } as React.CSSProperties}>R</span>
-            <span className="absolute text-6xl font-extrabold text-point letter-spread" style={{ '--spread-x': '180px', '--spread-y': '-20px', left: '330px' } as React.CSSProperties}>A</span>
+            {['T', 'A', 'M', 'N', 'A', 'R', 'A'].map((letter, index) => (
+              <span
+                key={index}
+                className={`absolute text-6xl font-extrabold text-point letter-spread ${
+                  animationComplete ? 'cursor-pointer hover:scale-110' : ''
+                }`}
+                style={{
+                  '--spread-x': ['-180px', '-120px', '-60px', '0px', '60px', '120px', '180px'][index],
+                  '--spread-y': ['-60px', '80px', '-40px', '60px', '-30px', '50px', '-20px'][index],
+                  left: `${letterPositions[index].x}px`,
+                  top: `${letterPositions[index].y}px`,
+                  transform: letterPositions[index].isMoving ? 'scale(1.2)' : 'scale(1)',
+                  transition: letterPositions[index].isMoving ? 'all 0.5s ease' : 'all 0.3s ease',
+                  zIndex: letterPositions[index].isMoving ? 50 : 10
+                } as React.CSSProperties}
+                onClick={() => handleLetterClick(index)}
+              >
+                {letter}
+              </span>
+            ))}
           </div>
         </div>
         {/* 오른쪽 50% */}
