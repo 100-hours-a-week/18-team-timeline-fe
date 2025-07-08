@@ -15,7 +15,7 @@ export default function MainPage({ initialCategory = 'all' }: MainPageProps) {
   const carouselContainerClass = 'flex flex-col items-center w-full mx-auto px-4 pt-6 pb-4 flex-shrink-0'
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full h-screen scrollbar-hide overflow-y-auto">
       <div className={carouselContainerClass}>
         <Carousel />
       </div>

@@ -53,7 +53,7 @@ export default function NewsDetail() {
   }
 
   return (
-    <div className="wrap">
+    <div className="flex flex-col w-full h-screen scrollbar-hide overflow-y-auto">
       <TimelineHeader
         isLoggedIn={isLoggedIn}
         title={news.title}
