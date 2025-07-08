@@ -8,12 +8,14 @@ type ThumbnailProps = ReactDivProps & {
 }
 
 export const Thumbnail = ({ image, title }: ThumbnailProps) => {
-  const wrapperClass = 'flex overflow-hidden'
-  const imageClass = 'w-full h-[200px] object-contain'
+  const wrapperClass = 'w-full aspect-[5/3] overflow-hidden'
+  const imageClass = 'w-full h-full object-cover'
 
   return (
-    <div className={wrapperClass}>
-      <img src={image || TamnaraDefaultImg} alt={title} className={imageClass} />
+    <div>
+      <div className={wrapperClass}>
+        <img src={image || TamnaraDefaultImg} alt={title} className={imageClass} />
+      </div>
     </div>
   )
 }
