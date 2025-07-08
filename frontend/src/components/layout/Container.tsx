@@ -71,8 +71,15 @@ export const Container = ({ children }: ContainerProps) => {
         @keyframes clickAnimation {
           0% { transform: translateX(0) translateY(0); opacity: 1; }
           30% { transform: translateX(100vw) translateY(0); opacity: 0; }
-          35% { transform: translateX(-100vw) translateY(-50vh); opacity: 0; }
+          50% { transform: translateX(-100vw) translateY(-50vh); opacity: 0; }
           100% { transform: translateX(0) translateY(0); opacity: 1; }
+        }
+        @keyframes letterSpread {
+          0% { transform: translateX(var(--spread-x)) translateY(var(--spread-y)); }
+          100% { transform: translateX(0) translateY(0); }
+        }
+        .letter-spread {
+          animation: letterSpread 2s ease-out forwards;
         }
       `}</style>
       <div className={wrapperClass}>{children}</div>
@@ -82,9 +89,17 @@ export const Container = ({ children }: ContainerProps) => {
       {/* 미니멀 2분할 레이아웃: 좌측 중앙 TAMNARA, 우측 중앙 감귤 Lottie */}
       <div className="w-full h-full flex items-center justify-between absolute top-0 left-0">
         {/* 왼쪽 50% */}
-        <div className="flex-1 flex items-center justify-center h-full relative">
-          {/* 비행기 Lottie: TAMNARA 위에 겹치게 */}
-          <span className="text-6xl font-extrabold text-point animate-tamnara-pop">TAMNARA</span>
+        <div className="flex-1 flex items-center justify-start h-full relative pl-20">
+          {/* TAMNARA 글자들을 개별적으로 배치 */}
+          <div className="relative">
+            <span className="absolute text-6xl font-extrabold text-point letter-spread" style={{ '--spread-x': '-180px', '--spread-y': '-60px', left: '-30px' } as React.CSSProperties}>T</span>
+            <span className="absolute text-6xl font-extrabold text-point letter-spread" style={{ '--spread-x': '-120px', '--spread-y': '80px', left: '20px' } as React.CSSProperties}>A</span>
+            <span className="absolute text-6xl font-extrabold text-point letter-spread" style={{ '--spread-x': '-60px', '--spread-y': '-40px', left: '80px' } as React.CSSProperties}>M</span>
+            <span className="absolute text-6xl font-extrabold text-point letter-spread" style={{ '--spread-x': '0px', '--spread-y': '60px', left: '150px' } as React.CSSProperties}>N</span>
+            <span className="absolute text-6xl font-extrabold text-point letter-spread" style={{ '--spread-x': '60px', '--spread-y': '-30px', left: '210px' } as React.CSSProperties}>A</span>
+            <span className="absolute text-6xl font-extrabold text-point letter-spread" style={{ '--spread-x': '120px', '--spread-y': '50px', left: '270px' } as React.CSSProperties}>R</span>
+            <span className="absolute text-6xl font-extrabold text-point letter-spread" style={{ '--spread-x': '180px', '--spread-y': '-20px', left: '330px' } as React.CSSProperties}>A</span>
+          </div>
         </div>
         {/* 오른쪽 50% */}
         <div className="flex-1 flex items-center justify-center h-full">
