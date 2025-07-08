@@ -3,6 +3,7 @@ import type { Comment } from '../../types/comment'
 import { ENDPOINTS } from '@/constants/url'
 import { useRequestStore } from '@/stores/useRequestStore'
 import { TimelineMessage } from '@/constants/PN/TimelineMessage'
+import { useSidebarAlarmStore } from '@/stores/useSidebarAlarmStore'
 
 interface UseCommentsProps {
   newsId: string
@@ -39,6 +40,7 @@ export const useComments = ({
   const [hasMore, setHasMore] = useState(true)
   const [loading, setLoading] = useState(false)
   const [shouldScrollToBottom, setShouldScrollToBottom] = useState(false)
+  const isAlarmOpen = useSidebarAlarmStore((state) => state.isOpen)
 
   const commentListRef = useRef<HTMLDivElement>(null)
   const commentsEndRef = useRef<HTMLDivElement>(null)
@@ -121,12 +123,18 @@ export const useComments = ({
   useEffect(() => {
     loadComments(1)
 
-    const interval = setInterval(() => {
-      pollLatestComments()
-    }, 5000)
+    let interval: NodeJS.Timeout | null = null
 
-    return () => clearInterval(interval)
-  }, [pollLatestComments])
+    if (!isAlarmOpen) {
+      interval = setInterval(() => {
+        pollLatestComments()
+      }, 5000)
+    }
+
+    return () => {
+      if (interval) clearInterval(interval)
+    }
+  }, [pollLatestComments, isAlarmOpen])
 
   /* -------------------------------------------------- */
   /* 무한 스크롤                                         */
@@ -160,10 +168,7 @@ export const useComments = ({
     const value = e.target.value
 
     if (value.length > 150) {
-      setToastMessage('')
-      setTimeout(() => {
-        setToastMessage(TimelineMessage.COMMENT_LENGTH_FAIL)
-      }, 0)
+      setToastMessage(TimelineMessage.COMMENT_LENGTH_FAIL)
       return
     }
 
@@ -178,16 +183,15 @@ export const useComments = ({
 
     const payload = { content: commentText.trim() }
 
+    setToastMessage('')
+
     try {
       const res = await postData(ENDPOINTS.COMMENT_CREATE(newsId), payload)
       if (userId == null || username == null) return
 
       if (res.success) {
         setCommentText('')
-        setToastMessage('')
-        setTimeout(() => {
-          setToastMessage(TimelineMessage.COMMENT_POST_SUCCESS)
-        }, 0)
+        setToastMessage(TimelineMessage.COMMENT_POST_SUCCESS)
 
         await pollLatestComments()
 
@@ -195,10 +199,7 @@ export const useComments = ({
       }
     } catch (err) {
       console.error('댓글 등록 실패:', err)
-      setToastMessage('')
-      setTimeout(() => {
-        setToastMessage(TimelineMessage.COMMENT_POST_FAIL)
-      }, 0)
+      setToastMessage(TimelineMessage.COMMENT_POST_FAIL)
     }
   }
 
@@ -208,19 +209,15 @@ export const useComments = ({
   const handleDeleteComment = async (commentId: string) => {
     if (!isLoggedIn || !newsId) return
 
+    setToastMessage('')
+
     try {
       await deleteData(ENDPOINTS.COMMENT_DELETE(newsId, commentId))
       setComments((prev) => prev.filter((comment) => comment.id !== commentId))
-      setToastMessage('')
-      setTimeout(() => {
-        setToastMessage(TimelineMessage.COMMENT_DELETE_SUCCESS)
-      }, 0)
+      setToastMessage(TimelineMessage.COMMENT_DELETE_SUCCESS)
     } catch (err) {
       console.error('댓글 삭제 실패:', err)
-      setToastMessage('')
-      setTimeout(() => {
-        setToastMessage(TimelineMessage.COMMENT_DELETE_FAIL)
-      }, 0)
+      setToastMessage(TimelineMessage.COMMENT_DELETE_FAIL)
     }
   }
 

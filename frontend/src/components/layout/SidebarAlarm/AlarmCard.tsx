@@ -13,24 +13,12 @@ export type AlarmCardProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, H
   onClick?: () => void
 }
 
-export const AlarmCard = ({
-  title,
-  content,
-  isChecked,
-  createdAt,
-  targetType,
-  targetId,
-  onClick,
-}: AlarmCardProps) => {
+export const AlarmCard = ({ title, content, isChecked, createdAt, targetType, targetId, onClick }: AlarmCardProps) => {
   const navigate = useNavigate()
 
   const handleNavigate = () => {
     if (targetType) {
-      if (targetType.toLowerCase() === 'news') {
-        navigate(targetId != null ? `/news/${targetId}` : '/main')
-      } else {
-        navigate(targetId != null ? `/${targetType.toLowerCase()}/${targetId}` : `/${targetType.toLowerCase()}`)
-      }
+      navigate(targetId != null ? `/${targetType.toLowerCase()}/${targetId}` : `/${targetType.toLowerCase()}`)
     }
   }
 

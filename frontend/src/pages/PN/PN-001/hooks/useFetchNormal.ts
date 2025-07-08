@@ -2,10 +2,12 @@ import { useCallback, useEffect, useState } from 'react'
 import { ENDPOINTS } from '@/constants/url'
 import { useRequestStore } from '@/stores/useRequestStore'
 import type { NewsByCategory } from '@/pages/PN/types/category'
+import { useSidebarAlarmStore } from '@/stores/useSidebarAlarmStore'
 
 export const useFetchNormal = () => {
   const [newsByCategory, setNewsByCategory] = useState<NewsByCategory>({})
   const { getData } = useRequestStore()
+  const isAlarmOpen = useSidebarAlarmStore((state) => state.isOpen)
 
   const fetchNews = useCallback(
     async (category: string = '', offset: string = '0', append = false) => {
@@ -49,12 +51,18 @@ export const useFetchNormal = () => {
   useEffect(() => {
     fetchNews()
 
-    const interval = setInterval(() => {
-      fetchLatestNews()
-    }, 5000)
+    let interval: NodeJS.Timeout | null = null
 
-    return () => clearInterval(interval)
-  }, [fetchLatestNews])
+    if (!isAlarmOpen) {
+      interval = setInterval(() => {
+        fetchLatestNews()
+      }, 5000)
+    }
+
+    return () => {
+      if (interval) clearInterval(interval)
+    }
+  }, [fetchLatestNews, isAlarmOpen])
 
   return {
     newsByCategory,

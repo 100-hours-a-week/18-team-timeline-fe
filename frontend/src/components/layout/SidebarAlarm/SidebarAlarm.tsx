@@ -6,6 +6,7 @@ import { useSidebarAlarmStore } from '@/stores/useSidebarAlarmStore'
 import { useRequestStore } from '@/stores/useRequestStore'
 import { getRelativeDate } from '@/utils/getRelativeDate'
 import { ENDPOINTS } from '@/constants/url'
+import { AlarmMessage, AlarmType } from '@/constants/AlarmMessage'
 
 type Alarm = {
   id: number
@@ -27,7 +28,7 @@ export const SidebarAlarm = () => {
   const close = useSidebarAlarmStore((state) => state.close)
   const SidebarAlarmRef = useRef<HTMLDivElement>(null)
 
-  const [activeTab, setActiveTab] = useState<'전체' | '북마크'>('전체')
+  const [activeTab, setActiveTab] = useState<AlarmType.ALL | AlarmType.BOOKMARK>(AlarmType.ALL)
   const [alarmsData, setAlarmsData] = useState<AlarmGroup[]>([])
 
   const { getData, patchData, isLoading } = useRequestStore()
@@ -49,7 +50,7 @@ export const SidebarAlarm = () => {
 
   useEffect(() => {
     if (isOpen) {
-      setActiveTab('전체')
+      setActiveTab(AlarmType.ALL)
     }
   }, [isOpen])
 
@@ -84,7 +85,7 @@ export const SidebarAlarm = () => {
     close()
   }
 
-  const tabType = activeTab === '전체' ? 'all' : 'bookmark'
+  const tabType = activeTab === AlarmType.ALL ? 'all' : 'bookmark'
   const filteredAlarms = alarmsData.find((group) => group.type === tabType)?.alarms ?? []
 
   const wrapperClass = clsx(
@@ -94,13 +95,13 @@ export const SidebarAlarm = () => {
 
   const iconClass = 'flex justify-end p-4 bg-alarmBarHeader'
   const tabClass = 'flex justify-around bg-alarmBarHeader'
-  const tabItemClass = (tab: '전체' | '북마크') =>
+  const tabItemClass = (tab: AlarmType.ALL | AlarmType.BOOKMARK) =>
     clsx(
       'w-1/2 text-lg text-center cursor-pointer pb-1',
       activeTab === tab ? 'font-bold border-b-2 border-b border-alarmTabSelect' : 'border-b text-alarmTabNotSelect',
     )
 
-  const menuClass = 'relative flex flex-col overflow-y-auto h-full'
+  const menuClass = 'relative flex flex-col overflow-y-auto h-full scrollbar-hide'
   const metaTextClass = 'text-center text-sm text-alarmBarMetaText mt-10'
 
   return (
@@ -111,19 +112,19 @@ export const SidebarAlarm = () => {
 
       {/* 탭 */}
       <div className={tabClass}>
-        <div className={tabItemClass('전체')} onClick={() => setActiveTab('전체')}>
-          전체
+        <div className={tabItemClass(AlarmType.ALL)} onClick={() => setActiveTab(AlarmType.ALL)}>
+          {AlarmType.ALL}
         </div>
-        <div className={tabItemClass('북마크')} onClick={() => setActiveTab('북마크')}>
-          북마크
+        <div className={tabItemClass(AlarmType.BOOKMARK)} onClick={() => setActiveTab(AlarmType.BOOKMARK)}>
+          {AlarmType.BOOKMARK}
         </div>
       </div>
 
       <div className={menuClass}>
         {isLoading ? (
-          <div className={metaTextClass}>불러오는 중...</div>
+          <div className={metaTextClass}>{AlarmMessage.LOADING}</div>
         ) : filteredAlarms.length === 0 ? (
-          <div className={metaTextClass}>알림이 없습니다.</div>
+          <div className={metaTextClass}>{AlarmMessage.NO_ALARM}</div>
         ) : (
           filteredAlarms.map((alarm) => (
             <AlarmCard
