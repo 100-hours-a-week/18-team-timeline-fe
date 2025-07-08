@@ -26,9 +26,6 @@ interface UseCommentsReturn {
   setShouldScrollToBottom: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-/**
- * 댓글 기능을 관리하는 커스텀 훅
- */
 export const useComments = ({
   newsId,
   isLoggedIn,
@@ -59,25 +56,21 @@ export const useComments = ({
       const offset = (pageNum - 1) * 20
       try {
         const res = await getData(ENDPOINTS.COMMENT_FETCH(newsId, offset))
-        if (res.success == false) {
-          return
-        }
+        if (!res.success) return
 
         const newComments: Comment[] = res.data.comments.map((comment: Comment) => {
           const isMine = comment.userId && comment.userId === userId
-
           return {
             id: comment.id.toString(),
             userId: comment.userId,
             username: isMine ? `${username}(나)` : `${comment.username ?? '탈퇴한 회원'}`,
             content: comment.content,
             createdAt: comment.createdAt,
-            isMine: isMine,
+            isMine,
           }
         })
 
         setComments((prev) => (pageNum === 1 ? newComments : [...newComments, ...prev]))
-
         setHasMore(res.data.hasNext)
         setPage(pageNum)
       } catch (err) {
@@ -90,6 +83,9 @@ export const useComments = ({
     [newsId, loading, getData, userId, username, setToastMessage],
   )
 
+  /* -------------------------------------------------- */
+  /* 최신 댓글 폴링                                      */
+  /* -------------------------------------------------- */
   const pollLatestComments = useCallback(async () => {
     if (!newsId) return
 
@@ -120,7 +116,7 @@ export const useComments = ({
   }, [newsId, getData, userId, username])
 
   /* -------------------------------------------------- */
-  /* 초기 댓글 로드                                        */
+  /* 초기 댓글 로드 및 폴링                               */
   /* -------------------------------------------------- */
   useEffect(() => {
     loadComments(1)
@@ -128,6 +124,7 @@ export const useComments = ({
     const interval = setInterval(() => {
       pollLatestComments()
     }, 5000)
+
     return () => clearInterval(interval)
   }, [pollLatestComments])
 
@@ -146,7 +143,7 @@ export const useComments = ({
       {
         threshold: 0.1,
         rootMargin: '50px',
-        root: commentListRef.current, // 댓글창 스크롤 컨테이너를 root로 설정
+        root: commentListRef.current,
       },
     )
 
@@ -184,28 +181,17 @@ export const useComments = ({
     try {
       const res = await postData(ENDPOINTS.COMMENT_CREATE(newsId), payload)
       if (userId == null || username == null) return
-      if (res.success) {
-        const newComment: Comment = {
-          id: res.data.commentId,
-          userId: userId,
-          username: `${username ?? ''}(나)`,
-          content: commentText.trim(),
-          createdAt: new Date().toISOString(),
-          isMine: true,
-        }
 
-        setComments((prev) => [...prev, newComment])
+      if (res.success) {
         setCommentText('')
         setToastMessage('')
         setTimeout(() => {
           setToastMessage(TimelineMessage.COMMENT_POST_SUCCESS)
         }, 0)
+
+        await pollLatestComments()
+
         setShouldScrollToBottom(true)
-      } else {
-        setToastMessage('')
-        setTimeout(() => {
-          setToastMessage(TimelineMessage.COMMENT_POST_FAIL)
-        }, 0)
       }
     } catch (err) {
       console.error('댓글 등록 실패:', err)
@@ -217,7 +203,7 @@ export const useComments = ({
   }
 
   /* -------------------------------------------------- */
-  /* 댓글 삭제 (서버 반영)                                */
+  /* 댓글 삭제                                           */
   /* -------------------------------------------------- */
   const handleDeleteComment = async (commentId: string) => {
     if (!isLoggedIn || !newsId) return
@@ -239,7 +225,7 @@ export const useComments = ({
   }
 
   /* -------------------------------------------------- */
-  /* 수동으로 더 많은 댓글 불러오기                      */
+  /* 수동 더보기                                         */
   /* -------------------------------------------------- */
   const loadMoreComments = () => {
     if (hasMore && !loading) {
