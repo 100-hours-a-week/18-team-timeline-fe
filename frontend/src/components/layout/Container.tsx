@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import type { DetailedHTMLProps, HTMLAttributes } from 'react'
 import clsx from 'clsx'
-import { BgItem1, BgItem2, BgItem3 } from '@/assets'
+import { BgItem1, BgItem2 } from '@/assets'
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import React from 'react';
 
@@ -13,6 +13,7 @@ type ContainerProps = ReactDivProps & {
 
 export const Container = ({ children }: ContainerProps) => {
   const [isSmall, setIsSmall] = useState(false)
+  const [isAnimating, setIsAnimating] = useState(false)
 
   useEffect(() => {
     const handleResize = () => {
@@ -67,13 +68,16 @@ export const Container = ({ children }: ContainerProps) => {
           50% { transform: translateX(40px); }
           100% { transform: translateX(0); }
         }
+        @keyframes clickAnimation {
+          0% { transform: translateX(0) translateY(0); opacity: 1; }
+          30% { transform: translateX(100vw) translateY(0); opacity: 0; }
+          35% { transform: translateX(-100vw) translateY(-50vh); opacity: 0; }
+          100% { transform: translateX(0) translateY(0); opacity: 1; }
+        }
       `}</style>
       <div className={wrapperClass}>{children}</div>
 
       <div className={bgGradationClass} />
-      <div className={bgItemBottomContainerClass} style={{ height: '60%' }}>
-        <img src={BgItem3} className={bgItemBottomClass} style={{ display: 'block' }} alt="background bottom" />
-      </div>
 
       {/* 미니멀 2분할 레이아웃: 좌측 중앙 TAMNARA, 우측 중앙 감귤 Lottie */}
       <div className="w-full h-full flex items-center justify-between absolute top-0 left-0">
@@ -93,8 +97,22 @@ export const Container = ({ children }: ContainerProps) => {
               className="w-full h-full object-contain block"
             />
           </div>
-          <div className="w-[180px] h-[180px] flex items-center justify-center"
-            style={{ animation: 'moveLeftRight 2s infinite ease-in-out', animationDelay: '1s', marginLeft: '32px' }}>
+          <div 
+            className="w-[180px] h-[180px] flex items-center justify-center cursor-pointer"
+            style={{ 
+              animation: isAnimating 
+                ? 'clickAnimation 1.5s ease-in-out' 
+                : 'moveLeftRight 2s infinite ease-in-out', 
+              animationDelay: isAnimating ? '0s' : '1s', 
+              marginLeft: '32px' 
+            }}
+            onClick={() => {
+              if (!isAnimating) {
+                setIsAnimating(true)
+                setTimeout(() => setIsAnimating(false), 1500)
+              }
+            }}
+          >
             <DotLottieReact
               src="https://lottie.host/3ff0e72f-ffbb-4f55-b2d0-1c6be9239070/G447bh5VPq.lottie"
               loop
