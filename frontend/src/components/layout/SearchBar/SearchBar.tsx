@@ -37,30 +37,15 @@ export const SearchBar = () => {
 
   useEffect(() => {
     if (!isSearchResultsPage) return
-  
-    const store = useSearchStore.getState()
-  
-    // ✅ 상태가 초기화되지 않은 경우에만 URL 쿼리 → 상태 반영
-    if (!store.isInitialized && tagsFromQuery.length > 0) {
-      store.setKeywords(tagsFromQuery)
-      store.setInitialized(true)
-    }
-  
-    store.setInputValue('')
-  }, [isSearchResultsPage, location.key, tagsFromQuery])
 
-  useEffect(() => {
-    if (!isSearchResultsPage) return
-    console.log(keywords);
-  
-    if (keywords.length === 0) {
-      navigate(`${ROUTES.SEARCH_RESULTS}`, { replace: true })
-    } else {
-      const newTagsParam = keywords.map(encodeURIComponent).join(',')
-      navigate(`${ROUTES.SEARCH_RESULTS}?tags=${newTagsParam}`, { replace: true })
+    const store = useSearchStore.getState()
+    if (tagsFromQuery.length > 0 && store.keywords.length === 0) {
+      store.setKeywords(tagsFromQuery)
     }
-  }, [keywords, isSearchResultsPage, navigate])
-  
+
+    store.setInputValue('')
+  }, [])
+
   const handleBack = () => {
     clearKeywords()
     closeSearch()
@@ -72,7 +57,6 @@ export const SearchBar = () => {
   const handleConfirm = () => {
     if (keywords.length === 0) {
       useSearchStore.getState().setToastMessage(SearchBarMessage.INVALID_KEYWORD)
-      navigate(ROUTES.SEARCH_RESULTS, { replace: true })
       return
     }
 
