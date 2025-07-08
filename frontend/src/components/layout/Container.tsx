@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react'
 import type { DetailedHTMLProps, HTMLAttributes } from 'react'
 import clsx from 'clsx'
-import { BgItem1, BgItem2 } from '@/assets'
-import { DotLottieReact } from '@lottiefiles/dotlottie-react';
-import React from 'react';
+import { DotLottieReact } from '@lottiefiles/dotlottie-react'
+import React from 'react'
 
 type ReactDivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
 
@@ -21,7 +20,7 @@ export const Container = ({ children }: ContainerProps) => {
     { x: 150, y: 0, isMoving: false },
     { x: 210, y: 0, isMoving: false },
     { x: 270, y: 0, isMoving: false },
-    { x: 330, y: 0, isMoving: false }
+    { x: 330, y: 0, isMoving: false },
   ])
   const [animationComplete, setAnimationComplete] = useState(false)
 
@@ -32,8 +31,8 @@ export const Container = ({ children }: ContainerProps) => {
     { x: 150, y: 0 },
     { x: 210, y: 0 },
     { x: 270, y: 0 },
-    { x: 330, y: 0 }
-  ];
+    { x: 330, y: 0 },
+  ]
 
   useEffect(() => {
     const handleResize = () => {
@@ -59,22 +58,16 @@ export const Container = ({ children }: ContainerProps) => {
 
   const bgGradationClass = 'absolute bottom-0 left-0 z-20 w-full h-1/3 bg-gradient-to-t from-white to-transparent'
 
-  const bgItemClass = 'absolute top-0 object-contain h-3/4 z-10'
-  const bgItemBottomContainerClass = 'absolute bottom-[-20%] right-[-18%] w-2/3 overflow-visible z-10'
-  const bgItemBottomClass = 'object-contain h-full animate-rise-up'
-
   // 애니메이션 완료 후 클릭 시 무작위 이동
   const handleLetterClick = (index: number) => {
-    if (!animationComplete) return;
+    if (!animationComplete) return
 
-    const randomX = basePositions[index].x + Math.random() * 50 - 25;
-    const randomY = basePositions[index].y + Math.random() * 30 - 15;
+    const randomX = basePositions[index].x + Math.random() * 50 - 25
+    const randomY = basePositions[index].y + Math.random() * 30 - 15
 
-    setLetterPositions(prev =>
-      prev.map((pos, i) =>
-        i === index ? { ...pos, x: randomX, y: randomY, isMoving: true } : pos
-      )
-    );
+    setLetterPositions((prev) =>
+      prev.map((pos, i) => (i === index ? { ...pos, x: randomX, y: randomY, isMoving: true } : pos)),
+    )
   }
 
   // 애니메이션 완료 감지
@@ -82,20 +75,22 @@ export const Container = ({ children }: ContainerProps) => {
     const timer = setTimeout(() => {
       setAnimationComplete(true)
     }, 2000) // letterSpread 애니메이션 시간과 동일
-    
+
     return () => clearTimeout(timer)
   }, [])
 
   // 애니메이션 keyframes 동적 생성
-  const leftPositions = [0, 160, 320, 480];
-  const rightPositions = [0, 160, 320, 480];
-  const animationId = Date.now();
-  const leftKeyframes = leftPositions.map(
-    (left) => `@keyframes slideInLeft${left}_${animationId} { from { left: -200px; } to { left: ${left}px; } }`
-  ).join('\n');
-  const rightKeyframes = rightPositions.map(
-    (right) => `@keyframes slideInRight${right}_${animationId} { from { right: -200px; } to { right: ${right}px; } }`
-  ).join('\n');
+  const leftPositions = [0, 160, 320, 480]
+  const rightPositions = [0, 160, 320, 480]
+  const animationId = Date.now()
+  const leftKeyframes = leftPositions
+    .map((left) => `@keyframes slideInLeft${left}_${animationId} { from { left: -200px; } to { left: ${left}px; } }`)
+    .join('\n')
+  const rightKeyframes = rightPositions
+    .map(
+      (right) => `@keyframes slideInRight${right}_${animationId} { from { right: -200px; } to { right: ${right}px; } }`,
+    )
+    .join('\n')
 
   return (
     <div className={containerClass}>
@@ -130,9 +125,9 @@ export const Container = ({ children }: ContainerProps) => {
       <div className={bgGradationClass} />
 
       {/* 미니멀 2분할 레이아웃: 좌측 중앙 TAMNARA, 우측 중앙 감귤 Lottie */}
-      <div className="w-full h-full flex items-center justify-between absolute top-0 left-0">
+      <div className="absolute top-0 left-0 flex items-center justify-between w-full h-full">
         {/* 왼쪽 50% */}
-        <div className="flex-1 flex items-center justify-start h-full relative pl-20">
+        <div className="relative flex items-center justify-start flex-1 h-full pl-20">
           {/* TAMNARA 글자들을 개별적으로 배치 */}
           <div className="relative">
             {['T', 'A', 'M', 'N', 'A', 'R', 'A'].map((letter, index) => (
@@ -141,15 +136,17 @@ export const Container = ({ children }: ContainerProps) => {
                 className={`absolute text-6xl font-extrabold text-point letter-spread ${
                   animationComplete ? 'cursor-pointer hover:scale-110' : ''
                 }`}
-                style={{
-                  '--spread-x': ['-180px', '-120px', '-60px', '0px', '60px', '120px', '180px'][index],
-                  '--spread-y': ['-60px', '80px', '-40px', '60px', '-30px', '50px', '-20px'][index],
-                  left: `${letterPositions[index].x}px`,
-                  top: `${letterPositions[index].y}px`,
-                  transform: letterPositions[index].isMoving ? 'scale(1.2)' : 'scale(1)',
-                  transition: letterPositions[index].isMoving ? 'all 0.5s ease' : 'all 0.3s ease',
-                  zIndex: letterPositions[index].isMoving ? 50 : 10
-                } as React.CSSProperties}
+                style={
+                  {
+                    '--spread-x': ['-180px', '-120px', '-60px', '0px', '60px', '120px', '180px'][index],
+                    '--spread-y': ['-60px', '80px', '-40px', '60px', '-30px', '50px', '-20px'][index],
+                    left: `${letterPositions[index].x}px`,
+                    top: `${letterPositions[index].y}px`,
+                    transform: letterPositions[index].isMoving ? 'scale(1.2)' : 'scale(1)',
+                    transition: letterPositions[index].isMoving ? 'all 0.5s ease' : 'all 0.3s ease',
+                    zIndex: letterPositions[index].isMoving ? 50 : 10,
+                  } as React.CSSProperties
+                }
                 onClick={() => handleLetterClick(index)}
               >
                 {letter}
@@ -158,24 +155,24 @@ export const Container = ({ children }: ContainerProps) => {
           </div>
         </div>
         {/* 오른쪽 50% */}
-        <div className="flex-1 flex items-center justify-end h-full pr-20">
-          <div className="w-[180px] h-[180px] flex items-center justify-center"
-            style={{ animation: 'moveLeftRight 2s infinite ease-in-out' }}>
+        <div className="flex items-center justify-end flex-1 h-full pr-20">
+          <div
+            className="w-[180px] h-[180px] flex items-center justify-center"
+            style={{ animation: 'moveLeftRight 2s infinite ease-in-out' }}
+          >
             <DotLottieReact
               src="https://lottie.host/66b80d91-8aa2-4df7-b433-5e7d7175c4c5/g1mY1bWz3p.lottie"
               loop
               autoplay
-              className="w-full h-full object-contain block"
+              className="block object-contain w-full h-full"
             />
           </div>
-          <div 
+          <div
             className="w-[180px] h-[180px] flex items-center justify-center cursor-pointer"
-            style={{ 
-              animation: isAnimating 
-                ? 'clickAnimation 1.5s ease-in-out' 
-                : 'moveLeftRight 2s infinite ease-in-out', 
-              animationDelay: isAnimating ? '0s' : '1s', 
-              marginLeft: '32px' 
+            style={{
+              animation: isAnimating ? 'clickAnimation 1.5s ease-in-out' : 'moveLeftRight 2s infinite ease-in-out',
+              animationDelay: isAnimating ? '0s' : '1s',
+              marginLeft: '32px',
             }}
             onClick={() => {
               if (!isAnimating) {
@@ -188,7 +185,7 @@ export const Container = ({ children }: ContainerProps) => {
               src="https://lottie.host/3ff0e72f-ffbb-4f55-b2d0-1c6be9239070/G447bh5VPq.lottie"
               loop
               autoplay
-              className="w-full h-full object-contain block"
+              className="block object-contain w-full h-full"
             />
           </div>
         </div>
