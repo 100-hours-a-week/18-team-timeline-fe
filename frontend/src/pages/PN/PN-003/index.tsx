@@ -53,7 +53,7 @@ export default function NewsDetail() {
   }
 
   return (
-    <div className="flex flex-col w-full h-screen scrollbar-hide overflow-y-auto">
+    <div className="flex flex-col w-full h-screen overflow-y-auto scrollbar-hide">
       <TimelineHeader
         isLoggedIn={isLoggedIn}
         title={news.title}
@@ -62,9 +62,7 @@ export default function NewsDetail() {
         onToggleBookmark={handleBookmark}
         onShare={handleShare}
       />
-      <div className="mt-4">
-        <Thumbnail title={news.title} image={news.image} />
-      </div>
+      <Thumbnail title={news.title} image={news.image} />
       {news.category !== 'KTB' && (
         <UpdateButtonBox
           isUpdating={isUpdating}
