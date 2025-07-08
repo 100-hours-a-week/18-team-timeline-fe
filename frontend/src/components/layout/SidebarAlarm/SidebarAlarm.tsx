@@ -89,7 +89,7 @@ export const SidebarAlarm = () => {
   const filteredAlarms = alarmsData.find((group) => group.type === tabType)?.alarms ?? []
 
   const wrapperClass = clsx(
-    'absolute top-0 right-0 h-full w-full bg-alarmBarBg z-50 scrollbar-hide',
+    'absolute top-0 right-0 h-full w-full bg-alarmBarBg z-50',
     isOpen ? 'translate-x-0' : 'translate-x-full',
   )
 
@@ -101,7 +101,7 @@ export const SidebarAlarm = () => {
       activeTab === tab ? 'font-bold border-b-2 border-b border-alarmTabSelect' : 'border-b text-alarmTabNotSelect',
     )
 
-  const menuClass = 'relative flex flex-col overflow-y-auto h-full'
+  const menuClass = 'relative flex flex-col overflow-y-auto h-full scrollbar-hide'
   const metaTextClass = 'text-center text-sm text-alarmBarMetaText mt-10'
 
   return (
@@ -113,10 +113,10 @@ export const SidebarAlarm = () => {
       {/* 탭 */}
       <div className={tabClass}>
         <div className={tabItemClass(AlarmType.ALL)} onClick={() => setActiveTab(AlarmType.ALL)}>
-          전체
+          {AlarmType.ALL}
         </div>
-        <div className={tabItemClass(AlarmType.BOOKMARK)} onClick={() => setActiveTab(AlarmType.BOOKMARK )}>
-          북마크
+        <div className={tabItemClass(AlarmType.BOOKMARK)} onClick={() => setActiveTab(AlarmType.BOOKMARK)}>
+          {AlarmType.BOOKMARK}
         </div>
       </div>
 
