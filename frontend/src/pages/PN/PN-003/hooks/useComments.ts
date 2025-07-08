@@ -9,7 +9,7 @@ interface UseCommentsProps {
   isLoggedIn: boolean
   userId?: number | null
   username?: string | null
-  setToastMessage: (message: string, position?: any) => void
+  setToastMessage: (message: string) => void
 }
 
 interface UseCommentsReturn {
@@ -97,7 +97,7 @@ export const useComments = ({
       const res = await getData(ENDPOINTS.COMMENT_FETCH(newsId, 0))
       if (!res.success) return
 
-      const newComments: Comment[] = res.data.comments.map((comment: any) => {
+      const newComments: Comment[] = res.data.comments.map((comment: Comment) => {
         const isMine = comment.userId && comment.userId === userId
         return {
           id: comment.id.toString(),
