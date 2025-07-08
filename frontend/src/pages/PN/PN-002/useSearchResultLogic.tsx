@@ -45,6 +45,13 @@ export const useSearchResultLogic = ({ setToastMessage }: SearchResultLogicProps
 
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>, tags: string[]) => {
     e.preventDefault()
+    if (tags.length === 0) {
+      setToastMessage('');
+      setTimeout(() => {
+        setToastMessage('태그를 최소한 1개 입력해주세요');
+      }, 0);
+      return;
+    }
     if (!isButtonActive || isLoading) return
 
     setToastMessage('')

@@ -139,7 +139,10 @@ export const useComments = ({ newsId, isLoggedIn, userId, username, setToastMess
     const value = e.target.value
 
     if (value.length > 150) {
-      setToastMessage(TimelineMessage.COMMENT_LENGTH_FAIL)
+      setToastMessage('');
+      setTimeout(() => {
+        setToastMessage(TimelineMessage.COMMENT_LENGTH_FAIL);
+      }, 0);
       return
     }
 
@@ -169,14 +172,23 @@ export const useComments = ({ newsId, isLoggedIn, userId, username, setToastMess
 
         setComments((prev) => [...prev, newComment])
         setCommentText('')
-        setToastMessage(TimelineMessage.COMMENT_POST_SUCCESS)
+        setToastMessage('');
+        setTimeout(() => {
+          setToastMessage(TimelineMessage.COMMENT_POST_SUCCESS);
+        }, 0);
         setShouldScrollToBottom(true)
       } else {
-        setToastMessage(TimelineMessage.COMMENT_POST_FAIL)
+        setToastMessage('');
+        setTimeout(() => {
+          setToastMessage(TimelineMessage.COMMENT_POST_FAIL);
+        }, 0);
       }
     } catch (err) {
       console.error('댓글 등록 실패:', err)
-      setToastMessage(TimelineMessage.COMMENT_POST_FAIL)
+      setToastMessage('');
+      setTimeout(() => {
+        setToastMessage(TimelineMessage.COMMENT_POST_FAIL);
+      }, 0);
     }
   }
 
@@ -189,10 +201,16 @@ export const useComments = ({ newsId, isLoggedIn, userId, username, setToastMess
     try {
       const res = await deleteData(ENDPOINTS.COMMENT_DELETE(newsId, commentId))
       setComments((prev) => prev.filter((comment) => comment.id !== commentId))
-      setToastMessage(TimelineMessage.COMMENT_DELETE_SUCCESS)
+      setToastMessage('');
+      setTimeout(() => {
+        setToastMessage(TimelineMessage.COMMENT_DELETE_SUCCESS);
+      }, 0);
     } catch (err) {
       console.error('댓글 삭제 실패:', err)
-      setToastMessage(TimelineMessage.COMMENT_DELETE_FAIL)
+      setToastMessage('');
+      setTimeout(() => {
+        setToastMessage(TimelineMessage.COMMENT_DELETE_FAIL);
+      }, 0);
     }
   }
 
