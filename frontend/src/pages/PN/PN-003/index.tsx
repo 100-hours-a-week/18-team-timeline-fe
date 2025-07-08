@@ -62,7 +62,9 @@ export default function NewsDetail() {
         onToggleBookmark={handleBookmark}
         onShare={handleShare}
       />
-      <Thumbnail title={news.title} image={news.image} />
+      <div className="mt-4">
+        <Thumbnail title={news.title} image={news.image} />
+      </div>
       {news.category !== 'KTB' && (
         <UpdateButtonBox
           isUpdating={isUpdating}
