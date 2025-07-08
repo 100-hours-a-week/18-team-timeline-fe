@@ -158,7 +158,7 @@ export const Container = ({ children }: ContainerProps) => {
           </div>
         </div>
         {/* 오른쪽 50% */}
-        <div className="flex-1 flex items-center justify-center h-full">
+        <div className="flex-1 flex items-center justify-end h-full pr-20">
           <div className="w-[180px] h-[180px] flex items-center justify-center"
             style={{ animation: 'moveLeftRight 2s infinite ease-in-out' }}>
             <DotLottieReact
