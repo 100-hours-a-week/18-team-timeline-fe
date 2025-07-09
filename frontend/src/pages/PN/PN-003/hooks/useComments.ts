@@ -3,14 +3,14 @@ import type { Comment } from '../../types/comment'
 import { ENDPOINTS } from '@/constants/url'
 import { useRequestStore } from '@/stores/useRequestStore'
 import { TimelineMessage } from '@/constants/PN/TimelineMessage'
-import { useAuthStore } from '@/stores/useAuthStore'
+import { useSidebarAlarmStore } from '@/stores/useSidebarAlarmStore'
 
 interface UseCommentsProps {
   newsId: string
   isLoggedIn: boolean
-  userId?: number | null,
-  username?: string | null,
-  setToastMessage: (message: string, position?: any) => void
+  userId?: number | null
+  username?: string | null
+  setToastMessage: (message: string) => void
 }
 
 interface UseCommentsReturn {
@@ -27,29 +27,25 @@ interface UseCommentsReturn {
   setShouldScrollToBottom: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-/**
- * 댓글 기능을 관리하는 커스텀 훅
- */
-export const useComments = ({ newsId, isLoggedIn, userId, username, setToastMessage }: UseCommentsProps): UseCommentsReturn => {
+export const useComments = ({
+  newsId,
+  isLoggedIn,
+  userId,
+  username,
+  setToastMessage,
+}: UseCommentsProps): UseCommentsReturn => {
   const [comments, setComments] = useState<Comment[]>([])
   const [commentText, setCommentText] = useState('')
   const [page, setPage] = useState(1)
   const [hasMore, setHasMore] = useState(true)
   const [loading, setLoading] = useState(false)
   const [shouldScrollToBottom, setShouldScrollToBottom] = useState(false)
+  const isAlarmOpen = useSidebarAlarmStore((state) => state.isOpen)
 
   const commentListRef = useRef<HTMLDivElement>(null)
   const commentsEndRef = useRef<HTMLDivElement>(null)
 
   const { getData, postData, deleteData } = useRequestStore()
-
-  /* -------------------------------------------------- */
-  /* 초기 댓글 로드                                        */
-  /* -------------------------------------------------- */
-  useEffect(() => {
-    if (newsId) loadComments(1)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [newsId])
 
   /* -------------------------------------------------- */
   /* 댓글 불러오기                                       */
@@ -62,26 +58,21 @@ export const useComments = ({ newsId, isLoggedIn, userId, username, setToastMess
       const offset = (pageNum - 1) * 20
       try {
         const res = await getData(ENDPOINTS.COMMENT_FETCH(newsId, offset))
-        if (res.success == false) {
-          return
-        }
+        if (!res.success) return
 
-        const newComments: Comment[] = res.data.comments.map((comment: any) => {
+        const newComments: Comment[] = res.data.comments.map((comment: Comment) => {
           const isMine = comment.userId && comment.userId === userId
-
           return {
             id: comment.id.toString(),
             userId: comment.userId,
             username: isMine ? `${username}(나)` : `${comment.username ?? '탈퇴한 회원'}`,
             content: comment.content,
             createdAt: comment.createdAt,
-            isMine: isMine,
+            isMine,
           }
         })
 
-        /* 첫 페이지인지 추가 페이지인지에 따라 댓글 병합 */
         setComments((prev) => (pageNum === 1 ? newComments : [...newComments, ...prev]))
-
         setHasMore(res.data.hasNext)
         setPage(pageNum)
       } catch (err) {
@@ -91,8 +82,59 @@ export const useComments = ({ newsId, isLoggedIn, userId, username, setToastMess
         setLoading(false)
       }
     },
-    [newsId, loading, setToastMessage],
+    [newsId, loading, getData, userId, username, setToastMessage],
   )
+
+  /* -------------------------------------------------- */
+  /* 최신 댓글 폴링                                      */
+  /* -------------------------------------------------- */
+  const pollLatestComments = useCallback(async () => {
+    if (!newsId) return
+
+    try {
+      const res = await getData(ENDPOINTS.COMMENT_FETCH(newsId, 0))
+      if (!res.success) return
+
+      const newComments: Comment[] = res.data.comments.map((comment: Comment) => {
+        const isMine = comment.userId && comment.userId === userId
+        return {
+          id: comment.id.toString(),
+          userId: comment.userId,
+          username: isMine ? `${username}(나)` : `${comment.username ?? '탈퇴한 회원'}`,
+          content: comment.content,
+          createdAt: comment.createdAt,
+          isMine,
+        }
+      })
+
+      setComments((prev) => {
+        const existingIds = new Set(prev.map((c) => c.id))
+        const filtered = newComments.filter((c) => !existingIds.has(c.id))
+        return [...prev, ...filtered]
+      })
+    } catch (err) {
+      console.error('댓글 폴링 실패:', err)
+    }
+  }, [newsId, getData, userId, username])
+
+  /* -------------------------------------------------- */
+  /* 초기 댓글 로드 및 폴링                               */
+  /* -------------------------------------------------- */
+  useEffect(() => {
+    loadComments(1)
+
+    let interval: NodeJS.Timeout | null = null
+
+    if (!isAlarmOpen) {
+      interval = setInterval(() => {
+        pollLatestComments()
+      }, 5000)
+    }
+
+    return () => {
+      if (interval) clearInterval(interval)
+    }
+  }, [pollLatestComments, isAlarmOpen])
 
   /* -------------------------------------------------- */
   /* 무한 스크롤                                         */
@@ -109,7 +151,7 @@ export const useComments = ({ newsId, isLoggedIn, userId, username, setToastMess
       {
         threshold: 0.1,
         rootMargin: '50px',
-        root: commentListRef.current, // 댓글창 스크롤 컨테이너를 root로 설정
+        root: commentListRef.current,
       },
     )
 
@@ -118,19 +160,6 @@ export const useComments = ({ newsId, isLoggedIn, userId, username, setToastMess
 
     return () => observer.disconnect()
   }, [hasMore, loading, page])
-
-  /* -------------------------------------------------- */
-  /* 폴링: 5초마다 댓글 자동 새로고침                    */
-  /* -------------------------------------------------- */
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (newsId) {
-        console.log('폴링: 댓글 새로고침');
-        loadComments(1);
-      }
-    }, 5000); // 5초마다 새로고침
-    return () => clearInterval(interval);
-  }, [newsId, loadComments]);
 
   /* -------------------------------------------------- */
   /* 입력 핸들러                                         */
@@ -154,25 +183,19 @@ export const useComments = ({ newsId, isLoggedIn, userId, username, setToastMess
 
     const payload = { content: commentText.trim() }
 
+    setToastMessage('')
+
     try {
       const res = await postData(ENDPOINTS.COMMENT_CREATE(newsId), payload)
       if (userId == null || username == null) return
-      if (res.success) {
-        const newComment: Comment = {
-          id: res.data.commentId,
-          userId: userId,
-          username: `${username ?? ''}(나)`,
-          content: commentText.trim(),
-          createdAt: new Date().toISOString(),
-          isMine: true,
-        }
 
-        setComments((prev) => [...prev, newComment])
+      if (res.success) {
         setCommentText('')
         setToastMessage(TimelineMessage.COMMENT_POST_SUCCESS)
+
+        await pollLatestComments()
+
         setShouldScrollToBottom(true)
-      } else {
-        setToastMessage(TimelineMessage.COMMENT_POST_FAIL)
       }
     } catch (err) {
       console.error('댓글 등록 실패:', err)
@@ -181,13 +204,15 @@ export const useComments = ({ newsId, isLoggedIn, userId, username, setToastMess
   }
 
   /* -------------------------------------------------- */
-  /* 댓글 삭제 (서버 반영)                                */
+  /* 댓글 삭제                                           */
   /* -------------------------------------------------- */
   const handleDeleteComment = async (commentId: string) => {
     if (!isLoggedIn || !newsId) return
 
+    setToastMessage('')
+
     try {
-      const res = await deleteData(ENDPOINTS.COMMENT_DELETE(newsId, commentId))
+      await deleteData(ENDPOINTS.COMMENT_DELETE(newsId, commentId))
       setComments((prev) => prev.filter((comment) => comment.id !== commentId))
       setToastMessage(TimelineMessage.COMMENT_DELETE_SUCCESS)
     } catch (err) {
@@ -197,7 +222,7 @@ export const useComments = ({ newsId, isLoggedIn, userId, username, setToastMess
   }
 
   /* -------------------------------------------------- */
-  /* 수동으로 더 많은 댓글 불러오기                      */
+  /* 수동 더보기                                         */
   /* -------------------------------------------------- */
   const loadMoreComments = () => {
     if (hasMore && !loading) {

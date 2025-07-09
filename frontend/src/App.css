@@ -1,5 +1,6 @@
 .wrap {
   @apply w-full h-full bg-pageBg overflow-y-auto;
+  @apply scrollbar-hide
 }
 
 @keyframes tamnara-pop {

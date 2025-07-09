@@ -1,6 +1,3 @@
 export { default as TamnaraIcon } from './tamnara_icon.png'
 export { default as TamnaraDefaultImg } from './tamanara_default_image.png'
 export { default as KakaoLoginBtn } from './kakao_login_large_wide.png'
-export { default as BgItem1 } from './bg_item_1.png'
-export { default as BgItem2 } from './bg_item_2.png'
-export { default as BgItem3 } from './bg_item_3.png'

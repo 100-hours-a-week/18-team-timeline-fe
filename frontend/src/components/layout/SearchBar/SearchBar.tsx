@@ -39,14 +39,12 @@ export const SearchBar = () => {
     if (!isSearchResultsPage) return
 
     const store = useSearchStore.getState()
-    const hasKeywords = store.keywords.length > 0
-
-    if (!hasKeywords && tagsFromQuery.length > 0) {
+    if (tagsFromQuery.length > 0 && store.keywords.length === 0) {
       store.setKeywords(tagsFromQuery)
     }
 
     store.setInputValue('')
-  }, [isSearchResultsPage, location.key, tagsFromQuery])
+  }, [])
 
   const handleBack = () => {
     clearKeywords()

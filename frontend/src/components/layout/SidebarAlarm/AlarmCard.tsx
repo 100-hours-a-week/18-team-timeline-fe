@@ -13,15 +13,7 @@ export type AlarmCardProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, H
   onClick?: () => void
 }
 
-export const AlarmCard = ({
-  title,
-  content,
-  isChecked,
-  createdAt,
-  targetType,
-  targetId,
-  onClick,
-}: AlarmCardProps) => {
+export const AlarmCard = ({ title, content, isChecked, createdAt, targetType, targetId, onClick }: AlarmCardProps) => {
   const navigate = useNavigate()
 
   const handleNavigate = () => {

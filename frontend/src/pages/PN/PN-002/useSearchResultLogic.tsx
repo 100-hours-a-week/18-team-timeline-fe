@@ -45,6 +45,7 @@ export const useSearchResultLogic = ({ setToastMessage }: SearchResultLogicProps
 
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>, tags: string[]) => {
     e.preventDefault()
+
     if (!isButtonActive || isLoading) return
 
     setToastMessage('')

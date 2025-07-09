@@ -91,6 +91,27 @@ export const CommentContainer = ({
     setShouldPreserveOnDelete(true)
   })
 
+  useEffect(() => {
+    const el = listRef.current
+    if (!el) return
+
+    const handleMouseEnter = () => {
+      document.body.style.overflow = 'hidden'
+    }
+
+    const handleMouseLeave = () => {
+      document.body.style.overflow = ''
+    }
+
+    el.addEventListener('mouseenter', handleMouseEnter)
+    el.addEventListener('mouseleave', handleMouseLeave)
+
+    return () => {
+      el.removeEventListener('mouseenter', handleMouseEnter)
+      el.removeEventListener('mouseleave', handleMouseLeave)
+    }
+  }, [])
+
   const wrapperClass = 'flex flex-col w-full min-h-[30vh] max-h-[50vh] bg-inputBg text-black rounded-t-xl shadow-inner'
   const cardContainerClass = 'flex-1 flex flex-col gap-4 overflow-y-auto overflow-x-hidden px-4 pb-4 mt-2'
   const inputContainerClass = 'sticky bottom-0 z-10'

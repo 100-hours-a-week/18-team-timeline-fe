@@ -17,7 +17,7 @@ export const Carousel = () => {
 
   const wrapperClass = 'w-full h-[200px] bg-carouselBg rounded-[5px] flex items-center justify-center cursor-pointer'
   const metaTextClass = 'text-carouselInactive text-center text-sm'
-  const loadingClass = 'animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-carouselInactive'
+  const loadingClass = 'animate-spin rounded-full h-12 w-12 border-4 border-ccLine border-t-point'
   const titleWrapperClass = 'absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-myBlack/80 to-transparent'
   const titleClass = 'absolute bottom-4 text-myWhite text-2xl font-semibold line-clamp-1 px-4'
   const imageClass = 'w-full h-full object-cover'
