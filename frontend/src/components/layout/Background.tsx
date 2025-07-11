@@ -14,6 +14,10 @@ export const Background = () => {
   ])
   const [animationComplete, setAnimationComplete] = useState(false)
 
+  // 랜덤 애니메이션 값 상태
+  const [randomAnim, setRandomAnim] = useState({ x: 100, y: 0 })
+  const [animKey, setAnimKey] = useState(0)
+
   const basePositions = [
     { x: -30, y: 0 },
     { x: 20, y: 0 },
@@ -40,6 +44,32 @@ export const Background = () => {
     )
   }
 
+  // 웨이브 곡선용 유틸
+  function getWaveKeyframes(xTarget: number, amplitude: number, waveCount: number) {
+    // 0~1 사이 7개 구간 (0%, 16%, 32%, 48%, 64%, 80%, 100%)
+    const steps = [0, 0.16, 0.32, 0.48, 0.64, 0.8, 1]
+    return steps.map((t, i) => {
+      const percent = Math.round(t * 100)
+      const x = xTarget * Math.sin((Math.PI / 2) * t) // X는 처음엔 빠르게, 끝에서 감속
+      const y = amplitude * Math.sin(2 * Math.PI * waveCount * t)
+      const opacity = 1 - 0.5 * t
+      return `${percent}% { transform: translateX(${x.toFixed(2)}vw) translateY(${y.toFixed(2)}vh); opacity: ${opacity.toFixed(2)}; }`
+    }).join('\n')
+  }
+
+  // 오른쪽 Lottie 클릭 핸들러
+  const handleLottieClick = () => {
+    if (!isAnimating) {
+      // X, Y는 각각 -180~180vw, -60~60vh
+      const x = Math.round(Math.random() * 180 + 60) * (Math.random() > 0.5 ? 1 : -1)
+      const y = Math.round(Math.random() * 60) * (Math.random() > 0.5 ? 1 : -1)
+      setRandomAnim({ x, y })
+      setAnimKey((k) => k + 1)
+      setIsAnimating(true)
+      setTimeout(() => setIsAnimating(false), 1500)
+    }
+  }
+
   return (
     <div
       className={`
@@ -51,16 +81,18 @@ export const Background = () => {
         z-0
       `}
     >
-      <style>{`
+      {/* 동적 keyframes */}
+      <style key={animKey}>{`
         @keyframes moveLeftRight {
           0% { transform: translateX(0); }
           50% { transform: translateX(40px); }
           100% { transform: translateX(0); }
         }
         @keyframes clickAnimation {
-          0% { transform: translateX(0) translateY(0); opacity: 1; }
-          30% { transform: translateX(100vw) translateY(0); opacity: 0; }
-          50% { transform: translateX(-100vw) translateY(-50vh); opacity: 0; }
+          0%   { transform: translateX(0) translateY(0); opacity: 1; }
+          30%  { transform: translateX(${randomAnim.x * 0.3}vw) translateY(${randomAnim.y * 0.3}vh); opacity: 0.8; }
+          60%  { transform: translateX(${randomAnim.x * 0.7}vw) translateY(${randomAnim.y * 0.7}vh); opacity: 0.6; }
+          80%  { transform: translateX(${randomAnim.x}vw) translateY(${randomAnim.y}vh); opacity: 0.5; }
           100% { transform: translateX(0) translateY(0); opacity: 1; }
         }
       `}</style>
@@ -109,12 +141,7 @@ export const Background = () => {
               animation: isAnimating ? 'clickAnimation 1.5s ease-in-out' : 'moveLeftRight 2s infinite ease-in-out',
               animationDelay: isAnimating ? '0s' : '1s',
             }}
-            onClick={() => {
-              if (!isAnimating) {
-                setIsAnimating(true)
-                setTimeout(() => setIsAnimating(false), 1500)
-              }
-            }}
+            onClick={handleLottieClick}
           >
             <DotLottieReact
               src="https://lottie.host/3ff0e72f-ffbb-4f55-b2d0-1c6be9239070/G447bh5VPq.lottie"
