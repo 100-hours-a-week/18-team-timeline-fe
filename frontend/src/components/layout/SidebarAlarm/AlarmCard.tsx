@@ -18,7 +18,11 @@ export const AlarmCard = ({ title, content, isChecked, createdAt, targetType, ta
 
   const handleNavigate = () => {
     if (targetType) {
-      navigate(targetId != null ? `/${targetType.toLowerCase()}/${targetId}` : `/${targetType.toLowerCase()}`)
+      if (targetType.toLowerCase() === 'news') {
+        navigate(targetId != null ? `/${targetType.toLowerCase()}/${targetId}` : `/}`)
+      } else {
+        navigate(targetId != null ? `/${targetType.toLowerCase()}/${targetId}` : `/${targetType.toLowerCase()}`)
+      }
     }
   }
 
