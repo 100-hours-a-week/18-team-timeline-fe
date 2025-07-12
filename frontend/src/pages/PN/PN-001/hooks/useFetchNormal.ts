@@ -42,7 +42,28 @@ export const useFetchNormal = () => {
   const fetchLatestNews = useCallback(async () => {
     try {
       const res = await getData(ENDPOINTS.NEWS_FETCH())
-      setNewsByCategory(res.data)
+
+      setNewsByCategory((prev) => {
+        const updated: NewsByCategory = { ...prev }
+
+        for (const category in res.data) {
+          const newList = res.data[category]?.newsList ?? []
+          const prevList = prev[category]?.newsList ?? []
+
+          const appendedList = prevList.length > newList.length ? prevList : newList
+
+          if (prevList.length === newList.length && prevList[0]?.id === newList[0]?.id) {
+            continue
+          }
+
+          updated[category] = {
+            ...res.data[category],
+            newsList: appendedList,
+          }
+        }
+
+        return updated
+      })
     } catch (err) {
       console.error('자동 새로고침 뉴스 로딩 오류:', err)
     }
@@ -62,7 +83,7 @@ export const useFetchNormal = () => {
     return () => {
       if (interval) clearInterval(interval)
     }
-  }, [fetchLatestNews, isAlarmOpen])
+  }, [fetchNews, fetchLatestNews, isAlarmOpen])
 
   return {
     newsByCategory,
