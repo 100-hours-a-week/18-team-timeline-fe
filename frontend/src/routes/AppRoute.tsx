@@ -1,31 +1,32 @@
 import { useEffect } from 'react'
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
-import usePageStore from './stores/usePageStore'
-import { Container } from './components/layout/Container'
-import { Header } from './components/layout/Header'
-import { SidebarMenu } from './components/layout/SidebarMenu/SidebarMenu'
-import { ROUTES } from './constants/url'
-import { LogoutRoute } from './routes/LogoutRoute'
-import { LoginRoute } from './routes/LoginRoute'
-import MainPage from './pages/PN/PN-001'
-import NewsDetail from './pages/PN/PN-003'
-import Login from './pages/PU/PU-002'
-import { KakaoCallback } from './pages/PU/auth/KakaoCallback'
-import UserInfo from './pages/PU/PU-003'
-import SearchResults from './pages/PN/PN-002'
-import { useAuthStore } from './stores/useAuthStore'
-import { SearchBar } from './components/layout/SearchBar/SearchBar'
-import { useSearchBarStore } from './stores/useSearchBarStore'
-import { useSearchStore } from './stores/useSearchStore'
-import { SidebarAlarm } from './components/layout/SidebarAlarm/SidebarAlarm'
+import usePageStore from '../stores/usePageStore'
+import { Container } from '../components/layout/Container'
+import { Header } from '../components/layout/Header'
+import { SidebarMenu } from '../components/layout/SidebarMenu/SidebarMenu'
+import { ROUTES } from '../constants/url'
+import { LogoutRoute } from './LogoutRoute'
+import { LoginRoute } from './LoginRoute'
+import MainPage from '../pages/PN/PN-001'
+import NewsDetail from '../pages/PN/PN-003'
+import Login from '../pages/PU/PU-002'
+import { KakaoCallback } from '../pages/PU/auth/KakaoCallback'
+import UserInfo from '../pages/PU/PU-003'
+import SearchResults from '../pages/PN/PN-002'
+import { useAuthStore } from '../stores/useAuthStore'
+import { SearchBar } from '../components/layout/SearchBar/SearchBar'
+import { useSearchBarStore } from '../stores/useSearchBarStore'
+import { useSearchStore } from '../stores/useSearchStore'
+import { SidebarAlarm } from '../components/layout/SidebarAlarm/SidebarAlarm'
 import PollPage from '@/pages/PV/PV-001'
 import BookmarkPage from '@/pages/PN/PN-004'
 import { useSidebarMenuStore } from '@/stores/useSidebarMenuStore'
 import { useSidebarAlarmStore } from '@/stores/useSidebarAlarmStore'
 import LoadingPage from '@/pages/PL'
-import { Background } from './components/layout/Background'
+import { Background } from '../components/layout/Background'
+import { RouteGuard } from '@/components/guard/RouteGuard'
 
-export const AppContent = () => {
+export const AppRoute = () => {
   const location = useLocation()
   const currentPage = usePageStore((state) => state.currentPage)
   const isSearchOpen = useSearchBarStore((state) => state.isOpen)
@@ -63,6 +64,7 @@ export const AppContent = () => {
 
   return (
     <>
+      <RouteGuard />
       <Background />
       <Container>
         {(isMenuOpen || isAlarmOpen) && <div className={overlayClass} onClick={handleOverlayClick} />}
