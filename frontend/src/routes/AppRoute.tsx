@@ -24,6 +24,7 @@ import { useSidebarMenuStore } from '@/stores/useSidebarMenuStore'
 import { useSidebarAlarmStore } from '@/stores/useSidebarAlarmStore'
 import LoadingPage from '@/pages/PL'
 import { Background } from '../components/layout/Background'
+import { RouteGuard } from '@/components/guard/RouteGuard'
 
 export const AppRoute = () => {
   const location = useLocation()
@@ -63,6 +64,7 @@ export const AppRoute = () => {
 
   return (
     <>
+      <RouteGuard />
       <Background />
       <Container>
         {(isMenuOpen || isAlarmOpen) && <div className={overlayClass} onClick={handleOverlayClick} />}
