@@ -50,7 +50,7 @@ export const SidebarMenu = () => {
           <Link to={INQUIRY_URL} className="text-menuItem" onClick={close} target="_blank" rel="noopener noreferrer">
             문의하기
           </Link>
-          <Text className="text-menuMetaText">v3.2.3 25.07.09</Text>
+          <Text className="text-menuMetaText">v3.2.4 25.07.11</Text>
         </div>
       </div>
     </div>
