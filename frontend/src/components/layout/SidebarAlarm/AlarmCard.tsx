@@ -2,6 +2,7 @@ import type { DetailedHTMLProps, HTMLAttributes } from 'react'
 import clsx from 'clsx'
 import { Text } from '@/components/ui/Text'
 import { useNavigate } from 'react-router-dom'
+import { ROUTES } from '@/constants/url'
 
 export type AlarmCardProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> & {
   title: string
@@ -19,7 +20,7 @@ export const AlarmCard = ({ title, content, isChecked, createdAt, targetType, ta
   const handleNavigate = () => {
     if (targetType) {
       if (targetType.toLowerCase() === 'news') {
-        navigate(targetId != null ? `/${targetType.toLowerCase()}/${targetId}` : `/`)
+        navigate(targetId != null ? `/${targetType.toLowerCase()}/${targetId}` : ROUTES.MAIN)
       } else {
         navigate(targetId != null ? `/${targetType.toLowerCase()}/${targetId}` : `/${targetType.toLowerCase()}`)
       }
