@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback, useLayoutEffect } from 'react'
 import type { Comment } from '../../types/comment'
 import { ENDPOINTS } from '@/constants/url'
 import { useRequestStore } from '@/stores/useRequestStore'
@@ -40,12 +40,36 @@ export const useComments = ({
   const [hasMore, setHasMore] = useState(true)
   const [loading, setLoading] = useState(false)
   const [shouldScrollToBottom, setShouldScrollToBottom] = useState(false)
-  const isAlarmOpen = useSidebarAlarmStore((state) => state.isOpen)
 
+  const isAlarmOpen = useSidebarAlarmStore((state) => state.isOpen)
   const commentListRef = useRef<HTMLDivElement>(null)
   const commentsEndRef = useRef<HTMLDivElement>(null)
 
   const { getData, postData, deleteData } = useRequestStore()
+
+  /* -------------------------------------------------- */
+  /* 스크롤 보존용 ref                                   */
+  /* -------------------------------------------------- */
+  const initialScrollDoneRef = useRef(false)
+  const prevScrollHeightRef = useRef<number | null>(null)
+  const prevScrollTopRef = useRef<number | null>(null)
+
+  /* -------------------------------------------------- */
+  /* 댓글 데이터 매핑 공통 함수                           */
+  /* -------------------------------------------------- */
+  const mapComments = (rawComments: Comment[]): Comment[] => {
+    return rawComments.map((comment: Comment) => {
+      const isMine = !!(comment.userId && comment.userId === userId)
+      return {
+        id: comment.id.toString(),
+        userId: comment.userId,
+        username: isMine ? `${username}(나)` : `${comment.username ?? '탈퇴한 회원'}`,
+        content: comment.content,
+        createdAt: comment.createdAt,
+        isMine,
+      }
+    })
+  }
 
   /* -------------------------------------------------- */
   /* 댓글 불러오기                                       */
@@ -55,24 +79,23 @@ export const useComments = ({
       if (!newsId || loading) return
 
       setLoading(true)
+
+      // 현재 스크롤 상태 저장
+      const listEl = commentListRef.current
+      if (listEl) {
+        prevScrollHeightRef.current = listEl.scrollHeight
+        prevScrollTopRef.current = listEl.scrollTop
+      }
+
       const offset = (pageNum - 1) * 20
+
       try {
         const res = await getData(ENDPOINTS.COMMENT_FETCH(newsId, offset))
         if (!res.success) return
 
-        const newComments: Comment[] = res.data.comments.map((comment: Comment) => {
-          const isMine = comment.userId && comment.userId === userId
-          return {
-            id: comment.id.toString(),
-            userId: comment.userId,
-            username: isMine ? `${username}(나)` : `${comment.username ?? '탈퇴한 회원'}`,
-            content: comment.content,
-            createdAt: comment.createdAt,
-            isMine,
-          }
-        })
+        const newComments = mapComments(res.data.comments)
 
-        setComments((prev) => (pageNum === 1 ? newComments : [...newComments, ...prev]))
+        setComments((prev) => (pageNum === 1 ? newComments : [...prev, ...newComments]))
         setHasMore(res.data.hasNext)
         setPage(pageNum)
       } catch (err) {
@@ -86,6 +109,21 @@ export const useComments = ({
   )
 
   /* -------------------------------------------------- */
+  /* 스크롤 위치 복원                                    */
+  /* -------------------------------------------------- */
+  useLayoutEffect(() => {
+    const listEl = commentListRef.current
+    if (listEl && prevScrollHeightRef.current !== null && prevScrollTopRef.current !== null) {
+      const newScrollHeight = listEl.scrollHeight
+      const scrollDiff = newScrollHeight - prevScrollHeightRef.current
+      listEl.scrollTop = (prevScrollTopRef.current ?? 0) + scrollDiff
+    }
+    // 사용 후 초기화
+    prevScrollHeightRef.current = null
+    prevScrollTopRef.current = null
+  }, [comments])
+
+  /* -------------------------------------------------- */
   /* 최신 댓글 폴링                                      */
   /* -------------------------------------------------- */
   const pollLatestComments = useCallback(async () => {
@@ -95,17 +133,7 @@ export const useComments = ({
       const res = await getData(ENDPOINTS.COMMENT_FETCH(newsId, 0))
       if (!res.success) return
 
-      const newComments: Comment[] = res.data.comments.map((comment: Comment) => {
-        const isMine = comment.userId && comment.userId === userId
-        return {
-          id: comment.id.toString(),
-          userId: comment.userId,
-          username: isMine ? `${username}(나)` : `${comment.username ?? '탈퇴한 회원'}`,
-          content: comment.content,
-          createdAt: comment.createdAt,
-          isMine,
-        }
-      })
+      const newComments = mapComments(res.data.comments)
 
       setComments((prev) => {
         const existingIds = new Set(prev.map((c) => c.id))
@@ -135,6 +163,16 @@ export const useComments = ({
       if (interval) clearInterval(interval)
     }
   }, [pollLatestComments, isAlarmOpen])
+
+  /* -------------------------------------------------- */
+  /* 초기 로딩 시 맨 아래로 이동                         */
+  /* -------------------------------------------------- */
+  useEffect(() => {
+    if (commentsEndRef.current && page === 1 && !initialScrollDoneRef.current) {
+      commentsEndRef.current.scrollIntoView({ behavior: 'auto' })
+      initialScrollDoneRef.current = true // 새로고침 시 한 번만 실행
+    }
+  }, [comments, page])
 
   /* -------------------------------------------------- */
   /* 무한 스크롤                                         */
@@ -194,7 +232,6 @@ export const useComments = ({
         setToastMessage(TimelineMessage.COMMENT_POST_SUCCESS)
 
         await pollLatestComments()
-
         setShouldScrollToBottom(true)
       }
     } catch (err) {
