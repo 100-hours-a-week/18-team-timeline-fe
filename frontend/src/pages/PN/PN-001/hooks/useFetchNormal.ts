@@ -50,15 +50,13 @@ export const useFetchNormal = () => {
           const newList = res.data[category]?.newsList ?? []
           const prevList = prev[category]?.newsList ?? []
 
-          const appendedList = prevList.length > newList.length ? prevList : newList
-
-          if (prevList.length === newList.length && prevList[0]?.id === newList[0]?.id) {
-            continue
-          }
+          const newItems = newList.filter((newItem) => !prevList.some((prevItem) => prevItem.id === newItem.id))
 
           updated[category] = {
             ...res.data[category],
-            newsList: appendedList,
+            offset: prev[category]?.offset ?? 0,
+            hasNext: prev[category]?.hasNext ?? true,
+            newsList: [...newItems, ...prevList],
           }
         }
 
